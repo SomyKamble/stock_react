@@ -442,7 +442,7 @@ export default function EnhancedTable() {
                           {row.change}.00%
                         </TableCell>
                         <TableCell align="left" className={classes.tableCell}>
-                          $ {row.lastprice}
+                          ₹{row.lastprice}
                         </TableCell>
                         <TableCell align="left" className={classes.tableCell}>
                           {row.weight}
@@ -451,13 +451,13 @@ export default function EnhancedTable() {
                           {numberWithCommas(row.quantity)}
                         </TableCell>
                         <TableCell align="left" className={classes.tableCell}>
-                          $ {numberWithCommas(row.value)}
+                          ₹{numberWithCommas(row.value)}
                         </TableCell>
                         <TableCell align="left" className={classes.tableCell}>
-                          $ {numberWithCommas(row.cost)}
+                          ₹{numberWithCommas(row.cost)}
                         </TableCell>
                         <TableCell align="left" className={classes.tableCell}>
-                          $ {row.totalreturn}
+                          ₹{row.totalreturn}
                         </TableCell>
                         <TableCell
                           align="left"
