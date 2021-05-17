@@ -18,6 +18,8 @@ import Container from "@material-ui/core/Container";
 import Custombutton from "../Button/Custombutton";
 import Progressbar from "../Progressbar/Progressbar";
 import styles from "./Table.module.css";
+import Layout from "../Layout/Layout";
+
 function createData(
   id,
   ticker,
@@ -472,127 +474,130 @@ export default function EnhancedTable() {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   return (
-    <Container className={classes.containerWidth}>
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <EnhancedTableToolbar />
-          <TableContainer className={classes.containerr}>
-            <Table stickyHeader className={classes.table}>
-              <EnhancedTableHead
-                classes={classes}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                <TableRow
-                  hover
-                  role="checkbox"
-                  className={classes.firstRow}
-                  tabIndex={-1}
-                >
-                  <TableCell
-                    align="left"
-                    className={`${classes.tableCellSticky} ${styles.paddingLeft}`}
+    <>
+      <Layout flag="dashboard" />
+      <Container className={classes.containerWidth}>
+        <div className={classes.root}>
+          <Paper className={classes.paper}>
+            <EnhancedTableToolbar />
+            <TableContainer className={classes.containerr}>
+              <Table stickyHeader className={classes.table}>
+                <EnhancedTableHead
+                  classes={classes}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    className={classes.firstRow}
+                    tabIndex={-1}
                   >
-                    {secondHeader[0].ticker}%
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    {secondHeader[0].securityname}
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    {secondHeader[0].change}
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    {secondHeader[0].lastprice}
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    {secondHeader[0].weight}%
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    {secondHeader[0].quantity}
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    ₹{secondHeader[0].value}
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    ₹{secondHeader[0].cost}
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    ₹{secondHeader[0].totalreturn}
-                  </TableCell>
-                  <TableCell align="left" className={classes.tableCellSticky}>
-                    {secondHeader[0].ctr}%
-                  </TableCell>
-                </TableRow>
+                    <TableCell
+                      align="left"
+                      className={`${classes.tableCellSticky} ${styles.paddingLeft}`}
+                    >
+                      {secondHeader[0].ticker}%
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      {secondHeader[0].securityname}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      {secondHeader[0].change}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      {secondHeader[0].lastprice}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      {secondHeader[0].weight}%
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      {secondHeader[0].quantity}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      ₹{secondHeader[0].value}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      ₹{secondHeader[0].cost}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      ₹{secondHeader[0].totalreturn}
+                    </TableCell>
+                    <TableCell align="left" className={classes.tableCellSticky}>
+                      {secondHeader[0].ctr}%
+                    </TableCell>
+                  </TableRow>
 
-                {stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.id}
-                      >
-                        <TableCell className={classes.tableCell} align="left">
-                          {row.ticker}
-                        </TableCell>
-                        <TableCell className={classes.tableCell} align="left">
-                          {row.securityname}
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          className={
-                            row.change < 1
-                              ? classes.tableCellRed
-                              : isNaN(row.ticker)
-                              ? classes.tableCell
-                              : ""
-                          }
+                  {stableSort(rows, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.id}
                         >
-                          {row.change}.00%
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          ₹{row.lastprice}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {row.weight}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {numberWithCommas(row.quantity)}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          ₹{numberWithCommas(row.value)}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          ₹{numberWithCommas(row.cost)}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          ₹{row.totalreturn}
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          className={
-                            row.ctr < 0 && isNaN(row.ticker)
-                              ? classes.tableCellRed
-                              : !isNaN(row.ticker)
-                              ? ""
-                              : classes.tableCellGreen
-                          }
-                        >
-                          {row.ctr}%
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </div>
-    </Container>
+                          <TableCell className={classes.tableCell} align="left">
+                            {row.ticker}
+                          </TableCell>
+                          <TableCell className={classes.tableCell} align="left">
+                            {row.securityname}
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            className={
+                              row.change < 1
+                                ? classes.tableCellRed
+                                : isNaN(row.ticker)
+                                ? classes.tableCell
+                                : ""
+                            }
+                          >
+                            {row.change}.00%
+                          </TableCell>
+                          <TableCell align="left" className={classes.tableCell}>
+                            ₹{row.lastprice}
+                          </TableCell>
+                          <TableCell align="left" className={classes.tableCell}>
+                            {row.weight}
+                          </TableCell>
+                          <TableCell align="left" className={classes.tableCell}>
+                            {numberWithCommas(row.quantity)}
+                          </TableCell>
+                          <TableCell align="left" className={classes.tableCell}>
+                            ₹{numberWithCommas(row.value)}
+                          </TableCell>
+                          <TableCell align="left" className={classes.tableCell}>
+                            ₹{numberWithCommas(row.cost)}
+                          </TableCell>
+                          <TableCell align="left" className={classes.tableCell}>
+                            ₹{row.totalreturn}
+                          </TableCell>
+                          <TableCell
+                            align="left"
+                            className={
+                              row.ctr < 0 && isNaN(row.ticker)
+                                ? classes.tableCellRed
+                                : !isNaN(row.ticker)
+                                ? ""
+                                : classes.tableCellGreen
+                            }
+                          >
+                            {row.ctr}%
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </div>
+      </Container>
+    </>
   );
 }

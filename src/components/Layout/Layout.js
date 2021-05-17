@@ -20,7 +20,7 @@ class Layout extends Component {
   render() {
     return (
       <Auxilary>
-        <Navbar />
+        <Navbar flag={this.props.flag}/>
       </Auxilary>
     );
   }
