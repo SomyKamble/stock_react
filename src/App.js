@@ -14,9 +14,9 @@ function App() {
           <Route path="/table" component={Table} />
           {/* <Route path="/form" component={Form} /> */}
           <Route path="/form">
-            <Form/>
-            </Route>
-            {/* <Route path="/showtable">
+            <Form />
+          </Route>
+          {/* <Route path="/showtable">
               <TablePage  />
             </Route> */}
         </Switch>

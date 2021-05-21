@@ -1,20 +1,20 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+// import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
+// import TextField from "@material-ui/core/TextField";
+// import Grid from "@material-ui/core/Grid";
 // import classes2 from "./Login.module.css";
-import { Table, Button, Row, Col, Upload } from "antd";
-import { DropzoneAreaBase, DropzoneArea } from "material-ui-dropzone";
+import { Table, Upload } from "antd";
+import { DropzoneAreaBase } from "material-ui-dropzone";
 import { ExcelRenderer } from "react-excel-renderer";
 // import { getDroppedOrSelectedFiles } from "html5-file-selector";
-import Dropzone from "react-dropzone";
+// import Dropzone from "react-dropzone";
 // import DropZone from "./dropzone/DropZone";
 import { Link as Links } from "react-router-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import TablePage from "./FormTab";
-import cssstyle from "./Form.module.css";
+// import cssstyle from "./Form.module.css";
 // import TransitionsModal from "./Modal";
 // import React from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -203,27 +203,27 @@ class ExcelPage extends Component {
       }
     };
 
-    const UploadButton = withStyles({
-      root: {
-        boxShadow: "none",
-        textTransform: "none",
-        fontSize: "18",
-        borderColor: "#225b54",
-        backgroundColor: "#302c3c",
-        "&:hover": {
-          borderColor: "#225b54",
-          backgroundColor: "#302c3c",
-          boxShadow: "none",
-        },
-        "&:active": {
-          boxShadow: "none",
-          borderColor: "#225b54",
-          backgroundColor: "#302c3c",
-        },
-      },
-    })(Button);
+    // const UploadButton = withStyles({
+    //   root: {
+    //     boxShadow: "none",
+    //     textTransform: "none",
+    //     fontSize: "18",
+    //     borderColor: "#225b54",
+    //     backgroundColor: "#302c3c",
+    //     "&:hover": {
+    //       borderColor: "#225b54",
+    //       backgroundColor: "#302c3c",
+    //       boxShadow: "none",
+    //     },
+    //     "&:active": {
+    //       boxShadow: "none",
+    //       borderColor: "#225b54",
+    //       backgroundColor: "#302c3c",
+    //     },
+    //   },
+    // })(Button);
 
-    const { data } = this.state;
+    // const { data } = this.state;
 
     const { classes } = this.props;
 
@@ -365,10 +365,10 @@ function TransitionsModal(props) {
     setOpen(false);
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  function toggleModal() {
-    setIsOpen(!isOpen);
-  }
+  // const [isOpen, setIsOpen] = useState(false);
+  // function toggleModal() {
+  //   setIsOpen(!isOpen);
+  // }
 
   return (
     <div style={{ padding: "0% 0% 0% 42%" }}>

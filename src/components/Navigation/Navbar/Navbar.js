@@ -1,5 +1,9 @@
 import React from "react";
-import { makeStyles,ThemeProvider ,createMuiTheme} from "@material-ui/core/styles";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,11 +18,9 @@ import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Grid from "@material-ui/core/Grid";
 import classes2 from "./Navbar.module.css";
-import { green} from '@material-ui/core/colors';
-import Button from '@material-ui/core/Button';
-import {
-  Link as Links
-} from "react-router-dom";
+import { green } from "@material-ui/core/colors";
+import Button from "@material-ui/core/Button";
+import { Link as Links } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -154,6 +156,8 @@ export default function PrimarySearchAppBar(props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            component={Links}
+            to="/"
           >
             LOGO
           </IconButton>
@@ -171,7 +175,12 @@ export default function PrimarySearchAppBar(props) {
               </ThemeProvider>
             ) : (
               <>
-                <IconButton component={Links} to="/form" aria-label="show 4 new mails" color="inherit">
+                <IconButton
+                  component={Links}
+                  to="/form"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                >
                   <HomeOutlined className={classes2.iconColor} />
                 </IconButton>
                 <IconButton

@@ -1,19 +1,19 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 import classes2 from "./Form.module.css";
 import {
   createMuiTheme,
-  MuiThemeProvider,
+  // MuiThemeProvider,
   ThemeProvider,
 } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
+// import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Clock from "react-digital-clock";
-import { DropzoneAreaBase } from "material-ui-dropzone";
+// import { DropzoneAreaBase } from "material-ui-dropzone";
 import ExcelPage from "./Upload";
 import Layout from "../Layout/Layout";
 
@@ -103,33 +103,33 @@ const theme = createMuiTheme({
   },
 });
 
-const themess = createMuiTheme({
-  overrides: {
-    MuiDropzoneSnackbar: {
-      errorAlert: {
-        backgroundColor: "#AFA",
-        color: "#000",
-      },
-      successAlert: {
-        backgroundColor: "#FAA",
-        color: "#000",
-      },
-    },
-  },
-});
+// const themess = createMuiTheme({
+//   overrides: {
+//     MuiDropzoneSnackbar: {
+//       errorAlert: {
+//         backgroundColor: "#AFA",
+//         color: "#000",
+//       },
+//       successAlert: {
+//         backgroundColor: "#FAA",
+//         color: "#000",
+//       },
+//     },
+//   },
+// });
 
-const themes = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#438c3f",
-      contrastText: "#000000",
-    },
-    secondary: {
-      main: "#438c3f",
-      contrastText: "#000000",
-    },
-  },
-});
+// const themes = createMuiTheme({
+//   palette: {
+//     primary: {
+//       main: "#438c3f",
+//       contrastText: "#000000",
+//     },
+//     secondary: {
+//       main: "#438c3f",
+//       contrastText: "#000000",
+//     },
+//   },
+// });
 
 // const buttonTheme = createMuiTheme({
 //     palette: {
@@ -144,34 +144,34 @@ const themes = createMuiTheme({
 //     },
 //   });
 
-const UploadButton = withStyles({
-  root: {
-    boxShadow: "none",
-    textTransform: "none",
-    fontSize: "18",
-    borderColor: "#225b54",
-    backgroundColor: "#302c3c",
-    "&:hover": {
-      borderColor: "#225b54",
-      backgroundColor: "#302c3c",
-      boxShadow: "none",
-    },
-    "&:active": {
-      boxShadow: "none",
-      borderColor: "#225b54",
-      backgroundColor: "#302c3c",
-    },
-  },
-})(Button);
+// const UploadButton = withStyles({
+//   root: {
+//     boxShadow: "none",
+//     textTransform: "none",
+//     fontSize: "18",
+//     borderColor: "#225b54",
+//     backgroundColor: "#302c3c",
+//     "&:hover": {
+//       borderColor: "#225b54",
+//       backgroundColor: "#302c3c",
+//       boxShadow: "none",
+//     },
+//     "&:active": {
+//       boxShadow: "none",
+//       borderColor: "#225b54",
+//       backgroundColor: "#302c3c",
+//     },
+//   },
+// })(Button);
 
 export default function Form() {
   // const [files, setFiles] = useState([]);
 
   const classes = useStyles();
 
-  const customMe = () => {
-    alert("button clicked");
-  };
+  // const customMe = () => {
+  //   alert("button clicked");
+  // };
 
   return (
     <>
