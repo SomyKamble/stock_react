@@ -178,7 +178,7 @@ export default function Form() {
       <Layout flag="form" />
       <Container className={classes.containerWidth} id="centerstyle">
         <div className={classes.root}>
-          <Typography
+          {/* <Typography
             className={classes.title}
             variant="h5"
             id="tableTitle"
@@ -188,12 +188,10 @@ export default function Form() {
           </Typography>
 
           <ThemeProvider theme={theme}>
-            {/* <Grid container className={classes.textfield}>
-            <Grid item> */}
-
+        
             <form className={classes.textfield} noValidate>
               <TextField
-                // className={classe.placeholder}
+           
                 label="Enter Portfolio name"
                 variant="standard"
                 id="standard-search"
@@ -217,69 +215,14 @@ export default function Form() {
               </Button>
             </form>
 
-            {/* </Grid>
-            <Grid item alignItems="stretch" style={{ display: "flex" }}> */}
-            {/* <Button variant="outlined" color="primary">
-                CONTINUE
-              </Button> */}
-            {/* </Grid>
-          </Grid> */}
-          </ThemeProvider>
+           
+          </ThemeProvider> */}
 
-          {/* <DropzoneAreaBase
-            dropzoneClass={classes.drop}
-            Icon="disable"
-            // onAdd={()=>customMe()}
-            // onChange={(files) => console.log('Files:', files)}
-            dropzoneText={
-              <>
-                <UploadButton
-                  variant="outlined"
-                  style={{ marginTop: "3%", background: "#302c3c" }}
-                >
-                  Attach or drop file here
-                </UploadButton>
-                <Typography
-                  variant="body2"
-                  style={{
-                    marginTop: "2%",
-                    color: "#86838B",
-                    fontSize: "12px",
-                  }}
-                >
-                  Use the specified format to successfully submit the file.
-                  <br />
-                  <i>
-                    {" "}
-                    <a
-                      href="https://res.cloudinary.com/bryta/raw/upload/v1562751445/Sample_Excel_Sheet_muxx6s.xlsx"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      download
-                      style={{ color: "#20A45C", textDecoration: "none" }}
-                    >
-                      Click here
-                    </a>{" "}
-                  </i>{" "}
-                  to download the sample file.
-                </Typography>
-              </>
-            }
-          ></DropzoneAreaBase> */}
-
-          {/* <ThemeProvider theme={themes}> */}
-          <p>
+          
+          {/* <p> */}
             <ExcelPage />
-          </p>
-          {/* <Button
-          className={classes.endIcon}
-            variant="contained"
-            color="primary"
-            style={{ "min-height": "40px", width: "20%" }}
-          >
-            CONTINUE
-          </Button> */}
-          {/* </ThemeProvider> */}
+          {/* </p> */}
+         
         </div>
       </Container>
     </>
