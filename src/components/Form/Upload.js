@@ -57,7 +57,7 @@ const useStyles = (theme) => ({
     paddingLeft: "65px",
     paddingRight: "65px",
     paddingTop: "0px",
-    paddingBottom: "65px",
+    paddingBottom: "20px",
   },
 
   containerWidth: {
@@ -484,34 +484,47 @@ class ExcelPage extends Component {
       );
     };
 
-    function returnerror(error, data) {
+    function returnerror(error, data, name) {
       console.log("error here:" + error);
       if (data === "YES") {
         return (
-          <div
-            style={{
-              width: 370,
-              height: 75,
-              whiteSpace: "nowrap",
-              marginLeft: "950px",
-            }}
-          >
-            <Box
-              component="div"
-              my={2}
-              overflow="auto"
-              bgcolor="background.paper"
-            >
-              <Alert
-                severity="error"
-                style={{ maxHeight: 75, overflow: "auto" }}
+          <>
+            <div style={{ display: "flex" }}>
+              <div style={{ marginLeft: "90px" }}>
+                <TextField
+                  id="outlined-bare"
+                  className={classes.textField}
+                  defaultValue={name}
+                  margin="dense"
+                  variant="outlined"
+                />
+              </div>
+              <div
+                style={{
+                  width: 370,
+                  height: 75,
+                  whiteSpace: "nowrap",
+                  marginLeft: "650px",
+                }}
               >
-                {error.map((er) => (
-                  <li>{er}</li>
-                ))}
-              </Alert>
-            </Box>
-          </div>
+                <Box
+                  component="div"
+                  my={2}
+                  overflow="auto"
+                  bgcolor="background.paper"
+                >
+                  <Alert
+                    severity="error"
+                    style={{ maxHeight: 75, overflow: "auto" }}
+                  >
+                    {error.map((er) => (
+                      <li>{er}</li>
+                    ))}
+                  </Alert>
+                </Box>
+              </div>
+            </div>
+          </>
         );
       } else {
         return <></>;
@@ -523,10 +536,12 @@ class ExcelPage extends Component {
         return (
           <div>
             {/* <div>{showname(this.state.data, this.state.name)}</div> */}
-            <div>{showname(this.state.data, this.state.name)} {returnerror(this.state.error, this.state.data)}</div>
+            <div>
+              {returnerror(this.state.error, this.state.data, this.state.name)}
+            </div>
             <Container
               className={classes.containerWidth}
-              style={{ maxWidth: "1450px", marginTop: "1px" }}
+              style={{ maxWidth: "1450px", marginTop: "10px" }}
             >
               <div
                 className={classes.root}
@@ -543,7 +558,7 @@ class ExcelPage extends Component {
                   <EnhancedTableToolbar />
                   <TableContainer
                     className={classes.containerr}
-                    style={{ height: 460 }}
+                    style={{ height: 360 }}
                   >
                     <Table
                       stickyHeader
@@ -822,20 +837,20 @@ class ExcelPage extends Component {
     //   }
     // }
 
-    function showname(data, name) {
-      if (data === "YES") {
-        // return <div>{name}</div>;
-        return <><TextField
-        id="outlined-bare"
-        className={classes.textField}
-        defaultValue={name}
-        margin="normal"
-        variant="outlined"
-      /></>
-      } else {
-        return <></>;
-      }
-    }
+    // function showname(data, name) {
+    //   if (data === "YES") {
+    //     // return <div>{name}</div>;
+    //     return <><TextField
+    //     id="outlined-bare"
+    //     className={classes.textField}
+    //     defaultValue={name}
+    //     margin="normal"
+    //     variant="outlined"
+    //   /></>
+    //   } else {
+    //     return <></>;
+    //   }
+    // }
 
     return (
       <>
@@ -1120,10 +1135,10 @@ function TableSubmitModal(props) {
           backgroundColor: "#20a45c",
           fontSize: "17px",
           fontWeight: "600",
-          marginTop: 20,
+          marginTop: 0,
           borderRadius: "4px",
           color: "black",
-          marginLeft: "930px",
+          marginLeft: "850px",
         }}
         className="button"
         onClick={(e) => {
@@ -1142,7 +1157,7 @@ function TableSubmitModal(props) {
           backgroundColor: "#20a45c",
           fontSize: "17px",
           fontWeight: "600",
-          marginTop: 20,
+          marginTop: 0,
           padding: "1px",
           borderRadius: "4px",
           color: "black",
