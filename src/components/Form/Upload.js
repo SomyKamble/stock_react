@@ -33,7 +33,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
-import Custombutton from "../Button/Custombutton";
+// import Custombutton from "../Button/Custombutton";
+import Custombutton from "./Tablecustombutton";
 import { Alert } from "@material-ui/lab";
 import {
   createMuiTheme,
@@ -490,7 +491,7 @@ class ExcelPage extends Component {
         return (
           <>
             <div style={{ display: "flex" }}>
-              <div style={{ marginLeft: "90px" }}>
+              <div style={{ marginLeft: "60px" }}>
                 <TextField
                   id="outlined-bare"
                   className={classes.textField}
@@ -501,10 +502,10 @@ class ExcelPage extends Component {
               </div>
               <div
                 style={{
-                  width: 370,
+                  width: 400,
                   height: 75,
                   whiteSpace: "nowrap",
-                  marginLeft: "650px",
+                  marginLeft: "620px",
                 }}
               >
                 <Box
@@ -517,6 +518,7 @@ class ExcelPage extends Component {
                     severity="error"
                     style={{ maxHeight: 75, overflow: "auto" }}
                   >
+                    Error !
                     {error.map((er) => (
                       <li>{er}</li>
                     ))}
@@ -536,13 +538,20 @@ class ExcelPage extends Component {
         return (
           <div>
             {/* <div>{showname(this.state.data, this.state.name)}</div> */}
-            <div>
+            {/* <div>
               {returnerror(this.state.error, this.state.data, this.state.name)}
-            </div>
+            </div> */}
             <Container
               className={classes.containerWidth}
               style={{ maxWidth: "1450px", marginTop: "10px" }}
             >
+              <div>
+                {returnerror(
+                  this.state.error,
+                  this.state.data,
+                  this.state.name
+                )}
+              </div>
               <div
                 className={classes.root}
                 // style={{
@@ -726,12 +735,18 @@ class ExcelPage extends Component {
                     <DropzoneAreaBase
                       dropzoneClass={classes.drop}
                       Icon="disable"
-                      showAlerts={false}
+                      acceptedFiles={[
+                        "application/vnd.ms-excel",
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                      ]}
+                      filesLimit={1}
+                      // showAlerts={false}
                       // onAdd={()=>customMe()}
                       // onChange={(files) => console.log('Files:', files)}
                       dropzoneText={
                         <>
                           <Upload
+                            accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             name="file"
                             beforeUpload={this.fileHandler}
                             onRemove={() => this.setState({ rows: [] })}
@@ -785,6 +800,7 @@ class ExcelPage extends Component {
                       rows={this.state.rows}
                       cols={columns}
                       parentCallback={this.handleCallback}
+                      errors={this.state.error}
                     />
                   </div>
                 </div>
@@ -1003,8 +1019,8 @@ function TransitionsModal(props) {
           >
             {/* <h2 id="transition-modal-title">INFO ABOUT ROWS AND COLS</h2> */}
             <p id="transition-modal-description">
-              This table have {props.rows.length} rows and errors found based on
-              matching tickers from database.
+              This table have {props.rows.length} rows and {props.errors.length}{" "}
+              errors found based on matching tickers from database.
             </p>
             <div style={{ marginTop: 15 }}>
               <div className="actions">
@@ -1113,7 +1129,15 @@ function TableSubmitModal(props) {
 
   return (
     <div>
-      {/* <button
+      <div
+        style={{
+          float: "right",
+          marginRight: "60px",
+          display: "flex",
+          width: "30%",
+        }}
+      >
+        {/* <button
         type="button"
         onClick={handleOpen}
         // onClick={() => { func1(); func2();}}
@@ -1128,44 +1152,49 @@ function TableSubmitModal(props) {
       >
         Submit
       </button> */}
-      <Buttons
-        style={{
-          "min-height": "40px",
-          width: "15%",
-          backgroundColor: "#20a45c",
-          fontSize: "17px",
-          fontWeight: "600",
-          marginTop: 0,
-          borderRadius: "4px",
-          color: "black",
-          marginLeft: "850px",
-        }}
-        className="button"
-        onClick={(e) => {
-          handleEntailmentRequest(e);
-        }}
-      >
-        CANCEL
-      </Buttons>
-      <span> &nbsp;&nbsp; </span>
-      <Buttons
-        type="button"
-        onClick={handleOpen}
-        style={{
-          "min-height": "40px",
-          width: "15%",
-          backgroundColor: "#20a45c",
-          fontSize: "17px",
-          fontWeight: "600",
-          marginTop: 0,
-          padding: "1px",
-          borderRadius: "4px",
-          color: "black",
-          marginLeft: "5px",
-        }}
-      >
-        SUBMIT
-      </Buttons>
+        <Buttons
+          style={{
+            "min-height": "40px",
+            width: "85%",
+            backgroundColor: "#20a45c",
+            fontSize: "17px",
+            fontWeight: "600",
+            marginTop: 0,
+            borderRadius: "4px",
+            color: "black",
+            // marginLeft: "850px",
+            // float: 'right',
+            marginRight: "10px",
+          }}
+          className="button"
+          onClick={(e) => {
+            handleEntailmentRequest(e);
+          }}
+        >
+          Cancel
+        </Buttons>
+        <span> &nbsp;&nbsp; </span>
+        <Buttons
+          type="button"
+          onClick={handleOpen}
+          style={{
+            "min-height": "40px",
+            width: "85%",
+            backgroundColor: "#20a45c",
+            fontSize: "17px",
+            fontWeight: "600",
+            marginTop: 0,
+            padding: "1px",
+            borderRadius: "4px",
+            color: "black",
+            // marginLeft: "5px",
+            // float: 'right',
+            marginRight: "5px",
+          }}
+        >
+          Submit
+        </Buttons>
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
