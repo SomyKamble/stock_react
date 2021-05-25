@@ -724,6 +724,19 @@ class ExcelPage extends Component {
                 <div>
                   <div style={{ marginTop: "25px" }}>
                     <DropzoneAreaBase
+                      filesLimit={1}
+                      acceptedFiles={['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']}
+                      // onAdd={ newFileObjs => {
+                      //   this.props.filesLimit === 1
+                      //      ? this.setState({ files : newFileObjs })
+                      //      : this.setState((state, props) => {
+                      //          {
+                      //            files: state.fileObjects.concat(newFileObjs);
+                      //          }
+                      //        });
+                      //  }}    
+                      
+                     
                       dropzoneClass={classes.drop}
                       Icon="disable"
                       showAlerts={false}
@@ -732,6 +745,7 @@ class ExcelPage extends Component {
                       dropzoneText={
                         <>
                           <Upload
+                            accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             name="file"
                             beforeUpload={this.fileHandler}
                             onRemove={() => this.setState({ rows: [] })}
@@ -776,7 +790,14 @@ class ExcelPage extends Component {
                           </Typography>
                         </>
                       }
-                    ></DropzoneAreaBase>
+                    >
+
+  
+    
+      
+  
+  
+                    </DropzoneAreaBase>
                   </div>
                 </div>
                 <div>
@@ -784,6 +805,7 @@ class ExcelPage extends Component {
                     <TransitionsModal
                       rows={this.state.rows}
                       cols={columns}
+                      errors={this.state.error}
                       parentCallback={this.handleCallback}
                     />
                   </div>
@@ -1003,7 +1025,7 @@ function TransitionsModal(props) {
           >
             {/* <h2 id="transition-modal-title">INFO ABOUT ROWS AND COLS</h2> */}
             <p id="transition-modal-description">
-              This table have {props.rows.length} rows and errors found based on
+              This table have {props.rows.length} rows and {props.errors.length} errors found based on
               matching tickers from database.
             </p>
             <div style={{ marginTop: 15 }}>
