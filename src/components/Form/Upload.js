@@ -522,7 +522,8 @@ class ExcelPage extends Component {
       if (data === "YES") {
         return (
           <div>
-            <div>{returnerror(this.state.error, this.state.data)}</div>
+            {/* <div>{showname(this.state.data, this.state.name)}</div> */}
+            <div>{showname(this.state.data, this.state.name)} {returnerror(this.state.error, this.state.data)}</div>
             <Container
               className={classes.containerWidth}
               style={{ maxWidth: "1450px", marginTop: "1px" }}
@@ -823,7 +824,14 @@ class ExcelPage extends Component {
 
     function showname(data, name) {
       if (data === "YES") {
-        return <div>{name}</div>;
+        // return <div>{name}</div>;
+        return <><TextField
+        id="outlined-bare"
+        className={classes.textField}
+        defaultValue={name}
+        margin="normal"
+        variant="outlined"
+      /></>
       } else {
         return <></>;
       }
@@ -832,7 +840,7 @@ class ExcelPage extends Component {
     return (
       <>
         {checkfordissaperingform(this.state.data)}
-        {showname(this.state.data, this.state.name)}
+        {/* {showname(this.state.data, this.state.name)} */}
 
         {/* <div>{returnerror(this.state.error, this.state.data)}</div> */}
         {check(this.state.data)}
@@ -983,7 +991,7 @@ function TransitionsModal(props) {
               This table have {props.rows.length} rows and errors found based on
               matching tickers from database.
             </p>
-            <div style={{ marginTop: 10 }}>
+            <div style={{ marginTop: 15 }}>
               <div className="actions">
                 {/* <button
                   onClick={() => {
@@ -1011,11 +1019,11 @@ function TransitionsModal(props) {
                     backgroundColor: "#449474",
                     fontSize: "17px",
                     fontWeight: "600",
-                    marginTop: 10,
+                    marginTop: 15,
                     padding: "1px",
                     borderRadius: "4px",
                     color: "black",
-                    marginLeft:"30%"
+                    marginLeft: "30%",
                   }}
                 >
                   OK
@@ -1118,7 +1126,9 @@ function TableSubmitModal(props) {
           marginLeft: "930px",
         }}
         className="button"
-        onClick={() => {}}
+        onClick={(e) => {
+          handleEntailmentRequest(e);
+        }}
       >
         CANCEL
       </Buttons>
@@ -1160,32 +1170,21 @@ function TableSubmitModal(props) {
               position: "fixed",
               // background: "lightblue",
               width: "30%",
-              height: "30%",
+              height: "25%",
             }}
           >
             <h2 id="transition-modal-title">Alert</h2>
             <p id="transition-modal-description">ignore errors and submit?</p>
             <div style={{ marginTop: 20 }}>
               <div className="actions">
-                {/* <button
-                  onClick={() => {
-                    props.parentCallback("YES");
-                    handleClose();
-                    // close();
-                  }}
-                  className="button"
-                >
-                  CREATE Table{" "}
-                </button> */}
-                <Buttons
+                <AlertSubmitModal />
+                {/* <Buttons
                   onClick={(e) => {
                     handleEntailmentRequest(e);
                   }}
-                  // component={Links}
-                  // to="/form"
+                  
                   type="button"
-                  // onClick={() => {}}
-                  // onClick={() => { func1(); func2();}}
+                
                   style={{
                     "min-height": "40px",
                     width: "50%",
@@ -1218,7 +1217,174 @@ function TableSubmitModal(props) {
                   }}
                 >
                   Yes
+                </Buttons> */}
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+    </div>
+  );
+}
+
+function AlertSubmitModal(props) {
+  const classes = useStyless();
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // const [isOpen, setIsOpen] = useState(false);
+  // function toggleModal() {
+  //   setIsOpen(!isOpen);
+  // }
+  const handleEntailmentRequest = (e) => {
+    window.location.reload(false);
+    console.log("aasdfad");
+    //do something...
+  };
+
+  return (
+    <div>
+      {/* <button
+        type="button"
+        onClick={handleOpen}
+        // onClick={() => { func1(); func2();}}
+        style={{
+          "min-height": "40px",
+          width: "14vw",
+          backgroundColor: "#20a45c",
+          fontSize: "17px",
+          fontWeight: "600",
+          marginTop: "40px",
+        }}
+      >
+        Submit
+      </button> */}
+      <Buttons
+        onClick={(e) => {
+          handleEntailmentRequest(e);
+        }}
+        // component={Links}
+        // to="/form"
+        type="button"
+        // onClick={() => {}}
+        // onClick={() => { func1(); func2();}}
+        style={{
+          "min-height": "40px",
+          width: "50%",
+          backgroundColor: "#449474",
+          fontSize: "17px",
+          fontWeight: "600",
+          marginTop: 20,
+          padding: "1px",
+          borderRadius: "4px",
+          color: "black",
+        }}
+      >
+        Re Upload
+      </Buttons>
+      <span> &nbsp;&nbsp; </span>
+      <Buttons
+        style={{
+          "min-height": "40px",
+          width: "45%",
+          backgroundColor: "#449474",
+          fontSize: "17px",
+          fontWeight: "600",
+          marginTop: 20,
+          borderRadius: "4px",
+          color: "black",
+        }}
+        className="button"
+        onClick={handleOpen}
+      >
+        Yes
+      </Buttons>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div
+            className={classes.paper}
+            style={{
+              position: "fixed",
+              // background: "lightblue",
+              width: "30%",
+              height: "25%",
+            }}
+          >
+            <h2 id="transition-modal-title">Success</h2>
+            <p id="transition-modal-description">Completed !</p>
+            <div style={{ marginTop: 20 }}>
+              <div className="actions">
+                {/* <button
+                  onClick={() => {
+                    props.parentCallback("YES");
+                    handleClose();
+                    // close();
+                  }}
+                  className="button"
+                >
+                  CREATE Table{" "}
+                </button> */}
+                <Buttons
+                  onClick={(e) => {
+                    handleEntailmentRequest(e);
+                  }}
+                  // component={Links}
+                  // to="/form"
+                  type="button"
+                  // onClick={() => {}}
+                  // onClick={() => { func1(); func2();}}
+                  style={{
+                    "min-height": "40px",
+                    width: "40%",
+                    backgroundColor: "#449474",
+                    fontSize: "17px",
+                    fontWeight: "600",
+                    marginTop: 10,
+                    padding: "1px",
+                    borderRadius: "4px",
+                    color: "black",
+                    marginLeft: "30%",
+                  }}
+                >
+                  OK
                 </Buttons>
+                {/* <span> &nbsp;&nbsp; </span>
+                <Buttons
+                  style={{
+                    "min-height": "40px",
+                    width: "45%",
+                    backgroundColor: "#449474",
+                    fontSize: "17px",
+                    fontWeight: "600",
+                    marginTop: 20,
+                    borderRadius: "4px",
+                    color: "black",
+                  }}
+                  className="button"
+                  onClick={() => {
+                    handleClose();
+                  }}
+                >
+                  Yes
+                </Buttons> */}
               </div>
             </div>
           </div>
