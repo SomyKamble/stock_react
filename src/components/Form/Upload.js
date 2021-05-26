@@ -472,7 +472,7 @@ class ExcelPage extends Component {
               >
                 <form>
                   <label for="lfname" style={{ fontSize: "15px" }}>
-                    Enter Portfolio Name:
+                    Portfolio Name:
                   </label>
                   <input
                     id="lfname"
@@ -497,7 +497,7 @@ class ExcelPage extends Component {
                   width: 750,
                   height: 75,
                   whiteSpace: "nowrap",
-                  marginLeft: "12%",
+                  marginLeft: "5%",
                 }}
               >
                 <Box
