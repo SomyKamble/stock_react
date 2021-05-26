@@ -965,6 +965,7 @@ function TableSubmitModal(props) {
             marginTop: "20px",
             borderRadius: "4px",
             color: "black",
+            height: "30px",
             // marginLeft: "850px",
             // float: 'right',
             marginRight: "10px",
@@ -984,6 +985,7 @@ function TableSubmitModal(props) {
           onClick={handleOpen}
           style={{
             "min-height": "10px",
+            height: "30px",
             width: "85%",
             backgroundColor: "#20a45c",
             fontSize: "15px",
