@@ -536,7 +536,7 @@ class ExcelPage extends Component {
             <Container
               // className={classes.containerWidth}
               id="centerstyle"
-              style={{ maxWidth: "1850px", marginTop: "10px" }}
+              style={{ maxWidth: "1850px", marginTop: "5px" }}
             >
               <div
                 style={{
@@ -544,8 +544,8 @@ class ExcelPage extends Component {
                   backgroundColor: "#141629",
                   paddingLeft: "75px",
                   paddingRight: "75px",
-                  paddingTop: "35px",
-                  paddingBottom: "85px",
+                  paddingTop: "25px",
+                  paddingBottom: "70px",
                 }}
                 //  className={classes.root}
               >
@@ -563,7 +563,7 @@ class ExcelPage extends Component {
                   <EnhancedTableToolbar />
                   <TableContainer
                     className={classes.containerr}
-                    style={{ height: 400, backgroundColor: "#141629" }}
+                    style={{ height: 350, backgroundColor: "#141629" }}
                   >
                     <Table
                       stickyHeader
@@ -663,7 +663,7 @@ class ExcelPage extends Component {
                   paddingLeft: "95px",
                   paddingRight: "95px",
                   paddingTop: "65px",
-                  paddingBottom: "65px",
+                  paddingBottom: "25px",
                 }}
                 // className={classes.root}
               >
@@ -828,11 +828,11 @@ function TransitionsModal(props) {
 
   const returnstatement = (name) => {
     if (name) {
-      var ans = "This table have";
+      var ans = "This table have ";
       ans = ans + props.rows.length;
-      ans = ans + "rows and ";
+      ans = ans + " rows and ";
       ans = ans + props.errors.length;
-      ans = ans + "errors found based on matching tickers from database.";
+      ans = ans + " errors found based on matching tickers from database.";
 
       return ans;
     } else {
@@ -889,7 +889,7 @@ function TransitionsModal(props) {
               errors found based on matching tickers from database. */}
               {returnstatement(props.portfolio)}
             </p>
-            <div style={{ marginTop: 15 }}>
+            <div style={{ marginTop: 8 }}>
               <div className="actions">
                 <Buttons
                   type="button"
@@ -904,12 +904,12 @@ function TransitionsModal(props) {
                     }
                   }}
                   style={{
-                    "min-height": "40px",
+                    "min-height": "20px",
                     width: "40%",
                     backgroundColor: "#449474",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                    marginTop: "10px",
+                    fontSize: "15px",
+                    fontWeight: "500",
+                    marginTop: "8px",
                     padding: "1px",
                     borderRadius: "4px",
                     color: "black",
@@ -957,18 +957,18 @@ function TableSubmitModal(props) {
       >
         <Buttons
           style={{
-            "min-height": "20px",
+            "min-height": "10px",
             width: "85%",
             backgroundColor: "#20a45c",
             fontSize: "15px",
             fontWeight: "500",
-            marginTop: "30px",
+            marginTop: "20px",
             borderRadius: "4px",
             color: "black",
             // marginLeft: "850px",
             // float: 'right',
             marginRight: "10px",
-            marginBottom: "20px",
+            marginBottom: "10px",
             // textTransform: "none"
           }}
           className="button"
@@ -983,19 +983,19 @@ function TableSubmitModal(props) {
           type="button"
           onClick={handleOpen}
           style={{
-            "min-height": "20px",
+            "min-height": "10px",
             width: "85%",
             backgroundColor: "#20a45c",
             fontSize: "15px",
             fontWeight: "500",
-            marginTop: "30px",
+            marginTop: "20px",
             padding: "1px",
             borderRadius: "4px",
             color: "black",
             // marginLeft: "5px",
             // float: 'right',
             marginRight: "5px",
-            marginBottom: "20px",
+            marginBottom: "10px",
             // textTransform: "none"
           }}
         >
@@ -1069,11 +1069,11 @@ function AlertSubmitModal(props) {
         // onClick={() => {}}
         // onClick={() => { func1(); func2();}}
         style={{
-          "min-height": "40px",
+          "min-height": "20px",
           width: "50%",
           backgroundColor: "#449474",
-          fontSize: "17px",
-          fontWeight: "600",
+          fontSize: "15px",
+          fontWeight: "500",
           marginTop: "10px",
           padding: "1px",
           borderRadius: "4px",
@@ -1084,18 +1084,20 @@ function AlertSubmitModal(props) {
       </Buttons>
       <span> &nbsp;&nbsp; </span>
       <Buttons
+        onClick={handleOpen}
+        type="button"
         style={{
-          "min-height": "40px",
+          "min-height": "20px",
           width: "45%",
           backgroundColor: "#449474",
-          fontSize: "17px",
-          fontWeight: "600",
+          fontSize: "15px",
+          fontWeight: "500",
           marginTop: "10px",
+          padding: "1px",
           borderRadius: "4px",
           color: "black",
         }}
-        className="button"
-        onClick={handleOpen}
+        // className="button"
       >
         Yes
       </Buttons>
@@ -1123,7 +1125,7 @@ function AlertSubmitModal(props) {
           >
             <h2 id="transition-modal-title">Success</h2>
             <p id="transition-modal-description">Completed !</p>
-            <div style={{ marginTop: 20 }}>
+            <div style={{ marginTop: 10 }}>
               <div className="actions">
                 <Buttons
                   onClick={(e) => {
@@ -1131,12 +1133,12 @@ function AlertSubmitModal(props) {
                   }}
                   type="button"
                   style={{
-                    "min-height": "40px",
+                    "min-height": "20px",
                     width: "40%",
                     backgroundColor: "#449474",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                    marginTop: 10,
+                    fontSize: "15px",
+                    fontWeight: "500",
+                    marginTop: "10px",
                     padding: "1px",
                     borderRadius: "4px",
                     color: "black",
