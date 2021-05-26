@@ -938,8 +938,8 @@ function TableSubmitModal(props) {
             "min-height": "20px",
             width: "85%",
             backgroundColor: "#20a45c",
-            fontSize: "17px",
-            fontWeight: "600",
+            fontSize: "15px",
+            fontWeight: "500",
             marginTop: "30px",
             borderRadius: "4px",
             color: "black",
@@ -947,6 +947,7 @@ function TableSubmitModal(props) {
             // float: 'right',
             marginRight: "10px",
             marginBottom: "20px",
+            // textTransform: "none"
           }}
           className="button"
           onClick={(e) => {
@@ -963,8 +964,8 @@ function TableSubmitModal(props) {
             "min-height": "20px",
             width: "85%",
             backgroundColor: "#20a45c",
-            fontSize: "17px",
-            fontWeight: "600",
+            fontSize: "15px",
+            fontWeight: "500",
             marginTop: "30px",
             padding: "1px",
             borderRadius: "4px",
@@ -973,6 +974,7 @@ function TableSubmitModal(props) {
             // float: 'right',
             marginRight: "5px",
             marginBottom: "20px",
+            // textTransform: "none"
           }}
         >
           Submit
