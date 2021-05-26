@@ -495,7 +495,7 @@ class ExcelPage extends Component {
               <div
                 style={{
                   width: 750,
-                  height: 75,
+                  height: 95,
                   whiteSpace: "nowrap",
                   marginLeft: "5%",
                 }}
@@ -509,7 +509,7 @@ class ExcelPage extends Component {
                   <Alert
                     severity="error"
                     style={{
-                      maxHeight: 75,
+                      maxHeight: 95,
                       overflow: "auto",
                       backgroundColor: "#070A1B",
                     }}
