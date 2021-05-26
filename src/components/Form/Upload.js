@@ -63,7 +63,7 @@ const useStyles = (theme) => ({
 
   containerWidth: {
     maxWidth: "1850px",
-    marginTop: "0px",
+    marginTop: "10px",
   },
 
   title: {
@@ -142,9 +142,9 @@ const useStyles = (theme) => ({
     top: 20,
     width: 1,
   },
-  containerWidth: {
-    maxWidth: "1450px",
-  },
+  // containerWidth: {
+  //   maxWidth: "1450px",
+  // },
   tableCell: {
     color: "#94959D!important",
     fontSize: "13px",
@@ -213,6 +213,11 @@ class ExcelPage extends Component {
           dataIndex: "age2",
           editable: false,
         },
+        {
+          title: "ASSET TYPE",
+          dataIndex: "assettype",
+          editable: false,
+        },
       ],
     };
   }
@@ -220,48 +225,6 @@ class ExcelPage extends Component {
   handleCallback = (childData) => {
     this.setState({ data: childData });
   };
-
-  //   handleSave = (row) => {
-  //     const newData = [...this.state.rows];
-  //     const index = newData.findIndex((item) => row.key === item.key);
-  //     const item = newData[index];
-  //     newData.splice(index, 1, {
-  //       ...item,
-  //       ...row,
-  //     });
-  //     this.setState({ rows: newData });
-  //   };
-
-  // handleChange(files1){
-  //   this.setState({
-  //     files: files1
-  //   });
-  //   console.log('file',this.state.files);
-  //   let fileObj = this.state.files;
-  //   console.log('file',this.state.files.type);
-  //   console.log("fileObj.type:", fileObj.type);
-  // }
-
-  //   checkFile(file) {
-  //     let errorMessage = "";
-  //     if (!file || !file[0]) {
-  //       return;
-  //     }
-  //     const isExcel =
-  //       file[0].type === "application/vnd.ms-excel" ||
-  //       file[0].type ===
-  //         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  //     if (!isExcel) {
-  //       errorMessage = "You can only upload Excel file!";
-  //     }
-  //     console.log("file", file[0].type);
-  //     const isLt2M = file[0].size / 1024 / 1024 < 2;
-  //     if (!isLt2M) {
-  //       errorMessage = "File must be smaller than 2MB!";
-  //     }
-  //     console.log("errorMessage", errorMessage);
-  //     return errorMessage;
-  //   }
 
   fileHandler = (FileList) => {
     console.log("fileListHere", FileList);
@@ -301,6 +264,7 @@ class ExcelPage extends Component {
                 age: row[1],
                 gender: row[2],
                 age2: row[3],
+                assettype: row[4],
               });
             } else {
               if (!row[0] && !row[3]) {
@@ -400,6 +364,12 @@ class ExcelPage extends Component {
         disablePadding: false,
         label: "COST",
       },
+      {
+        id: "assettype",
+        numeric: true,
+        disablePadding: false,
+        label: "ASSET TYPE",
+      },
     ];
 
     function EnhancedTableHead() {
@@ -469,7 +439,7 @@ class ExcelPage extends Component {
             id="tableTitle"
             component="div"
           >
-            SECURITY OVERVIEW
+            UPLOADED SECURITIES
           </Typography>
 
           <Tooltip title="Filter list">
@@ -491,36 +461,62 @@ class ExcelPage extends Component {
         return (
           <>
             <div style={{ display: "flex" }}>
-              <div style={{ marginLeft: "60px" }}>
-                <TextField
-                  id="outlined-bare"
-                  className={classes.textField}
-                  defaultValue={name}
-                  margin="dense"
-                  variant="outlined"
-                />
-              </div>
               <div
                 style={{
-                  width: 400,
+                  marginLeft: "0px",
+
+                  // margin: "auto",
+                  // width: "50%",
+                  // padding: "10px",
+                }}
+              >
+                <form>
+                  <label for="lfname" style={{ fontSize: "15px" }}>
+                    Enter Portfolio Name:
+                  </label>
+                  <input
+                    id="lfname"
+                    name="fname"
+                    type="text"
+                    value={name}
+                    style={{
+                      backgroundColor: "#141629",
+                      margin: "8px",
+                      height: "35px",
+                      border: "1px solid #6E6E95",
+                      width: 300,
+                      color: "#ffffff",
+                      fontSize: "15px",
+                    }}
+                  />
+                </form>
+              </div>
+
+              <div
+                style={{
+                  width: 750,
                   height: 75,
                   whiteSpace: "nowrap",
-                  marginLeft: "620px",
+                  marginLeft: "12%",
                 }}
               >
                 <Box
                   component="div"
-                  my={2}
+                  // my={2}
                   overflow="auto"
                   bgcolor="background.paper"
                 >
                   <Alert
                     severity="error"
-                    style={{ maxHeight: 75, overflow: "auto" }}
+                    style={{
+                      maxHeight: 75,
+                      overflow: "auto",
+                      backgroundColor: "#070A1B",
+                    }}
                   >
                     Error !
                     {error.map((er) => (
-                      <li>{er}</li>
+                      <li style={{ color: "#ffffff" }}>{er}</li>
                     ))}
                   </Alert>
                 </Box>
@@ -537,29 +533,29 @@ class ExcelPage extends Component {
       if (data === "YES") {
         return (
           <div>
-            {/* <div>{showname(this.state.data, this.state.name)}</div> */}
-            {/* <div>
-              {returnerror(this.state.error, this.state.data, this.state.name)}
-            </div> */}
             <Container
-              className={classes.containerWidth}
-              style={{ maxWidth: "1450px", marginTop: "10px" }}
+              // className={classes.containerWidth}
+              id="centerstyle"
+              style={{ maxWidth: "1850px", marginTop: "10px" }}
             >
-              <div>
-                {returnerror(
-                  this.state.error,
-                  this.state.data,
-                  this.state.name
-                )}
-              </div>
               <div
-                className={classes.root}
-                // style={{
-                //   width: "100%",
-                //   backgroundColor: "#141629",
-                //   paddingRight: theme.spacing(5),
-                // }}
+                style={{
+                  width: "100%",
+                  backgroundColor: "#141629",
+                  paddingLeft: "75px",
+                  paddingRight: "75px",
+                  paddingTop: "35px",
+                  paddingBottom: "85px",
+                }}
+                //  className={classes.root}
               >
+                <div>
+                  {returnerror(
+                    this.state.error,
+                    this.state.data,
+                    this.state.name
+                  )}
+                </div>
                 <Paper
                   className={classes.paper}
                   // style={{ width: "100%" }}
@@ -567,7 +563,7 @@ class ExcelPage extends Component {
                   <EnhancedTableToolbar />
                   <TableContainer
                     className={classes.containerr}
-                    style={{ height: 360 }}
+                    style={{ height: 400, backgroundColor: "#141629" }}
                   >
                     <Table
                       stickyHeader
@@ -593,7 +589,7 @@ class ExcelPage extends Component {
                             >
                               <TableCell
                                 className={classes.tableCell}
-                                align="left"
+                                align="cen"
                                 style={{ borderBottom: "none" }}
                               >
                                 {/* {row.name} */}
@@ -626,6 +622,14 @@ class ExcelPage extends Component {
                               >
                                 {row.age2}
                               </TableCell>
+
+                              <TableCell
+                                align="left"
+                                className={classes.tableCell}
+                                style={{ borderBottom: "none" }}
+                              >
+                                {row.assettype}
+                              </TableCell>
                             </TableRow>
                           );
                         })}
@@ -633,52 +637,8 @@ class ExcelPage extends Component {
                     </Table>
                   </TableContainer>
                 </Paper>
+                <TableSubmitModal />
               </div>
-              {/* <Buttons
-                style={{
-                  "min-height": "40px",
-                  width: "15%",
-                  backgroundColor: "#ffffff",
-                  fontSize: "17px",
-                  fontWeight: "600",
-                  marginTop: 20,
-                  borderRadius: "4px",
-                  color: "black",
-                  marginLeft: "930px",
-                }}
-                className="button"
-                onClick={() => {
-                  console.log("modal closed ");
-                  props.parentCallback("NO");
-                  handleClose();
-                  // close();
-                }}
-              >
-                CANCEL
-              </Buttons>
-              <span> &nbsp;&nbsp; </span> */}
-              {/* <Buttons
-                type="button"
-                onClick={() => {
-                  props.parentCallback("YES");
-                  handleClose();
-                }}
-                style={{
-                  "min-height": "40px",
-                  width: "15%",
-                  backgroundColor: "#ffffff",
-                  fontSize: "17px",
-                  fontWeight: "600",
-                  marginTop: 20,
-                  padding: "1px",
-                  borderRadius: "4px",
-                  color: "black",
-                  marginLeft: "5px",
-                }}
-              >
-                SUBMIT
-              </Buttons> */}
-              <TableSubmitModal />
             </Container>
           </div>
         );
@@ -691,8 +651,22 @@ class ExcelPage extends Component {
       if (data === "NO") {
         return (
           <div>
-            <Container className={classes.containerWidth} id="centerstyle">
-              <div className={classes.root}>
+            <Container
+              // className={classes.containerWidth}
+              style={{ maxWidth: "1850px", marginTop: "30px" }}
+              id="centerstyle"
+            >
+              <div
+                style={{
+                  width: "100%",
+                  backgroundColor: "#141629",
+                  paddingLeft: "95px",
+                  paddingRight: "95px",
+                  paddingTop: "65px",
+                  paddingBottom: "65px",
+                }}
+                // className={classes.root}
+              >
                 <Typography
                   className={classes.title}
                   variant="h5"
@@ -711,9 +685,9 @@ class ExcelPage extends Component {
                       onChange={this.storename.bind(this)}
                       inputProps={{
                         style: {
-                          fontSize: 11,
-                          color: "#585c67",
-                          marginBottom: "10px",
+                          fontSize: "15px",
+                          color: "#ffffff",
+                          // marginBottom: "10px",
                         },
                       }}
                       InputLabelProps={{ className: classes2.text_field }}
@@ -813,135 +787,13 @@ class ExcelPage extends Component {
       }
     };
 
-    // const UploadButton = withStyles({
-    //   root: {
-    //     boxShadow: "none",
-    //     textTransform: "none",
-    //     fontSize: "18",
-    //     borderColor: "#225b54",
-    //     backgroundColor: "#302c3c",
-    //     "&:hover": {
-    //       borderColor: "#225b54",
-    //       backgroundColor: "#302c3c",
-    //       boxShadow: "none",
-    //     },
-    //     "&:active": {
-    //       boxShadow: "none",
-    //       borderColor: "#225b54",
-    //       backgroundColor: "#302c3c",
-    //     },
-    //   },
-    // })(Button);
-
     const { classes } = this.props;
-    // function returnerror(error, data) {
-    //   console.log("error here:" + error);
-    //   if (data === "YES") {
-    //     return (
-    //       <div style={{ width: 200, whiteSpace: 'nowrap' }}>
-    //         <Box component="div" my={2} overflow="auto" bgcolor="background.paper">
-    //       <Alert severity="error" style={{maxHeight: 200, overflow: 'auto'}}>
-    //         {error.map((er) => (
-    //           <li>{er}</li>
-    //         ))}
-    //       </Alert>
-    //       </Box>
-    // </div>
-    //     );
-    //   } else {
-    //     return <></>;
-    //   }
-    // }
-
-    // function showname(data, name) {
-    //   if (data === "YES") {
-    //     // return <div>{name}</div>;
-    //     return <><TextField
-    //     id="outlined-bare"
-    //     className={classes.textField}
-    //     defaultValue={name}
-    //     margin="normal"
-    //     variant="outlined"
-    //   /></>
-    //   } else {
-    //     return <></>;
-    //   }
-    // }
 
     return (
       <>
         {checkfordissaperingform(this.state.data)}
-        {/* {showname(this.state.data, this.state.name)} */}
 
-        {/* <div>{returnerror(this.state.error, this.state.data)}</div> */}
         {check(this.state.data)}
-        {/* <div>
-          <div style={{ marginTop: "25px" }}>
-            <DropzoneAreaBase
-              dropzoneClass={classes.drop}
-              Icon="disable"
-              showAlerts={false}
-              // onAdd={()=>customMe()}
-              // onChange={(files) => console.log('Files:', files)}
-              dropzoneText={
-                <>
-                  <Upload
-                    name="file"
-                    beforeUpload={this.fileHandler}
-                    onRemove={() => this.setState({ rows: [] })}
-                    multiple={false}
-                    // component={Links} to="/showtable"
-                  >
-                    <Buttons
-                      className={classes.btn}
-                      variant="outlined"
-                      style={{ marginTop: "3%", background: "#302c3c" }}
-                    >
-                      Attach or drop file here
-                    </Buttons>
-                  </Upload>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      marginTop: "2%",
-                      color: "#86838B",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Use the specified format to successfully submit the file.
-                    <br />
-                    <i>
-                      {" "}
-                      <a
-                        href="https://res.cloudinary.com/bryta/raw/upload/v1562751445/Sample_Excel_Sheet_muxx6s.xlsx"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        download
-                        style={{ color: "#20A45C", textDecoration: "none" }}
-                      >
-                        Click here
-                      </a>{" "}
-                    </i>{" "}
-                    to download the sample file.
-                  </Typography>
-                </>
-              }
-            ></DropzoneAreaBase>
-           
-          </div>
-        
-        </div>
-        <div>
-          <div>
-            <TransitionsModal
-              rows={this.state.rows}
-              cols={columns}
-              parentCallback={this.handleCallback}
-            />
-          </div>
-         
-        </div> */}
-        {/* {check(this.state.data)} */}
       </>
     );
   }
@@ -1024,33 +876,19 @@ function TransitionsModal(props) {
             </p>
             <div style={{ marginTop: 15 }}>
               <div className="actions">
-                {/* <button
-                  onClick={() => {
-                    props.parentCallback("YES");
-                    handleClose();
-                    // close();
-                  }}
-                  className="button"
-                >
-                  CREATE Table{" "}
-                </button> */}
                 <Buttons
-                  // component={Links}
-                  // to="/table"
                   type="button"
                   onClick={() => {
                     props.parentCallback("YES");
                     handleClose();
-                    // close();
                   }}
-                  // onClick={() => { func1(); func2();}}
                   style={{
                     "min-height": "40px",
                     width: "40%",
                     backgroundColor: "#449474",
                     fontSize: "17px",
                     fontWeight: "600",
-                    marginTop: 15,
+                    marginTop: "10px",
                     padding: "1px",
                     borderRadius: "4px",
                     color: "black",
@@ -1059,44 +897,7 @@ function TransitionsModal(props) {
                 >
                   OK
                 </Buttons>
-                {/* <span> &nbsp;&nbsp; </span>
-                <Buttons
-                  style={{
-                    "min-height": "40px",
-                    width: "45%",
-                    backgroundColor: "#449474",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                    marginTop: 20,
-                    borderRadius: "4px",
-                    color: "black",
-                  }}
-                  className="button"
-                  onClick={() => {
-                    console.log("modal closed ");
-                    props.parentCallback("NO");
-                    handleClose();
-                    // close();
-                  }}
-                >
-                  Cancel
-                </Buttons> */}
               </div>
-              {/* <Table dataSource={props.dataSource} columns={props.columns} />
-              <button
-                type="button"
-                onClick={""}
-                style={{
-                  "min-height": "40px",
-                  width: "45%",
-                  backgroundColor: "green",
-                  fontSize: "17px",
-                  fontWeight: "600",
-                  marginTop: 20,
-                }}
-              >
-                Submit
-              </button> */}
             </div>
           </div>
         </Fade>
@@ -1117,14 +918,9 @@ function TableSubmitModal(props) {
     setOpen(false);
   };
 
-  // const [isOpen, setIsOpen] = useState(false);
-  // function toggleModal() {
-  //   setIsOpen(!isOpen);
-  // }
   const handleEntailmentRequest = (e) => {
     window.location.reload(false);
     console.log("aasdfad");
-    //do something...
   };
 
   return (
@@ -1132,39 +928,25 @@ function TableSubmitModal(props) {
       <div
         style={{
           float: "right",
-          marginRight: "60px",
+          marginRight: "0px",
           display: "flex",
           width: "30%",
         }}
       >
-        {/* <button
-        type="button"
-        onClick={handleOpen}
-        // onClick={() => { func1(); func2();}}
-        style={{
-          "min-height": "40px",
-          width: "14vw",
-          backgroundColor: "#20a45c",
-          fontSize: "17px",
-          fontWeight: "600",
-          marginTop: "40px",
-        }}
-      >
-        Submit
-      </button> */}
         <Buttons
           style={{
-            "min-height": "40px",
+            "min-height": "20px",
             width: "85%",
             backgroundColor: "#20a45c",
             fontSize: "17px",
             fontWeight: "600",
-            marginTop: 0,
+            marginTop: "30px",
             borderRadius: "4px",
             color: "black",
             // marginLeft: "850px",
             // float: 'right',
             marginRight: "10px",
+            marginBottom: "20px",
           }}
           className="button"
           onClick={(e) => {
@@ -1178,18 +960,19 @@ function TableSubmitModal(props) {
           type="button"
           onClick={handleOpen}
           style={{
-            "min-height": "40px",
+            "min-height": "20px",
             width: "85%",
             backgroundColor: "#20a45c",
             fontSize: "17px",
             fontWeight: "600",
-            marginTop: 0,
+            marginTop: "30px",
             padding: "1px",
             borderRadius: "4px",
             color: "black",
             // marginLeft: "5px",
             // float: 'right',
             marginRight: "5px",
+            marginBottom: "20px",
           }}
         >
           Submit
@@ -1218,50 +1001,12 @@ function TableSubmitModal(props) {
             }}
           >
             <h2 id="transition-modal-title">Alert</h2>
-            <p id="transition-modal-description">ignore errors and submit?</p>
+            <p id="transition-modal-description">
+              Ignore The Errors And Submit?
+            </p>
             <div style={{ marginTop: 20 }}>
               <div className="actions">
                 <AlertSubmitModal />
-                {/* <Buttons
-                  onClick={(e) => {
-                    handleEntailmentRequest(e);
-                  }}
-                  
-                  type="button"
-                
-                  style={{
-                    "min-height": "40px",
-                    width: "50%",
-                    backgroundColor: "#449474",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                    marginTop: 20,
-                    padding: "1px",
-                    borderRadius: "4px",
-                    color: "black",
-                  }}
-                >
-                  Re Upload
-                </Buttons>
-                <span> &nbsp;&nbsp; </span>
-                <Buttons
-                  style={{
-                    "min-height": "40px",
-                    width: "45%",
-                    backgroundColor: "#449474",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                    marginTop: 20,
-                    borderRadius: "4px",
-                    color: "black",
-                  }}
-                  className="button"
-                  onClick={() => {
-                    handleClose();
-                  }}
-                >
-                  Yes
-                </Buttons> */}
               </div>
             </div>
           </div>
@@ -1283,33 +1028,13 @@ function AlertSubmitModal(props) {
     setOpen(false);
   };
 
-  // const [isOpen, setIsOpen] = useState(false);
-  // function toggleModal() {
-  //   setIsOpen(!isOpen);
-  // }
   const handleEntailmentRequest = (e) => {
     window.location.reload(false);
     console.log("aasdfad");
-    //do something...
   };
 
   return (
     <div>
-      {/* <button
-        type="button"
-        onClick={handleOpen}
-        // onClick={() => { func1(); func2();}}
-        style={{
-          "min-height": "40px",
-          width: "14vw",
-          backgroundColor: "#20a45c",
-          fontSize: "17px",
-          fontWeight: "600",
-          marginTop: "40px",
-        }}
-      >
-        Submit
-      </button> */}
       <Buttons
         onClick={(e) => {
           handleEntailmentRequest(e);
@@ -1325,7 +1050,7 @@ function AlertSubmitModal(props) {
           backgroundColor: "#449474",
           fontSize: "17px",
           fontWeight: "600",
-          marginTop: 20,
+          marginTop: "10px",
           padding: "1px",
           borderRadius: "4px",
           color: "black",
@@ -1341,7 +1066,7 @@ function AlertSubmitModal(props) {
           backgroundColor: "#449474",
           fontSize: "17px",
           fontWeight: "600",
-          marginTop: 20,
+          marginTop: "10px",
           borderRadius: "4px",
           color: "black",
         }}
@@ -1376,25 +1101,11 @@ function AlertSubmitModal(props) {
             <p id="transition-modal-description">Completed !</p>
             <div style={{ marginTop: 20 }}>
               <div className="actions">
-                {/* <button
-                  onClick={() => {
-                    props.parentCallback("YES");
-                    handleClose();
-                    // close();
-                  }}
-                  className="button"
-                >
-                  CREATE Table{" "}
-                </button> */}
                 <Buttons
                   onClick={(e) => {
                     handleEntailmentRequest(e);
                   }}
-                  // component={Links}
-                  // to="/form"
                   type="button"
-                  // onClick={() => {}}
-                  // onClick={() => { func1(); func2();}}
                   style={{
                     "min-height": "40px",
                     width: "40%",
@@ -1410,25 +1121,6 @@ function AlertSubmitModal(props) {
                 >
                   OK
                 </Buttons>
-                {/* <span> &nbsp;&nbsp; </span>
-                <Buttons
-                  style={{
-                    "min-height": "40px",
-                    width: "45%",
-                    backgroundColor: "#449474",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                    marginTop: 20,
-                    borderRadius: "4px",
-                    color: "black",
-                  }}
-                  className="button"
-                  onClick={() => {
-                    handleClose();
-                  }}
-                >
-                  Yes
-                </Buttons> */}
               </div>
             </div>
           </div>

@@ -66,163 +66,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const color = "#008000";
-const theme = createMuiTheme({
-  palette: {
-    common: { black: color, white: color },
-    primary: {
-      main: "#bdbbbb",
-      contrastText: "#ffffff",
-    },
-    text: { primary: color, secondary: color },
-  },
-  overrides: {
-    MuiInputBase: {
-      root: {
-        color: "#449474",
-      },
-    },
-    MuiInput: {
-      underline: {
-        "&:before": {
-          borderBottom: `1px solid #449474`,
-        },
-        "&:hover": {
-          borderBottom: `2px solid #449474`,
-        },
-      },
-      placeholder: {
-        opacity: "1px",
-      },
-    },
-    MuiDropzoneArea: {
-      root: {
-        minHeight: "184px",
-      },
-    },
-  },
-});
-
-// const themess = createMuiTheme({
-//   overrides: {
-//     MuiDropzoneSnackbar: {
-//       errorAlert: {
-//         backgroundColor: "#AFA",
-//         color: "#000",
-//       },
-//       successAlert: {
-//         backgroundColor: "#FAA",
-//         color: "#000",
-//       },
-//     },
-//   },
-// });
-
-// const themes = createMuiTheme({
-//   palette: {
-//     primary: {
-//       main: "#438c3f",
-//       contrastText: "#000000",
-//     },
-//     secondary: {
-//       main: "#438c3f",
-//       contrastText: "#000000",
-//     },
-//   },
-// });
-
-// const buttonTheme = createMuiTheme({
-//     palette: {
-//       primary: {
-//         main: "#bdbbbb",
-//         contrastText: "#ffffff",
-//       },
-//       secondary: {
-//         main: "#bdbbbb",
-//         contrastText: "#ffffff",
-//       },
-//     },
-//   });
-
-// const UploadButton = withStyles({
-//   root: {
-//     boxShadow: "none",
-//     textTransform: "none",
-//     fontSize: "18",
-//     borderColor: "#225b54",
-//     backgroundColor: "#302c3c",
-//     "&:hover": {
-//       borderColor: "#225b54",
-//       backgroundColor: "#302c3c",
-//       boxShadow: "none",
-//     },
-//     "&:active": {
-//       boxShadow: "none",
-//       borderColor: "#225b54",
-//       backgroundColor: "#302c3c",
-//     },
-//   },
-// })(Button);
-
 export default function Form() {
-  // const [files, setFiles] = useState([]);
-
   const classes = useStyles();
-
-  // const customMe = () => {
-  //   alert("button clicked");
-  // };
 
   return (
     <>
       <Layout flag="form" />
-      <Container className={classes.containerWidth} id="centerstyle">
-        <div className={classes.root}>
-          {/* <Typography
-            className={classes.title}
-            variant="h5"
-            id="tableTitle"
-            component="div"
-          >
-            FILL BELOW FORM
-          </Typography>
-          <ThemeProvider theme={theme}>
-        
-            <form className={classes.textfield} noValidate>
-              <TextField
-           
-                label="Enter Portfolio name"
-                variant="standard"
-                id="standard-search"
-                inputProps={{
-                  style: {
-                    fontSize: 11,
-                    color: "#585c67",
-                    marginBottom: "10px",
-                  },
-                }}
-                InputLabelProps={{ className: classes2.text_field }}
-                className={classes.lineStyle}
-              />
-              <span>&nbsp;&nbsp;&nbsp;&nbsp; </span>
-              <Button
-                variant="outlined"
-                color="primary"
-                style={{ "min-height": "45px", width: "15%" }}
-              >
-                <Clock hour12={false} /> IST
-              </Button>
-            </form>
-           
-          </ThemeProvider> */}
-
-          
-          {/* <p> */}
-            <ExcelPage />
-          {/* </p> */}
-         
-        </div>
-      </Container>
+      {/* <Container className={classes.containerWidth} id="centerstyle"> */}
+      {/* <div className={classes.root}> */}
+      <ExcelPage />
+      {/* </div> */}
+      {/* </Container> */}
     </>
   );
 }
