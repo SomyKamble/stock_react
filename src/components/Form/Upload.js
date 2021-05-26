@@ -775,6 +775,7 @@ class ExcelPage extends Component {
                       cols={columns}
                       parentCallback={this.handleCallback}
                       errors={this.state.error}
+                      portfolio={this.state.name}
                     />
                   </div>
                 </div>
@@ -825,6 +826,20 @@ function TransitionsModal(props) {
     setOpen(false);
   };
 
+  const returnstatement = (name) => {
+    if (name) {
+      var ans = "This table have";
+      ans = ans + props.rows.length;
+      ans = ans + "rows and ";
+      ans = ans + props.errors.length;
+      ans = ans + "errors found based on matching tickers from database.";
+
+      return ans;
+    } else {
+      return "Please fill portfolio Name And Then Submit";
+    }
+  };
+
   // const [isOpen, setIsOpen] = useState(false);
   // function toggleModal() {
   //   setIsOpen(!isOpen);
@@ -869,18 +884,24 @@ function TransitionsModal(props) {
               height: "20%",
             }}
           >
-            {/* <h2 id="transition-modal-title">INFO ABOUT ROWS AND COLS</h2> */}
             <p id="transition-modal-description">
-              This table have {props.rows.length} rows and {props.errors.length}{" "}
-              errors found based on matching tickers from database.
+              {/* This table have {props.rows.length} rows and {props.errors.length}{" "}
+              errors found based on matching tickers from database. */}
+              {returnstatement(props.portfolio)}
             </p>
             <div style={{ marginTop: 15 }}>
               <div className="actions">
                 <Buttons
                   type="button"
                   onClick={() => {
-                    props.parentCallback("YES");
-                    handleClose();
+                    // props.parentCallback("YES");
+                    // handleClose();
+                    if (props.portfolio) {
+                      props.parentCallback("YES");
+                      handleClose();
+                    } else {
+                      handleClose();
+                    }
                   }}
                   style={{
                     "min-height": "40px",
@@ -895,7 +916,8 @@ function TransitionsModal(props) {
                     marginLeft: "30%",
                   }}
                 >
-                  OK
+                  {/* OK */}
+                  {props.portfolio ? "OK" : "SUBMIT AGAIN"}
                 </Buttons>
               </div>
             </div>
