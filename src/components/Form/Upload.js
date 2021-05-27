@@ -192,6 +192,7 @@ class ExcelPage extends Component {
       data: "NO",
       error: [],
       name: "",
+      btn: "no",
       errorMessage: null,
       columns: [
         {
@@ -228,6 +229,8 @@ class ExcelPage extends Component {
   };
 
   fileHandler = (FileList) => {
+    this.setState({ btn: "yes" });
+    console.log("asdada:", this.state.btn);
     console.log("fileListHere", FileList);
     let fileObj = FileList;
     if (!fileObj) {
@@ -648,6 +651,11 @@ class ExcelPage extends Component {
       }
     };
 
+    // const handleBtn = (databtn) => {
+    //   this.setState({ btn: databtn });
+    //   console.log("sadsdas:", databtn);
+    // };
+
     const checkfordissaperingform = (data) => {
       if (data === "NO") {
         return (
@@ -715,6 +723,7 @@ class ExcelPage extends Component {
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                       ]}
                       filesLimit={1}
+                      dropzoneProps={{ disabled: true }}
                       // showAlerts={false}
                       // onAdd={()=>customMe()}
                       // onChange={(files) => console.log('Files:', files)}
@@ -724,19 +733,42 @@ class ExcelPage extends Component {
                             accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             name="file"
                             beforeUpload={this.fileHandler}
-                            onRemove={() => this.setState({ rows: [] })}
+                            // onRemove={() => this.setState({ rows: [] })}
+                            onRemove={() =>
+                              this.setState({ btn: "no", rows: [], error: [] })
+                            }
                             multiple={false}
                             // className={classes2.upload}
                             className={classes3}
                             // component={Links} to="/showtable"
                           >
-                            <Buttons
-                              className={classes.btn}
-                              variant="outlined"
-                              style={{ marginTop: "3%", background: "#302c3c" }}
-                            >
-                              Attach or drop file here
-                            </Buttons>
+                            {this.state.btn === "no" ? (
+                              <Buttons
+                                // disabled='true'
+                                // onClick={handleBtn}
+                                className={classes.btn}
+                                variant="outlined"
+                                style={{
+                                  marginTop: "3%",
+                                  background: "#302c3c",
+                                }}
+                              >
+                                Attach or drop file here
+                              </Buttons>
+                            ) : (
+                              <Buttons
+                                disabled="true"
+                                // onClick={handleBtn}
+                                className={classes.btn}
+                                variant="outlined"
+                                style={{
+                                  marginTop: "3%",
+                                  background: "#302c3c",
+                                }}
+                              >
+                                Attach or drop file here
+                              </Buttons>
+                            )}
                           </Upload>
                           <Typography
                             variant="body2"
