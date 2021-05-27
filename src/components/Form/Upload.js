@@ -50,6 +50,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { lighten } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import classes3 from "./app.scss";
 
 const useStyles = (theme) => ({
   root: {
@@ -725,6 +726,8 @@ class ExcelPage extends Component {
                             beforeUpload={this.fileHandler}
                             onRemove={() => this.setState({ rows: [] })}
                             multiple={false}
+                            // className={classes2.upload}
+                            className={classes3}
                             // component={Links} to="/showtable"
                           >
                             <Buttons

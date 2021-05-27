@@ -31,3 +31,8 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.upload{
+  color: red;
+  background: red !important;
+}
