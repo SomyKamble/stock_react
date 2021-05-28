@@ -19,6 +19,7 @@ import LockOpenOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { Link as Links } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import api from "../../constant";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -165,6 +166,7 @@ export default function Login() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [icon, setIcon] = useState("no");
   const datapost = {
     email: email,
     password: password,
@@ -207,6 +209,14 @@ export default function Login() {
     }
   };
 
+  const iconHideShow = () => {
+    if (icon === "no") {
+      setIcon("yes");
+    } else {
+      setIcon("no");
+    }
+  };
+
   return (
     <>
       <Layout flag="login" />
@@ -245,14 +255,17 @@ export default function Login() {
                 id="standard-search"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                inputProps={{ style: { fontSize: 13, color: "white" } }}
+                inputProps={{
+                  style: { fontSize: 13, color: "white", marginBottom: "18px" },
+                }}
                 InputLabelProps={{ className: classes2.text_field }}
               />
               <TextField
                 // className={classe.placeholder}
                 label="Password"
                 variant="standard"
-                type="password"
+                type={icon === "yes" ? "text" : "password"}
+                // type="password"
                 id="standard-search"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -261,9 +274,11 @@ export default function Login() {
                 InputProps={{
                   color: "white",
                   endAdornment: (
-                    <LockOpenOutlinedIcon
-                      style={{ color: "rgb(148, 149, 157)" }}
-                    />
+                    <IconButton onClick={iconHideShow}>
+                      <LockOpenOutlinedIcon
+                        style={{ color: "rgb(148, 149, 157)" }}
+                      />
+                    </IconButton>
                   ),
                 }}
               />
