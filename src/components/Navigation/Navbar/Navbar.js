@@ -77,6 +77,14 @@ export default function PrimarySearchAppBar(props) {
     handleMobileMenuClose();
   };
 
+  const logOut=()=>{
+    localStorage.removeItem("token");
+    location.href = "/"
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -94,6 +102,7 @@ export default function PrimarySearchAppBar(props) {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={logOut}>Log Out</MenuItem>
     </Menu>
   );
 

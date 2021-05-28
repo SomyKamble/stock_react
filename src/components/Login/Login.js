@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   makeStyles,
   createMuiTheme,
@@ -18,6 +18,7 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import LockOpenOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { Link as Links } from "react-router-dom";
 import Layout from "../Layout/Layout";
+import api from "../../constant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
       //   margin: theme.spacing(1),
       width: "100%",
       //   color:"green",
-      marginTop: "40px",
+      marginTop: "30px",
       // borderColor: 'red'
     },
   },
@@ -81,16 +82,16 @@ const useStyles = makeStyles((theme) => ({
   forgetpassword: {
     fontSize: "13px",
     fontWeight: "100",
-    paddingTop: "30px",
+    // paddingTop: "30px",
     paddingRight: "3px",
-    paddingBottom: "30px",
+    // paddingBottom: "0px",
     color: "green",
   },
 
   needhelpbutton: {
     fontSize: "13px",
     fontWeight: "100",
-    paddingTop: "30px",
+    // paddingTop: "30px",
     paddingRight: "3px",
     color: "green",
   },
@@ -162,6 +163,50 @@ const themes = createMuiTheme({
 export default function Login() {
   // const classe = textareauseStyles();
   const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const datapost = {
+    email: email,
+    password: password,
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      alert("Email or Password cannot be blank");
+    } else {
+      setEmail("");
+      setPassword("");
+
+      const headers = {
+        "Content-Type": "application/json; charset=UTF-8",
+      };
+
+      const postResponse = await api
+        .post("user/login/", datapost, { headers })
+        // .post("login_user_register/", datapost, { headers })
+
+        .then(function (response) {
+          if (response.status === 200) {
+            console.log("success:", response.data["token"]);
+            localStorage.setItem("token", response.data["token"]);
+
+            // console.log("successtoken:",localStorage.getItem('token'));
+            window.location = "/table";
+          }
+        })
+        .catch(function (error) {
+          console.log("error:", error);
+          console.log("errosr:", error.response.data);
+          error.response.status === 400
+            ? alert("Please Enter Correct Login Credentials")
+            : error.response.status === 500
+            ? console.log("bad request")
+            : console.log("error");
+        });
+    }
+  };
+
   return (
     <>
       <Layout flag="login" />
@@ -192,12 +237,14 @@ export default function Login() {
                     <Input className={classes.placeholder} color="green"  type="password" placeholder="Password" inputProps={{ 'aria-label': 'description' }} />
                 </form> */}
 
-            <form className={classes.textfield} noValidate>
+            <form className={classes.textfield} onSubmit={submit} noValidate>
               <TextField
                 // className={classe.placeholder}
                 label="Email Address"
                 variant="standard"
                 id="standard-search"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 inputProps={{ style: { fontSize: 13, color: "white" } }}
                 InputLabelProps={{ className: classes2.text_field }}
               />
@@ -207,6 +254,8 @@ export default function Login() {
                 variant="standard"
                 type="password"
                 id="standard-search"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 inputProps={{ style: { fontSize: 13, color: "white" } }}
                 InputLabelProps={{ className: classes2.text_field }}
                 InputProps={{
@@ -218,47 +267,49 @@ export default function Login() {
                   ),
                 }}
               />
-            </form>
+              {/* </form> */}
 
-            <Typography
-              className={classes.forgetpassword}
-              // variant="h6"
-              // id="tableTitle"
-              align="right"
-              component="div"
-            >
-              <Link className={classes.forgetpassword} href="#">
-                Forget Password?
-              </Link>
-            </Typography>
-
-            <ThemeProvider theme={theme}>
-              <Button
-                classes={{
-                  endIcon: classes.endIcon,
-                }}
-                component={Links}
-                to="/table"
-                endIcon={<ArrowForwardIosIcon />}
-                variant="contained"
-                color="primary"
-                style={{ "min-height": "60px", width: "100%" }}
+              <Typography
+                className={classes.forgetpassword}
+                // variant="h6"
+                // id="tableTitle"
+                align="right"
+                component="div"
               >
-                CONTINUE
-              </Button>
-            </ThemeProvider>
+                <Link className={classes.forgetpassword} href="#">
+                  Forget Password?
+                </Link>
+              </Typography>
 
-            <Typography
-              className={classes.needhelpbutton}
-              // variant="h6"
-              // id="tableTitle"
-              align="right"
-              component="div"
-            >
-              <Link className={classes.needhelpbutton} href="#">
-                Need Help?
-              </Link>
-            </Typography>
+              <ThemeProvider theme={theme}>
+                <Button
+                  classes={{
+                    endIcon: classes.endIcon,
+                  }}
+                  type="submit"
+                  // component={Links}
+                  // to="/table"
+                  endIcon={<ArrowForwardIosIcon />}
+                  variant="contained"
+                  color="primary"
+                  style={{ "min-height": "60px", width: "100%" }}
+                >
+                  CONTINUE
+                </Button>
+              </ThemeProvider>
+
+              <Typography
+                className={classes.needhelpbutton}
+                // variant="h6"
+                // id="tableTitle"
+                align="right"
+                component="div"
+              >
+                <Link className={classes.needhelpbutton} href="#">
+                  Need Help?
+                </Link>
+              </Typography>
+            </form>
           </div>
         </Container>
       </MuiThemeProvider>
