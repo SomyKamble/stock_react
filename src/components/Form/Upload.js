@@ -723,6 +723,7 @@ class ExcelPage extends Component {
                             beforeUpload={this.fileHandler}
                             onRemove={() => this.setState({ rows: [] })}
                             multiple={false}
+                            showUploadList={false}
                             // component={Links} to="/showtable"
                           >
                             <Buttons
@@ -986,11 +987,6 @@ return "Please fill portfolio Name And Then Submit";
           timeout: 500,
         }}
       >
-        
-                
-              
-
-               
                <Fade in={open}>
           <div
             className={classes.paper}
