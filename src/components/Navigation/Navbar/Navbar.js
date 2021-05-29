@@ -20,7 +20,7 @@ import Grid from "@material-ui/core/Grid";
 import classes2 from "./Navbar.module.css";
 import { green } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
-import { Link as Links } from "react-router-dom";
+import { Link as Links,useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -77,12 +77,14 @@ export default function PrimarySearchAppBar(props) {
     handleMobileMenuClose();
   };
 
+  const history = useHistory();
+
   const logOut=()=>{
     localStorage.removeItem("token");
-    location.href = "/"
+    // window.location.href = "/"
     setAnchorEl(null);
     handleMobileMenuClose();
-    
+    history.push("/");
   };
 
   const handleMobileMenuOpen = (event) => {
