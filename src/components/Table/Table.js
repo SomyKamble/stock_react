@@ -62,7 +62,7 @@ const TableCell = withStyles({
 const secondHeader = [
   createData(50, 2005, 20, 5087, "80%", 734760, 36777, 55563, 5788, 80, 20),
 ];
-const rows = [
+var rows = [
   createData(
     1,
     <Custombutton bankName="Reliance" dChange={false} />,
@@ -70,7 +70,7 @@ const rows = [
     -1,
     25,
     <Progressbar position={20} />,
-    5215745,
+    738561,
     36777,
     36781,
     20,
@@ -83,7 +83,7 @@ const rows = [
     1,
     223,
     <Progressbar position={85} />,
-    633601,
+    2953217,
     36777,
     36781,
     20,
@@ -91,12 +91,12 @@ const rows = [
   ),
   createData(
     3,
-    <Custombutton bankName="NAUKRI" dChange={false} />,
-    "NAUKRI",
+    <Custombutton bankName="KOTAKBANK" dChange={false} />,
+    "KOTAK MAHINDRA BANK",
     -1,
     222,
     <Progressbar position={50} />,
-    1195009,
+    492033,
     36777,
     36781,
     20,
@@ -109,7 +109,7 @@ const rows = [
     -1,
     224,
     <Progressbar position={50} />,
-    779521, 
+    340481, 
     36777,
     36781,
     20,
@@ -122,7 +122,7 @@ const rows = [
     1,
     22,
     <Progressbar position={50} />,
-    758529,
+    408065,
     36777,
     36781,
     20,
@@ -135,7 +135,7 @@ const rows = [
     1,
     228,
     <Progressbar position={50} />,
-    1256193,
+    356865,
     36777,
     36781,
     20,
@@ -148,7 +148,7 @@ const rows = [
     1,
     22,
     <Progressbar position={50} />,
-    5215746,
+    1510401,
     36777,
     36781,
     20,
@@ -187,7 +187,7 @@ const rows = [
     1,
     22,
     <Progressbar position={50} />,
-    779525,
+    1270529,
     36777,
     36781,
     20,
@@ -200,7 +200,7 @@ const rows = [
     1,
     22,
     <Progressbar position={50} />,
-    758520, 
+    81153, 
     36777,
     36781,
     20,
@@ -213,7 +213,7 @@ const rows = [
     1,
     22,
     <Progressbar position={50} />,
-    758529,
+    779521,
     36777,
     36781,
     20,
@@ -239,12 +239,121 @@ const rows = [
     22,
     22,
     <Progressbar position={50} />,
-    633601,
+    2714625,
     36777,
     36781,
     20,
     20
   ),
+
+  createData(
+    15,
+    <Custombutton bankName="HCLTECH" dChange={true} />,
+    "HCL TECHNOLOGIES",
+    22,
+    22,
+    <Progressbar position={50} />,
+    1850625	,
+    36777,
+    36781,
+    20,
+    20
+  ),
+  createData(
+    16,
+    <Custombutton bankName="ASIANPAINT" dChange={true} />,
+    "ASIAN PAINTS",
+    22,
+    22,
+    <Progressbar position={50} />,
+    60417,
+    36777,
+    36781,
+    20,
+    20
+  ),
+  createData(
+    17,
+    <Custombutton bankName="WIPRO" dChange={true} />,
+    "WIPRO",
+    22,
+    22,
+    <Progressbar position={50} />,
+    969473,
+    36777,
+    36781,
+    20,
+    20
+  ),
+  createData(
+    18,
+    <Custombutton bankName="MARUTI" dChange={true} />,
+    "MARUTI SUZUKI INDIA.",
+    22,
+    22,
+    <Progressbar position={50} />,
+    2815745,
+    36777,
+    36781,
+    20,
+    20
+  ),
+  createData(
+    19,
+    <Custombutton bankName="ULTRACEMCO" dChange={true} />,
+    "ULTRATECH CEMENT",
+    22,
+    22,
+    <Progressbar position={50} />,
+    2952193,
+    36777,
+    36781,
+    20,
+    20
+  ),
+  createData(
+    20,
+    <Custombutton bankName="DMART" dChange={true} />,
+    "AVENUE SUPERMARTS",
+    22,
+    22,
+    <Progressbar position={50} />,
+    5097729,
+    36777,
+    36781,
+    20,
+    20
+  ),
+  createData(
+    21,
+    <Custombutton bankName="ADANIGREEN" dChange={true} />,
+    "ADANI GREEN ENERGY",
+    22,
+    22,
+    <Progressbar position={50} />,
+    912129,
+    36777,
+    36781,
+    20,
+    20
+  ),
+  createData(
+    22,
+    <Custombutton bankName="SUNPHARMA" dChange={true} />,
+    "SUN PHARMACEUTICAL IND L",
+    22,
+    22,
+    <Progressbar position={50} />,
+    857857,
+    36777,
+    36781,
+    20,
+    20
+  ),
+
+
+
+
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -467,7 +576,7 @@ const useStyles = makeStyles((theme) => ({
   
 export default function EnhancedTable() {
   const classes = useStyles();
-  const [stocks,setstocks]=useState([]);
+  const [stocks,setstocks]=useState(rows);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page] = React.useState(0);
@@ -492,7 +601,7 @@ React.useEffect(() => {
        setTableData(snapshot.val());
     //    let userRef = Firebase.database().ref('customPath/' + userId);
     // userRef.remove();
-    console.log("dat_ddget:", snapshot.val());
+    // console.log("dat_ddget:", snapshot.val());
       
     });
 
@@ -503,17 +612,19 @@ React.useEffect(() => {
 
 function setTableData(val)
 {
+  rows=stocks;
   setstocks([]);
-  // console.log("start");
+  
+  console.log("start");
  val.map((row)=>{
  
   rows.map((stock)=>{
    if(stock.quantity===row.instrument_token)
    {
      stock.change=row.change.toFixed(2);
-     console.log("quantity", row.instrument_token);
+     console.log("sec name :"+ stock.securityname + "    Change :" + stock.change + " Price :" + row.last_price);
      stock.lastprice=row.last_price;
-     stock.value=(stock.lastprice*stock.quantity).toFixed(2);
+     stock.value=(stock.lastprice*10).toFixed(2);
      stock.totalreturn=Math.abs(((stock.lastprice-stock.cost)*(stock.quantity))).toFixed(2);
      stock.ctr= stock.weight*stock.totalreturn;
    }
@@ -523,7 +634,7 @@ function setTableData(val)
 
   
 });
-//  console.log("end");
+ console.log("end");
  setstocks(rows);
 
 }
