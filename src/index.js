@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const themeDark = createMuiTheme({
   palette: {
@@ -28,7 +29,9 @@ const themeDark = createMuiTheme({
 ReactDOM.render(
   <ThemeProvider theme={themeDark}>
     <CssBaseline />
+    
     <App />
+  
   </ThemeProvider>,
   document.getElementById("root")
 );

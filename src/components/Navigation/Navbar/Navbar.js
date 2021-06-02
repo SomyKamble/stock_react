@@ -1,5 +1,9 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,6 +18,10 @@ import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Grid from "@material-ui/core/Grid";
 import classes2 from "./Navbar.module.css";
+import { green } from "@material-ui/core/colors";
+import Button from "@material-ui/core/Button";
+import { Link as Links } from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -42,7 +50,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
+
+export default function PrimarySearchAppBar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -142,6 +156,8 @@ export default function PrimarySearchAppBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            component={Links}
+            to="/"
           >
             LOGO
           </IconButton>
@@ -151,35 +167,57 @@ export default function PrimarySearchAppBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <HomeOutlined className={classes2.iconColor} />
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon className={classes2.iconColor} />
-              </Badge>
-            </IconButton>
-
-            <Grid
-              style={{ textAlign: "right", paddingTop: 12, paddingLeft: 15 }}
-            >
-              <Grid className={classes2.userName}>User Name</Grid>
-              <Grid className={classes2.email}>abcd@gmail.com</Grid>
-            </Grid>
-            <Grid container direction="row" alignItems="center">
-              <Grid item>
+            {props.flag === "login" ? (
+              <ThemeProvider theme={theme}>
+                <Button variant="outlined" color="primary">
+                  SIGN UP
+                </Button>
+              </ThemeProvider>
+            ) : (
+              <>
                 <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
+                  component={Links}
+                  to="/form"
+                  aria-label="show 4 new mails"
                   color="inherit"
                 >
-                  <AccountCircle className={classes2.userIcon} />
+                  <HomeOutlined className={classes2.iconColor} />
                 </IconButton>
-              </Grid>
-            </Grid>
+                <IconButton
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                >
+                  <Badge badgeContent={17} color="secondary">
+                    <NotificationsIcon className={classes2.iconColor} />
+                  </Badge>
+                </IconButton>
+
+                <Grid
+                  style={{
+                    textAlign: "right",
+                    paddingTop: 12,
+                    paddingLeft: 15,
+                  }}
+                >
+                  <Grid className={classes2.userName}>User Name</Grid>
+                  <Grid className={classes2.email}>abcd@gmail.com</Grid>
+                </Grid>
+                <Grid container direction="row" alignItems="center">
+                  <Grid item>
+                    <IconButton
+                      edge="end"
+                      aria-label="account of current user"
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      onClick={handleProfileMenuOpen}
+                      color="inherit"
+                    >
+                      <AccountCircle className={classes2.userIcon} />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </>
+            )}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton

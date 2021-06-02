@@ -1,0 +1,22 @@
+.center {
+    margin: auto;
+    width: 100%;
+  }
+
+
+.table-custom {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
+    margin: 50px;
+  }
+  
+  .td-custom, .th-custom {
+    border: 1px solid 	#808080;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .tr-custom:nth-child(even) {
+    background-color: 	#808080;
+  }
