@@ -576,6 +576,16 @@ export default function EnhancedTable() {
   const [page] = React.useState(0);
   const [id,setid] =useState(14);
   const [rowsPerPage] = React.useState(rows.length + 1);
+  var tot=0;
+  rows.map((row)=>{tot=tot+parseInt(row.value);});
+  const [rowa,setrowa]=React.useState(tot);
+  var totc=0;
+  rows.map((row)=>{ totc=totc+parseFloat(row.ctr); });
+  const [tctr,settctr]=React.useState(totc.toFixed(2));
+
+  var totr=0;
+  rows.map((row)=>{ totr=totr+parseFloat(row.totalreturn); });
+  const [x,setx]=React.useState(totr.toFixed(2));
 
   if (!Firebase.apps.length) {
     Firebase.initializeApp(firebaseConfig);
@@ -629,6 +639,8 @@ function setTableData(val)
      stock.cost=row.ohlc.close;
      var y=(stock.value/weight1)*100;
      stock.weight=y.toFixed(2);
+    
+
    }
   
 
@@ -636,8 +648,19 @@ function setTableData(val)
 
   
 });
+
+  var toti=0;
+  rows.map((row)=>{ toti=toti+parseInt(row.value);  });
+  setrowa(toti);
+  var totc=0;
+  rows.map((row)=>{ totc=totc+parseFloat(row.ctr); });
+  settctr(totc.toFixed(2));
+  var totrr=0;
+  rows.map((row)=>{ totrr=totrr+parseFloat(row.totalreturn); });
+  setx(totrr.toFixed(2));
  console.log("end");
  setstocks(rows);
+
 
 }
 
@@ -696,16 +719,16 @@ function setTableData(val)
                       {stocks.length*10}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{secondHeader[0].value}
+                      ₹{numberWithCommas(rowa)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{secondHeader[0].cost}
+                      ---
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{secondHeader[0].totalreturn}
+                      ₹{numberWithCommas(x)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].ctr}%
+                      {tctr}%
                     </TableCell>
                   </TableRow>
 
