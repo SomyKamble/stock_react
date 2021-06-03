@@ -38,7 +38,7 @@ function createData(
   value,
   cost,
   totalreturn,
-  ctr
+  ctr,token
 ) {
   return {
     id,
@@ -51,7 +51,7 @@ function createData(
     value,
     cost,
     totalreturn,
-    ctr,
+    ctr,token
   };
 }
 const TableCell = withStyles({
@@ -65,290 +65,284 @@ const secondHeader = [
 var rows = [
   createData(
     1,
-    <Custombutton bankName="Reliance" dChange={false} />,
+    "Reliance" ,
     "Reliance Industries Limited",
     -1,
     25,
-    <Progressbar position={20} />,
-    738561,
+    50,
+    10,
     36777,
     36781,
     20,
-    -20
+    -20,
+    738561,
   ),
   createData(
     2,
-    <Custombutton bankName="TCS" dChange={true} />,
+   "TCS" ,
     "Tata Consultancy Services Limited",
     1,
     223,
-    <Progressbar position={85} />,
-    2953217,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    2953217
   ),
   createData(
     3,
-    <Custombutton bankName="KOTAKBANK" dChange={false} />,
+    "KOTAKBANK",
     "KOTAK MAHINDRA BANK",
     -1,
     222,
-    <Progressbar position={50} />,
-    492033,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    492033
   ),
   createData(
     4,
-    <Custombutton bankName="HDFC" dChange={false} />,
+   "HDFC",
     "HDFC Bank Limited",
     -1,
     224,
-    <Progressbar position={50} />,
-    340481, 
+    50,
+    10, 
     36777,
     36781,
     20,
-    20
+    20,
+    340481
   ),
   createData(
     5,
-    <Custombutton bankName="INFY" dChange={true} />,
+    "INFY" ,
     "Infosys Limited",
     1,
     22,
-    <Progressbar position={50} />,
-    408065,
+    50,
+    10,
     36777,
     36781,
     20,
-    -20
+    -20,
+    408065
   ),
   createData(
     6,
-    <Custombutton bankName="HINDUNILVR" dChange={true} />,
+    "HINDUNILVR" ,
     "Hindustan Unilever Limited",
     1,
     228,
-    <Progressbar position={50} />,
-    356865,
+    50,
+    10,
     36777,
     36781,
     20,
-    -20
+    -20,
+    356865
   ),
   createData(
     7,
-    <Custombutton bankName="AXISBANK" dChange={true} />,
+   "AXISBANK" ,
     "AXIS BANK",
     1,
     22,
-    <Progressbar position={50} />,
-    1510401,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    1510401
   ),
   createData(
     8,
-    <Custombutton bankName="HDFC" dChange={false} />,
+    "HDFC",
     "Housing Development Finance Corporation Limited",
     -1,
     22,
-    <Progressbar position={50} />,
-    633607, 
+    50,
+    10, 
     36777,
     36781,
     20,
-    -20
+    -20,
+    633607
   ),
   createData(
     9,
-    <Custombutton bankName="KOTAKBANK" dChange={true} />,
-    "Kotak Mahindra Bank Limited",
-    1,
-    22,
-    <Progressbar position={50} />,
-    1195000, 
-    36777,
-    36781,
-    20,
-    20
-  ),
-  createData(
-    10,
-    <Custombutton bankName="ICICIBANK" dChange={true} />,
+    "ICICIBANK",
     "ICICI Bank Limited",
     1,
     22,
-    <Progressbar position={50} />,
-    1270529,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    1270529
   ),
   createData(
-    11,
-    <Custombutton bankName="BAJFINANCE" dChange={true} />,
+    10,
+    "BAJFINANCE",
     "Bajaj Finance Limited",
     1,
     22,
-    <Progressbar position={50} />,
-    81153, 
+    50,
+    10, 
     36777,
     36781,
     20,
-    20
+    20,
+    81153
   ),
   createData(
-    12,
-    <Custombutton bankName="SBIN" dChange={true} />,
+    11,
+    "SBIN",
     "State Bank of India",
     1,
     22,
-    <Progressbar position={50} />,
-    779521,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
-  ),
-  createData(
-    13,
-    <Custombutton bankName="ABBOTBANK" dChange={true} />,
-    "ABBOT",
-    1,
-    22,
-    <Progressbar position={50} />,
-    1195009,
-    36777,
-    36781,
     20,
-    20
+    779521
   ),
   createData(
-    14,
-    <Custombutton bankName="BHARTIARTL" dChange={true} />,
+    12,
+    "BHARTIARTL",
     "Bharti Airtel Limited",
     22,
     22,
-    <Progressbar position={50} />,
-    2714625,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    2714625
   ),
 
   createData(
-    15,
-    <Custombutton bankName="HCLTECH" dChange={true} />,
+    13,
+    "HCLTECH",
     "HCL TECHNOLOGIES",
     22,
     22,
-    <Progressbar position={50} />,
-    1850625	,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    1850625
   ),
   createData(
-    16,
-    <Custombutton bankName="ASIANPAINT" dChange={true} />,
+    14,
+    "ASIANPAINT",
     "ASIAN PAINTS",
     22,
     22,
-    <Progressbar position={50} />,
-    60417,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    60417
   ),
   createData(
-    17,
-    <Custombutton bankName="WIPRO" dChange={true} />,
+    15,
+    "WIPRO",
     "WIPRO",
     22,
     22,
-    <Progressbar position={50} />,
-    969473,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    969473
   ),
   createData(
-    18,
-    <Custombutton bankName="MARUTI" dChange={true} />,
+    16,
+    "MARUTI",
     "MARUTI SUZUKI INDIA.",
     22,
     22,
-    <Progressbar position={50} />,
-    2815745,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    2815745
   ),
   createData(
-    19,
-    <Custombutton bankName="ULTRACEMCO" dChange={true} />,
+    17,
+    "ULTRACEMCO",
     "ULTRATECH CEMENT",
     22,
     22,
-    <Progressbar position={50} />,
-    2952193,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    2952193
   ),
   createData(
-    20,
-    <Custombutton bankName="DMART" dChange={true} />,
+    18,
+    "DMART",
     "AVENUE SUPERMARTS",
     22,
     22,
-    <Progressbar position={50} />,
-    5097729,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    5097729
   ),
   createData(
-    21,
-    <Custombutton bankName="ADANIGREEN" dChange={true} />,
+    19,
+    "ADANIGREEN",
     "ADANI GREEN ENERGY",
     22,
     22,
-    <Progressbar position={50} />,
-    912129,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    912129
   ),
   createData(
-    22,
-    <Custombutton bankName="SUNPHARMA" dChange={true} />,
+    20,
+    "SUNPHARMA",
     "SUN PHARMACEUTICAL IND L",
     22,
     22,
-    <Progressbar position={50} />,
-    857857,
+    50,
+    10,
     36777,
     36781,
     20,
-    20
+    20,
+    857857
   ),
 
 
@@ -616,17 +610,24 @@ function setTableData(val)
   setstocks([]);
   
   console.log("start");
+  var weight1=0;
+  rows.map((stock)=>{ weight1=weight1+parseInt(stock.value); });
+  
  val.map((row)=>{
  
   rows.map((stock)=>{
-   if(stock.quantity===row.instrument_token)
+   if(stock.token===row.instrument_token)
    {
-     stock.change=row.change.toFixed(2);
+     var x=(row.change*row.last_price)/100;
+     stock.change=x.toFixed(2);
+
      console.log("sec name :"+ stock.securityname + "    Change :" + stock.change + " Price :" + row.last_price);
      stock.lastprice=row.last_price;
      stock.value=(stock.lastprice*10).toFixed(2);
      stock.totalreturn=Math.abs(((stock.lastprice-stock.cost)*(stock.quantity))).toFixed(2);
-     stock.ctr= stock.weight*stock.totalreturn;
+     stock.ctr= (stock.weight*stock.totalreturn).toFixed(2);
+     var y=(stock.value/weight1)*100;
+     stock.weight=y.toFixed(2);
    }
   
 
@@ -718,7 +719,9 @@ function setTableData(val)
                           key={row.id}
                         >
                           <TableCell className={classes.tableCell} align="left">
-                            {row.ticker}
+
+                          { row.change<1? <Custombutton bankName={row.ticker} dChange={false} /> :<Custombutton bankName={row.ticker} dChange={true} /> }
+                          
                           </TableCell>
                           <TableCell className={classes.tableCell} align="left">
                             {row.securityname}
@@ -739,7 +742,7 @@ function setTableData(val)
                             ₹{row.lastprice}
                           </TableCell>
                           <TableCell align="left" className={classes.tableCell}>
-                            {row.weight}
+                             <Progressbar position={row.weight}/>
                           </TableCell>
                           <TableCell align="left" className={classes.tableCell}>
                             {numberWithCommas(row.quantity)}
