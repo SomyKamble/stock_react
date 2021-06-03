@@ -173,7 +173,7 @@ var rows = [
     36781,
     20,
     -20,
-    633607
+    340481
   ),
   createData(
     9,
@@ -618,14 +618,15 @@ function setTableData(val)
   rows.map((stock)=>{
    if(stock.token===row.instrument_token)
    {
-     var x=(row.change*row.last_price)/100;
-     stock.change=x.toFixed(2);
+    //  var x=(row.change*row.last_price)/100;
+     stock.change=row.change.toFixed(2);
 
      console.log("sec name :"+ stock.securityname + "    Change :" + stock.change + " Price :" + row.last_price);
      stock.lastprice=row.last_price;
      stock.value=(stock.lastprice*10).toFixed(2);
-     stock.totalreturn=Math.abs(((stock.lastprice-stock.cost)*(stock.quantity))).toFixed(2);
-     stock.ctr= (stock.weight*stock.totalreturn).toFixed(2);
+     stock.totalreturn=((stock.lastprice-stock.cost)*(stock.quantity)).toFixed(2);
+     stock.ctr= (stock.weight*(stock.totalreturn/stock.value)).toFixed(2);
+     stock.cost=row.ohlc.close;
      var y=(stock.value/weight1)*100;
      stock.weight=y.toFixed(2);
    }
@@ -680,19 +681,19 @@ function setTableData(val)
                       {secondHeader[0].ticker}%
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].securityname}
+                      {stocks.length}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].change}
+                      ---
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].lastprice}
+                      ---
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].weight}%
+                      100%
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].quantity}
+                      {stocks.length*10}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       ₹{secondHeader[0].value}
@@ -720,7 +721,7 @@ function setTableData(val)
                         >
                           <TableCell className={classes.tableCell} align="left">
 
-                          { row.change<1? <Custombutton bankName={row.ticker} dChange={false} /> :<Custombutton bankName={row.ticker} dChange={true} /> }
+                          { row.change<0? <Custombutton bankName={row.ticker} dChange={false} /> :<Custombutton bankName={row.ticker} dChange={true} /> }
                           
                           </TableCell>
                           <TableCell className={classes.tableCell} align="left">
@@ -729,7 +730,7 @@ function setTableData(val)
                           <TableCell
                             align="left"
                             className={
-                              row.change < 1
+                              row.change < 0
                                 ? classes.tableCellRed
                                 : isNaN(row.ticker)
                                 ? classes.tableCell
