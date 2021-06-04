@@ -105,20 +105,7 @@ var rows = [
     20,
     492033
   ),
-  createData(
-    4,
-   "HDFC",
-    "HDFC Bank Limited",
-    -1,
-    224,
-    50,
-    10, 
-    36777,
-    36781,
-    20,
-    20,
-    340481
-  ),
+  
   createData(
     5,
     "INFY" ,
@@ -160,6 +147,20 @@ var rows = [
     20,
     20,
     1510401
+  ),
+  createData(
+    8,
+    "HDFC",
+    "Housing Development Finance Corporation Limited",
+    -1,
+    22,
+    50,
+    10, 
+    36777,
+    36781,
+    20,
+    -20,
+    340481
   ),
   createData(
     9,
@@ -591,7 +592,7 @@ function setTableData(val)
      stock.change=row.change.toFixed(2);
 
      console.log("sec name :"+ stock.securityname + "    Change :" + stock.change + " Price :" + row.last_price);
-     stock.lastprice=row.last_price;
+     stock.lastprice=row.last_price.toFixed(2);
      stock.value=(stock.lastprice*10).toFixed(2);
      stock.totalreturn=((stock.lastprice-stock.cost)*(stock.quantity)).toFixed(2);
      stock.ctr= (stock.weight*(stock.totalreturn/stock.value)).toFixed(2);
