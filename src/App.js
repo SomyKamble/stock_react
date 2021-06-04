@@ -61,6 +61,9 @@ window.onhashchange = function() {
      <Router>
         <Switch>
           <Route path="/" exact component={Login} />
+          {/* <LazyLoad> */}
+            <Route path="/table" component={Table} />
+          {/* </LazyLoad> */}
           <Route path="/table" component={Table} />
           <LazyLoad>
           <Route path="/stocktable" component={StockTable} />

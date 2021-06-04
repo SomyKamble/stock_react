@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles, withStyles } from "@material-ui/core/styles";
@@ -19,9 +19,8 @@ import Custombutton from "../Button/Custombutton";
 import Progressbar from "../Progressbar/Progressbar";
 import styles from "./Table.module.css";
 import Layout from "../Layout/Layout";
-import Firebase from 'firebase';
 import config from "../config";
-
+import Firebase from "firebase";
 
 function createData(
   id,
@@ -278,7 +277,7 @@ const headCells = [
     disablePadding: false,
     label: "SECURITY NAME",
   },
-  { id: "change", numeric: true, disablePadding: false, label: "%1D CHANGE" },
+  { id: "change", numeric: true, disablePadding: false, label: "CHANGE" },
   {
     id: "lastprice",
     numeric: true,
@@ -461,34 +460,52 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable() {
-  // useEffect(() => {
-  //   Firebase.initializeApp(config);
-  //   let ref = Firebase.database().ref();
-  //   ref.on('value', snapshot => {
-  //     const state = snapshot.val();
-  //     console.log("Data");
-  //     console.log(state);
-  //   });
-  //   console.log('DATA RETRIEVED');
-  // });
-
-
-
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page] = React.useState(0);
   const [rowsPerPage] = React.useState(rows.length + 1);
-
+  // const [tabledata, setTableData] = React.useState([]);
+  const [tabledata, setTableData] = React.useState({});
+  
+  console.log("datsdadasda_ddget:", tabledata);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  React.useEffect(() => {
+    (async () => {
+        if (!Firebase.apps.length) {
+            Firebase.initializeApp(config);
+        }
+        
+        let ref = Firebase.database().ref();
+        
+        ref.on("value", (snapshot) => {
+          const state = snapshot.val();
+          console.log("data:",state);
+          setTableData(state);
+        });
+      })();
+  }, []);
+
+
+  console.log("final:", tabledata);
+
+  // const [totalValue, setTotalValue] = useState(1);
+  let total = 0;
+
+  if(Object.keys(tabledata).length !== 0){
+      Object.keys(tabledata['Stock']).slice(0, 20).map((keyName, id)=>{
+        total +=(tabledata['Stock'][keyName]['last_price']*10);
+      })
+
+      
   }
+
   return (
     <>
       <Layout flag="dashboard" />
@@ -505,8 +522,8 @@ export default function EnhancedTable() {
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
                 />
-                <TableBody>
-                  <TableRow
+                {/* <TableBody> */}
+                  {/* <TableRow
                     hover
                     role="checkbox"
                     className={classes.firstRow}
@@ -545,69 +562,85 @@ export default function EnhancedTable() {
                     <TableCell align="left" className={classes.tableCellSticky}>
                       {secondHeader[0].ctr}%
                     </TableCell>
-                  </TableRow>
+                  </TableRow> */}
 
-                  {stableSort(rows, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={row.id}
+                  {/*                   
+                  // stableSort(rows, getComparator(order, orderBy))
+                  //   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) */}
+                  {/* {tabledata.map((row) => { */}
+                  <TableBody>
+                    {/* <tr> */}
+                  {Object.keys(tabledata).length !== 0&&Object.keys(tabledata['Stock']).slice(0,20).map((keyName, id) => {
+                  {/* {indents.map((row, id) => { */}
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={id}
+                      >
+                        <TableCell className={classes.tableCell} align="left">
+                        {keyName}
+                        {/* {row.instrument_token} */}
+                        </TableCell>
+                        <TableCell className={classes.tableCell} align="left">
+                        {tabledata['Stock'][keyName]['change']}
+                        {/* {row.change} */}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          // className={
+                          //   row.change < 1
+                          //     ? classes.tableCellRed
+                          //     : isNaN(row.oi)
+                          //     ? classes.tableCell
+                          //     : ""
+                          // }
                         >
-                          <TableCell className={classes.tableCell} align="left">
-                            {row.ticker}
-                          </TableCell>
-                          <TableCell className={classes.tableCell} align="left">
-                            {row.securityname}
-                          </TableCell>
-                          <TableCell
-                            align="left"
-                            className={
-                              row.change < 1
-                                ? classes.tableCellRed
-                                : isNaN(row.ticker)
-                                ? classes.tableCell
-                                : ""
-                            }
-                          >
-                            {row.change}.00%
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{row.lastprice}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            {row.weight}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            {numberWithCommas(row.quantity)}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{numberWithCommas(row.value)}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{numberWithCommas(row.cost)}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{row.totalreturn}
-                          </TableCell>
-                          <TableCell
-                            align="left"
-                            className={
-                              row.ctr < 0 && isNaN(row.ticker)
-                                ? classes.tableCellRed
-                                : !isNaN(row.ticker)
-                                ? ""
-                                : classes.tableCellGreen
-                            }
-                          >
-                            {row.ctr}%
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                          {tabledata['Stock'][keyName]['close']}
+                        {/* {row.close} */}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          ₹{tabledata['Stock'][keyName]['last_price']}
+                          {/* {row.last_price} */}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                        {((tabledata['Stock'][keyName]['last_price'])*10/total).toFixed(2)}
+                          {/* {row.last_quantity} */}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          10
+                          {/* {row.volume} */}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                        {((tabledata['Stock'][keyName]['last_price'])*10).toFixed(2)}
+                          {/* ₹{row.average_price} */}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          10
+                          {/* ₹{row.last_price} */}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                        {((tabledata['Stock'][keyName]['last_price']-10)*10).toFixed(2)}
+                          {/* ₹{row.sell_quantity} */}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          // className={
+                          //   row.ctr < 0 && isNaN(row.last_quantity)
+                          //     ? classes.tableCellRed
+                          //     : !isNaN(row.last_quantity)
+                          //     ? ""
+                          //     : classes.tableCellGreen
+                          // }
+                        >
+                          {((tabledata['Stock'][keyName]['last_price'])*10/(total)*(tabledata['Stock'][keyName]['last_price']-10)*10).toFixed(2)}
+                          {/* {row.last_quantity}% */}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {/* </tr> */}
                 </TableBody>
               </Table>
             </TableContainer>
