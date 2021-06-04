@@ -162,20 +162,6 @@ var rows = [
     1510401
   ),
   createData(
-    8,
-    "HDFC",
-    "Housing Development Finance Corporation Limited",
-    -1,
-    22,
-    50,
-    10, 
-    36777,
-    36781,
-    20,
-    -20,
-    340481
-  ),
-  createData(
     9,
     "ICICIBANK",
     "ICICI Bank Limited",
@@ -302,34 +288,7 @@ var rows = [
     20,
     2952193
   ),
-  createData(
-    18,
-    "DMART",
-    "AVENUE SUPERMARTS",
-    22,
-    22,
-    50,
-    10,
-    36777,
-    36781,
-    20,
-    20,
-    5097729
-  ),
-  createData(
-    19,
-    "ADANIGREEN",
-    "ADANI GREEN ENERGY",
-    22,
-    22,
-    50,
-    10,
-    36777,
-    36781,
-    20,
-    20,
-    912129
-  ),
+  
   createData(
     20,
     "SUNPHARMA",
