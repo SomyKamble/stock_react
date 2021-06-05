@@ -526,8 +526,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#070A1B",
   },
 }));
+
 // const client = new WebSocket('wss://ws.kite.trade?api_key=0yvny102khsjlnpr&access_token=EdL5jjXZ3lvHxIOFnNxUJAMZkAD3Y0iZ');
-  
+
 export default function EnhancedTable() {
   const classes = useStyles();
   const [stocks,setstocks]=useState(rows);
@@ -579,7 +580,7 @@ function setTableData(val)
   rows=stocks;
   setstocks([]);
   
-  console.log("start");
+  // console.log("start");
   var weight1=0;
   rows.map((stock)=>{ weight1=weight1+parseInt(stock.value); });
   
@@ -591,7 +592,7 @@ function setTableData(val)
     //  var x=(row.change*row.last_price)/100;
      stock.change=row.change.toFixed(2);
 
-     console.log("sec name :"+ stock.securityname + "    Change :" + stock.change + " Price :" + row.last_price);
+    //  console.log("sec name :"+ stock.securityname + "    Change :" + stock.change + " Price :" + row.last_price);
      stock.lastprice=row.last_price.toFixed(2);
      stock.value=(stock.lastprice*10).toFixed(2);
      stock.totalreturn=((stock.lastprice-stock.cost)*(stock.quantity)).toFixed(2);
@@ -618,7 +619,7 @@ function setTableData(val)
   var totrr=0;
   rows.map((row)=>{ totrr=totrr+parseFloat(row.totalreturn); });
   setx(totrr.toFixed(2));
- console.log("end");
+//  console.log("end");
  setstocks(rows);
 
 
