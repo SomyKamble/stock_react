@@ -16,11 +16,10 @@ import Link from "@material-ui/core/Link";
 // import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import LockOpenOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
-import { Link as Links } from "react-router-dom";
+// import { Link as Links } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import api from "../../constant";
 import IconButton from "@material-ui/core/IconButton";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -184,7 +183,7 @@ export default function Login() {
       const headers = {
         "Content-Type": "application/json; charset=UTF-8",
       };
-
+ 
       const postResponse = await api
         .post("user/login/", datapost, { headers })
         // .post("login_user_register/", datapost, { headers })
@@ -302,9 +301,9 @@ export default function Login() {
                   classes={{
                     endIcon: classes.endIcon,
                   }}
-                  // type="submit"
-                  component={Links}
-                  to="/table"
+                  type="submit"
+                  // component={Links}
+                  // to="/table"
                   endIcon={<ArrowForwardIosIcon />}
                   variant="contained"
                   color="primary"
