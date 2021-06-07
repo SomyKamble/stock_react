@@ -19,6 +19,11 @@ import Custombutton from "../Button/Custombutton";
 import Progressbar from "../Progressbar/Progressbar";
 import styles from "./Table.module.css";
 import Layout from "../Layout/Layout";
+import api from "../../constant";
+import config from "../../Firebase";
+import Firebase from "firebase";
+
+var token = localStorage.getItem("token");
 
 function createData(
   id,
@@ -463,7 +468,7 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page] = React.useState(0);
   const [rowsPerPage] = React.useState(rows.length + 1);
-
+  const MINUTE_MS = 10000;
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -473,7 +478,180 @@ export default function EnhancedTable() {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-  
+
+  const [indents, setindentsData] = React.useState([]);
+  const [ticks, ticksData] = React.useState();
+  React.useEffect(() => {
+    console.log("table_token:", "Authorization" + token);
+    const headers = {
+      Authorization: "Token " + token,
+    };
+
+    const postResponse = api
+      .get("dashboard/my_stocks/view/", { headers })
+
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log("success:", response.data);
+
+          ticksData(response.data);
+        }
+      })
+      .catch(function (error) {
+        console.log("error:", error);
+        console.log("errosr:", error.response.data);
+        error.response.status === 400
+          ? alert("Something went wrong from server side")
+          : error.response.status === 500
+          ? console.log("bad request")
+          : console.log("error");
+      });
+  }, []);
+  // console.log("final:", indents);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("success_after:", ticks);
+      console.log("final:", indents);
+      if (!Firebase.apps.length) {
+        Firebase.initializeApp(config);
+      }
+      indents.splice();
+      let ref = Firebase.database().ref().child("Stock");
+
+      setindentsData([]);
+
+      {
+        ticks.map((r) => {
+          ref.child(r.instrument_token).on("value", (snapshot) => {
+            const state = snapshot.val();
+            const ch = {
+              tradingsymbol: r.tradingsymbol,
+              name: r.name,
+              quantity: r.quantity,
+              buy_price: r.buy_price,
+            };
+            const act_data = Object.assign({}, state, ch);
+            console.log("asda:", act_data);
+            if (state === null) {
+              return null;
+            } else {
+              console.log("data:", state);
+              setindentsData((indents) => [...indents, act_data]);
+            }
+          });
+        });
+      }
+    }, MINUTE_MS);
+    return () => clearInterval(interval);
+  }, [ticks]);
+
+  console.log("finalresult:", indents);
+
+  function calWeight(val) {
+    // var weight1 = 0;
+    // indents.map((stock) => {
+    //   weight1 = weight1 + parseFloat(stock.last_price);
+    // });
+    // var y = (val / weight1) * 100;
+    // return y.toFixed(2);
+    var weight1 = 0;
+    indents.map((stock) => {
+      weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
+    });
+    var y = (val / weight1) * 100;
+    return y.toFixed(2);
+  }
+
+  function calCtr(val, totalreturn, cost, quantity) {
+    var weight1 = 0;
+    indents.map((stock) => {
+      weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
+    });
+    var weight = (val / weight1) * 100;
+    var ctr = weight * (totalreturn / (cost * quantity));
+    return ctr.toFixed(2);
+    // var weight1 = 0;
+    // indents.map((stock) => {
+    //   weight1 = weight1 + parseFloat(stock.last_price);
+    // });
+    // var y = ((val / weight1) * 100).toFixed(2);
+    // var ctr = (y * (totalreturn / (val * 10).toFixed(2))).toFixed(2);
+
+    // return ctr;
+  }
+  // (row.last_price)*(row.quantity)
+  // (row.last_price - row.close) * row.quantity)
+
+  function totalcalCtr() {
+    var weight1 = 0;
+    indents.map((stock) => {
+      weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
+    });
+    var tot = 0;
+    indents.map((row) => {
+      tot =
+        tot +
+        parseFloat(
+          ((row.last_price * row.quantity) / weight1) *
+            100 *
+            (((row.last_price - row.close) * row.quantity) /
+              (row.close * row.quantity))
+        );
+    });
+    console.log("eeee:", tot);
+    return tot.toFixed(2);
+
+    // var weight1 = 0;
+    // indents.map((stock) => {
+    //   weight1 = weight1 + parseFloat(stock.last_price);
+    // });
+    // var tot = 0;
+    // indents.map((row) => {
+    //   tot =
+    //     tot +
+    //     parseFloat(
+    //       (
+    //         ((row.last_price / weight1) * 100).toFixed(2) *
+    //         (((row.last_price - row.close) * row.quantity).toFixed(2) /
+    //           (row.last_price * 10).toFixed(2))
+    //       ).toFixed(2)
+    //     );
+    // });
+    // console.log("eeee:", tot);
+    // return tot.toFixed(2);
+  }
+
+  function secNameCount() {
+    var res = 0;
+    indents.map((stock, id) => {
+      res = id;
+    });
+    return res + 1;
+  }
+
+  function totalQuanCount() {
+    var totq = 0;
+    indents.map((row) => {
+      totq = totq + parseFloat(row.quantity);
+    });
+    return totq;
+  }
+
+  function totalValCount(val) {
+    var totv = 0;
+    indents.map((row) => {
+      totv = totv + parseFloat(row.last_price * row.quantity);
+    });
+    return numberWithCommas(totv.toFixed(2));
+  }
+  function totalReturnCount(val) {
+    var totr = 0;
+    indents.map((row) => {
+      totr = totr + parseFloat((row.last_price - row.close) * row.quantity);
+    });
+    return numberWithCommas(totr.toFixed(2));
+  }
+
   return (
     <>
       <Layout flag="dashboard" />
@@ -504,95 +682,124 @@ export default function EnhancedTable() {
                       {secondHeader[0].ticker}%
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].securityname}
+                      {secNameCount()}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].change}
+                      -----
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].lastprice}
+                      -----
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].weight}%
+                      100 %
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].quantity}
+                      {totalQuanCount()}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{secondHeader[0].value}
+                      ₹{totalValCount()}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{secondHeader[0].cost}
+                      -----
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{secondHeader[0].totalreturn}
+                      ₹{totalReturnCount()}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secondHeader[0].ctr}%
+                      {totalcalCtr()} %
                     </TableCell>
                   </TableRow>
 
-                  {stableSort(rows, getComparator(order, orderBy))
+                  {/* {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      return (
-                        <TableRow
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={row.id}
+                    .map((row, index) => { */}
+                  {indents.map((row, id) => {
+                    return (
+                      <TableRow hover role="checkbox" tabIndex={-1} key={id}>
+                        <TableCell className={classes.tableCell} align="left">
+                          {/* {row.tradingsymbol} */}
+                          {row.change < 0 ? (
+                            <Custombutton
+                              bankName={row.tradingsymbol}
+                              dChange={false}
+                            />
+                          ) : (
+                            <Custombutton
+                              bankName={row.tradingsymbol}
+                              dChange={true}
+                            />
+                          )}
+                        </TableCell>
+                        <TableCell className={classes.tableCell} align="left">
+                          {/* security name */}
+                          {row.name}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          className={
+                            row.change < 0
+                              ? classes.tableCellRed
+                              : classes.tableCell
+                          }
                         >
-                          <TableCell className={classes.tableCell} align="left">
-                            {row.ticker}
-                          </TableCell>
-                          <TableCell className={classes.tableCell} align="left">
-                            {row.securityname}
-                          </TableCell>
-                          <TableCell
-                            align="left"
-                            className={
-                              row.change < 1
-                                ? classes.tableCellRed
-                                : isNaN(row.ticker)
-                                ? classes.tableCell
-                                : ""
-                            }
-                          >
-                            {row.change}.00%
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{row.lastprice}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            {row.weight}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            {numberWithCommas(row.quantity)}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{numberWithCommas(row.value)}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{numberWithCommas(row.cost)}
-                          </TableCell>
-                          <TableCell align="left" className={classes.tableCell}>
-                            ₹{row.totalreturn}
-                          </TableCell>
-                          <TableCell
-                            align="left"
-                            className={
-                              row.ctr < 0 && isNaN(row.ticker)
-                                ? classes.tableCellRed
-                                : !isNaN(row.ticker)
-                                ? ""
-                                : classes.tableCellGreen
-                            }
-                          >
-                            {row.ctr}%
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                          {/* %1d change */}
+                          {row.change.toFixed(2)}%
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          {/* last price */}₹
+                          {numberWithCommas(row.last_price.toFixed(2))}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          {/* weight */}
+                          <Progressbar
+                            position={calWeight(row.last_price * row.quantity)}
+                          />
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          {/* quantity */}
+                          {numberWithCommas(row.quantity)}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          {/* value */}₹
+                          {numberWithCommas(
+                            (row.last_price * row.quantity).toFixed(2)
+                          )}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          {/* cost */}₹{numberWithCommas(row.close.toFixed(2))}
+                        </TableCell>
+                        <TableCell align="left" className={classes.tableCell}>
+                          {/* total return */}₹
+                          {(
+                            (row.last_price - row.close) *
+                            row.quantity
+                          ).toFixed(2)}
+                        </TableCell>
+                        <TableCell
+                          align="left"
+                          className={
+                            calCtr(
+                              row.last_price * row.quantity,
+                              (row.last_price - row.close) * row.quantity,
+                              row.close,
+                              row.quantity
+                            ) < 0
+                              ? classes.tableCellRed
+                              : classes.tableCellGreen
+                          }
+                        >
+                          {/* CTR */}
+                          {calCtr(
+                            row.last_price * row.quantity,
+                            (row.last_price - row.close) * row.quantity,
+                            row.close,
+                            row.quantity
+                          )}{" "}
+                          %
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
