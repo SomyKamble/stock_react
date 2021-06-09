@@ -510,8 +510,8 @@ export default function EnhancedTable() {
   // console.log("final:", indents);
   React.useEffect(() => {
     const interval = setInterval(() => {
-      console.log("success_after:", ticks);
-      console.log("final:", indents);
+      // console.log("success_after:", ticks);
+      // console.log("final:", indents);
       if (!Firebase.apps.length) {
         Firebase.initializeApp(config);
       }
@@ -531,11 +531,11 @@ export default function EnhancedTable() {
               buy_price: r.buy_price,
             };
             const act_data = Object.assign({}, state, ch);
-            console.log("asda:", act_data);
+            // console.log("asda:", act_data);
             if (state === null) {
               return null;
             } else {
-              console.log("data:", state);
+              // console.log("data:", state);
               setindentsData((indents) => [...indents, act_data]);
             }
           });
@@ -598,7 +598,7 @@ export default function EnhancedTable() {
               (row.close * row.quantity))
         );
     });
-    console.log("eeee:", tot);
+    // console.log("eeee:", tot);
     return tot.toFixed(2);
 
     // var weight1 = 0;
