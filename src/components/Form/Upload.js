@@ -195,6 +195,7 @@ class ExcelPage extends Component {
       error: [],
       fileList: [],
       FileList:"",
+      err:"",
       newe:"",
       name: "",
       btn: "no",
@@ -265,29 +266,34 @@ class ExcelPage extends Component {
     console.log(999,fileList);
   };
 
-
-
+  
   fileHandler = (FileList) => {
     this.setState({ btn: "yes" });
+    var self=this;
+
     // this.setState({files : FileList});
     console.log("asdada:", this.state.btn);
     console.log("fileListHere", FileList);
     
     var FormDatas = new FormData();
     FormDatas.append('file', FileList); 
+    FormDatas.append('portfolio_name', 'hgvggcfgc'); 
+
     axios({
       method: "post",
       url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
       data: FormDatas,
-      headers: { "Content-Type": "multipart/form-data",   "Authorization": 'Token ad34cc86b5dcf2beaaeb637eb5635b33f5768929'}
+      headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token 07b6b76438e1bf6d1d615301866ebd6395fd5ae4'}
     })
       .then(function (response) {
         console.log(response.data);
+        self.setState({resp:response.data});
       }).catch(function (error) {
         console.log("error:", error);
+       
         console.log("errosr:", error.response.data);
         error.response.status === 400
-          ? alert("Please Enter Correct Login Credentials")
+          ? console.log("400")
           : error.response.status === 500
           ? console.log("bad request")
           : console.log("error");
@@ -552,7 +558,7 @@ class ExcelPage extends Component {
       );
     };
 
-    function returnerror(error, data, name) {
+    function returnerror(error, data, name,resp) {
       console.log("error here:" + error);
       if (data === "YES") {
         return (
@@ -612,9 +618,10 @@ class ExcelPage extends Component {
                     }}
                   >
                     Error !
-                    {error.map((er) => (
+                    {/* {error.map((er) => (
                       <li style={{ color: "#ffffff" }}>{er}</li>
-                    ))}
+                    ))} */}
+                  {resp}
                   </Alert>
                 </Box>
               </div>
@@ -626,7 +633,7 @@ class ExcelPage extends Component {
       }
     }
 
-    const check = (data,fileList) => {
+    const check = (data,fileList,name) => {
       if (data === "YES") {
         return (
           <div>
@@ -650,7 +657,8 @@ class ExcelPage extends Component {
                   {returnerror(
                     this.state.error,
                     this.state.data,
-                    this.state.name
+                    this.state.name,
+                    this.state.resp
                   )}
                 </div>
                 <Paper
@@ -734,7 +742,7 @@ class ExcelPage extends Component {
                     </Table>
                   </TableContainer>
                 </Paper>
-                <TableSubmitModal file={fileList} />
+                <TableSubmitModal file={fileList} portfolio_name={name} />
               </div>
             </Container>
           </div>
@@ -907,6 +915,8 @@ class ExcelPage extends Component {
                       errors={this.state.error}
                       newer={this.state.newe}
                       portfolio={this.state.name}
+                      err={this.state.err}
+                      resp={this.state.resp}
                     />
                   </div>
                 </div>
@@ -925,7 +935,7 @@ class ExcelPage extends Component {
       <>
         {checkfordissaperingform(this.state.data)}
 
-        {check(this.state.data,this.state.fileList)}
+        {check(this.state.data,this.state.fileList,this.state.name)}
       </>
     );
   }
@@ -962,9 +972,8 @@ function TransitionsModal(props) {
       var ans = "This table have ";
       ans = ans + props.rows.length;
       ans = ans + " rows and ";
-      ans = ans + props.newe;
+      ans = ans + props.resp;
       ans = ans + " errors found based on matching tickers from database.";
-
       return ans;
     } else {
       return "Please fill portfolio Name And Then Submit";
@@ -1163,7 +1172,7 @@ function TableSubmitModal(props) {
             </p>
             <div style={{ marginTop: 20 }}>
               <div className="actions">
-                <AlertSubmitModal file={props.file}/>
+                <AlertSubmitModal file={props.file} />
               </div>
             </div>
           </div>
@@ -1187,16 +1196,18 @@ function AlertSubmitModal(props) {
     var bodyFormData = new FormData();
 
 bodyFormData.append('file', props.file[0].originFileObj); 
+bodyFormData.append('portfolio_name',props.portfolio_name);
 
 axios({
   method: "post",
   url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload/",
   data: bodyFormData,
-  headers: { "Content-Type": "multipart/form-data",   "Authorization": 'Token ad34cc86b5dcf2beaaeb637eb5635b33f5768929'}
+  headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token 07b6b76438e1bf6d1d615301866ebd6395fd5ae4'}
 })
   .then(function (response) {
     console.log(response.data);
   }).catch(function (error) {
+
     console.log("error:", error);
     console.log("errosr:", error.response.data);
     error.response.status === 400
