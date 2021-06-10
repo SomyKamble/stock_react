@@ -20,7 +20,10 @@ import Grid from "@material-ui/core/Grid";
 import classes2 from "./Navbar.module.css";
 import { green } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
-import { Link as Links,useHistory } from "react-router-dom";
+import { Link as Links, useHistory } from "react-router-dom";
+import Divider from "@material-ui/core/Divider";
+import api from "../../../constant";
+import Table from "../../Table/Table";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -64,6 +67,37 @@ export default function PrimarySearchAppBar(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const [indents, setindentsData] = React.useState([]);
+  React.useEffect(() => {
+    var token = localStorage.getItem("token");
+    console.log("nav_token:", "Authorization" + token);
+    const headers = {
+      Authorization: "Token " + token,
+    };
+
+    const postResponse = api
+      .get("dashboard/me/portfolio/", { headers })
+
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log("success:", response.data);
+
+          setindentsData(response.data);
+        }
+      })
+      .catch(function (error) {
+        console.log("error:", error);
+        console.log("errosr:", error.response.data);
+        error.response.status === 400
+          ? alert("Something went wrong from server side")
+          : error.response.status === 500
+          ? console.log("bad request")
+          : console.log("error");
+      });
+  }, [props.flag]);
+
+  // console.log("successdata:", indents);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -77,9 +111,16 @@ export default function PrimarySearchAppBar(props) {
     handleMobileMenuClose();
   };
 
+  
+  const handleMenuStock = (e) => {
+    var data=e.target.id;
+    console.log("iam in:",data);
+    <Table name={data}/>
+  };
+
   const history = useHistory();
 
-  const logOut=()=>{
+  const logOut = () => {
     localStorage.removeItem("token");
     // window.location.href = "/"
     setAnchorEl(null);
@@ -90,6 +131,10 @@ export default function PrimarySearchAppBar(props) {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  // indents.map((stock) => {
+  //   console.log("data:",stock['name']);
+  // });
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -102,7 +147,13 @@ export default function PrimarySearchAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      {indents.map((stock) => {
+        // console.log("dataasda:", stock["name"]);
+        return <MenuItem id={stock["name"]} onClick={handleMenuStock}>{stock["name"]}</MenuItem>;
+      })}
+      <Divider />
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={logOut}>Log Out</MenuItem>
     </Menu>

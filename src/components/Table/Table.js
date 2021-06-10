@@ -462,7 +462,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable({name}) {
+  console.log("call from table:",{name})
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -498,8 +499,8 @@ export default function EnhancedTable() {
         }
       })
       .catch(function (error) {
-        console.log("error:", error);
-        console.log("errosr:", error.response.data);
+        // console.log("error:", error);
+        // console.log("errosr:", error.response.data);
         error.response.status === 400
           ? alert("Something went wrong from server side")
           : error.response.status === 500
@@ -520,6 +521,9 @@ export default function EnhancedTable() {
 
       setindentsData([]);
 
+      {indents.length === 0 ? (console.log("error in api dashboard/my_stocks")
+      ) : (
+        <>
       {
         ticks.map((r) => {
           ref.child(r.instrument_token).on("value", (snapshot) => {
@@ -539,14 +543,18 @@ export default function EnhancedTable() {
               setindentsData((indents) => [...indents, act_data]);
             }
           });
-        });
+        })
       }
+      </>
+      )}
     }, MINUTE_MS);
     return () => clearInterval(interval);
   }, [ticks]);
 
-  console.log("finalresult:", indents);
-
+  console.log("finalresult:", indents.length);
+  // {indents.length === 0 ? (console.log("erter")
+  //   ) : (console.log("werwerw")
+  //     )};
   function calWeight(val) {
     // var weight1 = 0;
     // indents.map((stock) => {
@@ -713,6 +721,9 @@ export default function EnhancedTable() {
                   {/* {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => { */}
+                      {indents.length === 0 ? (console.log("error in table ")
+    ) : (
+      <>
                   {indents.map((row, id) => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={id}>
@@ -800,6 +811,8 @@ export default function EnhancedTable() {
                       </TableRow>
                     );
                   })}
+                  </>
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
