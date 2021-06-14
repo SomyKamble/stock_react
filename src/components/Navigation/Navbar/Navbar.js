@@ -70,7 +70,7 @@ export default function PrimarySearchAppBar(props) {
   const [indents, setindentsData] = React.useState([]);
   React.useEffect(() => {
     var token = localStorage.getItem("token");
-    console.log("nav_token:", "Authorization" + token);
+    // console.log("nav_token:", "Authorization" + token);
     const headers = {
       Authorization: "Token " + token,
     };
@@ -80,7 +80,7 @@ export default function PrimarySearchAppBar(props) {
 
       .then(function (response) {
         if (response.status === 200) {
-          console.log("success:", response.data);
+          // console.log("success:", response.data);
 
           setindentsData(response.data);
         }
@@ -111,12 +111,19 @@ export default function PrimarySearchAppBar(props) {
     handleMobileMenuClose();
   };
 
-  
+  // const [val, setVal] = React.useState("");
   const handleMenuStock = (e) => {
     var data=e.target.id;
-    console.log("iam in:",data);
-    <Table name={data}/>
+    // setVal(data)
+    // console.log("iam in:",data);
+    localStorage.setItem("portfolio_name", data);
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    window.location.reload();
+    // return <Table dt={data}/>
   };
+  // console.log("iam out:",val);
+
 
   const history = useHistory();
 
@@ -147,8 +154,19 @@ export default function PrimarySearchAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {indents.map((stock) => {
-        // console.log("dataasda:", stock["name"]);
+      {indents.map((stock,index) => {
+        // {index===0?
+        //   console.log("dataasda:", index);
+        //   localStorage.setItem("default_portfolio_name", stock["name"]):('')
+        // }
+        if (index === 0){
+          localStorage.setItem("default_portfolio_name", stock["name"]);
+        }
+        else{
+
+        }
+        
+        // console.log("qqqqdataasda:", stock["name"]);
         return <MenuItem id={stock["name"]} onClick={handleMenuStock}>{stock["name"]}</MenuItem>;
       })}
       <Divider />
@@ -209,7 +227,8 @@ export default function PrimarySearchAppBar(props) {
     </Menu>
   );
 
-  return (
+  return (<>
+    {/* <Table data={val}/> */}
     <div className={classes.grow}>
       <AppBar className={classes2.navbarColor} position="static">
         <Toolbar>
@@ -296,6 +315,6 @@ export default function PrimarySearchAppBar(props) {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    </div>
+    </div></>
   );
 }

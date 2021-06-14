@@ -384,7 +384,7 @@ const EnhancedTableToolbar = (props) => {
         id="tableTitle"
         component="div"
       >
-        SECURITY OVERVIEW
+        SECURITY OVERVIEW 
       </Typography>
 
       <Tooltip title="Filter list">
@@ -462,8 +462,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({name}) {
-  console.log("call from table:",{name})
+export default function EnhancedTable() {
+  // console.log("ggggggg:",localStorage.getItem("default_portfolio_name"));
+
+  var port_name = localStorage.getItem("portfolio_name");
+  var default_port_name = localStorage.getItem("default_portfolio_name");
+
+  if (port_name) {
+    var port_name_data = port_name;
+  } else {
+    var port_name_data = default_port_name;
+  }
+
+  // console.log("data_port_name:",port_name_data);
+
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -483,17 +495,20 @@ export default function EnhancedTable({name}) {
   const [indents, setindentsData] = React.useState([]);
   const [ticks, ticksData] = React.useState();
   React.useEffect(() => {
-    console.log("table_token:", "Authorization" + token);
+    // console.log("table_token:", "Authorization" + token);
     const headers = {
       Authorization: "Token " + token,
     };
-
+    const datapost = {
+      portfolio_name: port_name_data,
+      action: "view",
+    };
     const postResponse = api
-      .get("dashboard/my_stocks/view/", { headers })
+      .post("dashboard/my_stocks/", datapost, { headers })
 
       .then(function (response) {
         if (response.status === 200) {
-          console.log("success:", response.data);
+          // console.log("success:", response.data);
 
           ticksData(response.data);
         }
@@ -513,45 +528,74 @@ export default function EnhancedTable({name}) {
     const interval = setInterval(() => {
       // console.log("success_after:", ticks);
       // console.log("final:", indents);
+
       if (!Firebase.apps.length) {
         Firebase.initializeApp(config);
       }
       indents.splice();
       let ref = Firebase.database().ref().child("Stock");
+      // start
+      // let refe = Firebase.database().ref();
+      // refe
+      //     // .ref("Stock")
+      //     .once("value")
+      //     .then(function (snapshot) {
+      //       console.log("dat_ddget:", snapshot.val());
 
+      //     });
+      // end
+      // start
+      // let refe = Firebase.database().ref().child("Stock");
+      // refe
+      //   // .ref("Stock")
+      //   .child("897537")
+      //   .on("value", (snapshot) => {
+      //     console.log("dat_ddget:", snapshot.val());
+      //   });
+      // end
       setindentsData([]);
 
-      {indents.length === 0 ? (console.log("error in api dashboard/my_stocks")
-      ) : (
-        <>
+      // {indents.length === 0 ? (console.log("error in api dashboard/my_stocks")
+      // ) : (
+      //   <>
+      // console.log("ticks:", ticks);
       {
-        ticks.map((r) => {
-          ref.child(r.instrument_token).on("value", (snapshot) => {
-            const state = snapshot.val();
-            const ch = {
-              tradingsymbol: r.tradingsymbol,
-              name: r.name,
-              quantity: r.quantity,
-              buy_price: r.buy_price,
-            };
-            const act_data = Object.assign({}, state, ch);
-            // console.log("asda:", act_data);
-            if (state === null) {
-              return null;
-            } else {
-              // console.log("data:", state);
-              setindentsData((indents) => [...indents, act_data]);
-            }
-          });
-        })
+        {
+          ticks === undefined
+            ? window.location.reload()
+            : ticks.map((r) => {
+                // {r.length<0?(console.log("error in api dashboard/my_stocks")):(
+                ref.child(r.instrument_token).on("value", (snapshot) => {
+                  const state = snapshot.val();
+                  const ch = {
+                    tradingsymbol: r.tradingsymbol,
+                    name: r.name,
+                    quantity: r.quantity,
+                    buy_price: r.buy_price,
+                  };
+                  const act_data = Object.assign({}, state, ch);
+                  // console.log("inst_tok:",r.instrument_token)
+                  // console.log("asda:", act_data);
+                  if (state === null) {
+                    return null;
+                  } else {
+                    // console.log("data:", state);
+                    setindentsData((indents) => [...indents, act_data]);
+                  }
+                });
+                // )}
+              });
+        }
       }
-      </>
-      )}
+      // console.log("final:", indents);
+      // </>
+      // )}
     }, MINUTE_MS);
     return () => clearInterval(interval);
   }, [ticks]);
+  // console.log("finalresult:", indents);
 
-  console.log("finalresult:", indents.length);
+  // console.log("finalresultcount:", indents.length);
   // {indents.length === 0 ? (console.log("erter")
   //   ) : (console.log("werwerw")
   //     )};
@@ -660,6 +704,15 @@ export default function EnhancedTable({name}) {
     return numberWithCommas(totr.toFixed(2));
   }
 
+  //   indents.map((stock) => {
+  //   console.log("hekk:",stock.length)
+  // });
+  const key = "instrument_token";
+
+  const arrayUniqueByKey = [
+    ...new Map(indents.map((item) => [item[key], item])).values(),
+  ];
+
   return (
     <>
       <Layout flag="dashboard" />
@@ -687,7 +740,7 @@ export default function EnhancedTable({name}) {
                       align="left"
                       className={`${classes.tableCellSticky} ${styles.paddingLeft}`}
                     >
-                      {secondHeader[0].ticker}%
+                      {port_name_data}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       {secNameCount()}
@@ -721,97 +774,130 @@ export default function EnhancedTable({name}) {
                   {/* {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => { */}
-                      {indents.length === 0 ? (console.log("error in table ")
-    ) : (
-      <>
-                  {indents.map((row, id) => {
-                    return (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={id}>
-                        <TableCell className={classes.tableCell} align="left">
-                          {/* {row.tradingsymbol} */}
-                          {row.change < 0 ? (
-                            <Custombutton
-                              bankName={row.tradingsymbol}
-                              dChange={false}
-                            />
-                          ) : (
-                            <Custombutton
-                              bankName={row.tradingsymbol}
-                              dChange={true}
-                            />
-                          )}
-                        </TableCell>
-                        <TableCell className={classes.tableCell} align="left">
-                          {/* security name */}
-                          {row.name}
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          className={
-                            row.change < 0
-                              ? classes.tableCellRed
-                              : classes.tableCell
-                          }
-                        >
-                          {/* %1d change */}
-                          {row.change.toFixed(2)}%
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {/* last price */}₹
-                          {numberWithCommas(row.last_price.toFixed(2))}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {/* weight */}
-                          <Progressbar
-                            position={calWeight(row.last_price * row.quantity)}
-                          />
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {/* quantity */}
-                          {numberWithCommas(row.quantity)}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {/* value */}₹
-                          {numberWithCommas(
-                            (row.last_price * row.quantity).toFixed(2)
-                          )}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {/* cost */}₹{numberWithCommas(row.close.toFixed(2))}
-                        </TableCell>
-                        <TableCell align="left" className={classes.tableCell}>
-                          {/* total return */}₹
-                          {(
-                            (row.last_price - row.close) *
-                            row.quantity
-                          ).toFixed(2)}
-                        </TableCell>
-                        <TableCell
-                          align="left"
-                          className={
-                            calCtr(
-                              row.last_price * row.quantity,
-                              (row.last_price - row.close) * row.quantity,
-                              row.close,
-                              row.quantity
-                            ) < 0
-                              ? classes.tableCellRed
-                              : classes.tableCellGreen
-                          }
-                        >
-                          {/* CTR */}
-                          {calCtr(
-                            row.last_price * row.quantity,
-                            (row.last_price - row.close) * row.quantity,
-                            row.close,
-                            row.quantity
-                          )}{" "}
-                          %
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  </>
+                  {indents.length < 0 ? (
+                    console.log("error in table ")
+                  ) : (
+                    <>
+                      {arrayUniqueByKey.map((row, id) => {
+                        return (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={id}
+                          >
+                            <TableCell
+                              className={classes.tableCell}
+                              align="left"
+                            >
+                              {/* {row.tradingsymbol} */}
+                              {row.change < 0 ? (
+                                <Custombutton
+                                  bankName={row.tradingsymbol}
+                                  dChange={false}
+                                />
+                              ) : (
+                                <Custombutton
+                                  bankName={row.tradingsymbol}
+                                  dChange={true}
+                                />
+                              )}
+                            </TableCell>
+                            <TableCell
+                              className={classes.tableCell}
+                              align="left"
+                            >
+                              {/* security name */}
+                              {row.name}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={
+                                row.change < 0
+                                  ? classes.tableCellRed
+                                  : classes.tableCell
+                              }
+                            >
+                              {/* %1d change */}
+                              {row.change.toFixed(2)}%
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={classes.tableCell}
+                            >
+                              {/* last price */}₹
+                              {numberWithCommas(row.last_price.toFixed(2))}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={classes.tableCell}
+                            >
+                              {/* weight */}
+                              <Progressbar
+                                position={calWeight(
+                                  row.last_price * row.quantity
+                                )}
+                              />
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={classes.tableCell}
+                            >
+                              {/* quantity */}
+                              {numberWithCommas(row.quantity)}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={classes.tableCell}
+                            >
+                              {/* value */}₹
+                              {numberWithCommas(
+                                (row.last_price * row.quantity).toFixed(2)
+                              )}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={classes.tableCell}
+                            >
+                              {/* cost */}₹
+                              {numberWithCommas(row.close.toFixed(2))}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={classes.tableCell}
+                            >
+                              {/* total return */}₹
+                              {(
+                                (row.last_price - row.close) *
+                                row.quantity
+                              ).toFixed(2)}
+                            </TableCell>
+                            <TableCell
+                              align="left"
+                              className={
+                                calCtr(
+                                  row.last_price * row.quantity,
+                                  (row.last_price - row.close) * row.quantity,
+                                  row.close,
+                                  row.quantity
+                                ) < 0
+                                  ? classes.tableCellRed
+                                  : classes.tableCellGreen
+                              }
+                            >
+                              {/* CTR */}
+                              {calCtr(
+                                row.last_price * row.quantity,
+                                (row.last_price - row.close) * row.quantity,
+                                row.close,
+                                row.quantity
+                              )}{" "}
+                              %
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </>
                   )}
                 </TableBody>
               </Table>
