@@ -634,13 +634,14 @@ export default function EnhancedTable() {
   // (row.last_price)*(row.quantity)
   // (row.last_price - row.close) * row.quantity)
 
-  function totalcalCtr() {
+  function totalcalCtr(val) {
+
     var weight1 = 0;
-    indents.map((stock) => {
+    val.map((stock) => {
       weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
     });
     var tot = 0;
-    indents.map((row) => {
+    val.map((row) => {
       tot =
         tot +
         parseFloat(
@@ -650,9 +651,27 @@ export default function EnhancedTable() {
               (row.close * row.quantity))
         );
     });
-    // console.log("eeee:", tot);
     return tot.toFixed(2);
 
+    //new
+    // var weight1 = 0;
+    // indents.map((stock) => {
+    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
+    // });
+    // var tot = 0;
+    // indents.map((row) => {
+    //   tot =
+    //     tot +
+    //     parseFloat(
+    //       ((row.last_price * row.quantity) / weight1) *
+    //         100 *
+    //         (((row.last_price - row.close) * row.quantity) /
+    //           (row.close * row.quantity))
+    //     );
+    // });
+    // return tot.toFixed(2);
+
+    //old
     // var weight1 = 0;
     // indents.map((stock) => {
     //   weight1 = weight1 + parseFloat(stock.last_price);
@@ -681,27 +700,48 @@ export default function EnhancedTable() {
     return res + 1;
   }
 
-  function totalQuanCount() {
+  function totalQuanCount(data) {
+
     var totq = 0;
-    indents.map((row) => {
+    data.map((row) => {
       totq = totq + parseFloat(row.quantity);
     });
     return totq;
+
+    // var totq = 0;
+    // indents.map((row) => {
+    //   totq = totq + parseFloat(row.quantity);
+    // });
+    // return totq;
   }
 
   function totalValCount(val) {
+
     var totv = 0;
-    indents.map((row) => {
+    val.map((row) => {
       totv = totv + parseFloat(row.last_price * row.quantity);
     });
     return numberWithCommas(totv.toFixed(2));
+
+    // var totv = 0;
+    // indents.map((row) => {
+    //   totv = totv + parseFloat(row.last_price * row.quantity);
+    // });
+    // return numberWithCommas(totv.toFixed(2));
   }
   function totalReturnCount(val) {
+
     var totr = 0;
-    indents.map((row) => {
+    val.map((row) => {
       totr = totr + parseFloat((row.last_price - row.close) * row.quantity);
     });
     return numberWithCommas(totr.toFixed(2));
+
+    // var totr = 0;
+    // indents.map((row) => {
+    //   totr = totr + parseFloat((row.last_price - row.close) * row.quantity);
+    // });
+    // return numberWithCommas(totr.toFixed(2));
   }
 
   //   indents.map((stock) => {
@@ -712,6 +752,8 @@ export default function EnhancedTable() {
   const arrayUniqueByKey = [
     ...new Map(indents.map((item) => [item[key], item])).values(),
   ];
+
+  // console.log("count:",arrayUniqueByKey.length);
 
   return (
     <>
@@ -743,7 +785,8 @@ export default function EnhancedTable() {
                       {port_name_data}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {secNameCount()}
+                      {/* {secNameCount()} */}
+                      {arrayUniqueByKey.length}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       -----
@@ -755,19 +798,19 @@ export default function EnhancedTable() {
                       100 %
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {totalQuanCount()}
+                      {totalQuanCount(arrayUniqueByKey)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{totalValCount()}
+                      ₹{totalValCount(arrayUniqueByKey)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       -----
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{totalReturnCount()}
+                      ₹{totalReturnCount(arrayUniqueByKey)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {totalcalCtr()} %
+                      {totalcalCtr(arrayUniqueByKey)} %
                     </TableCell>
                   </TableRow>
 

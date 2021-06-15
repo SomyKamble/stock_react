@@ -119,6 +119,7 @@ export default function PrimarySearchAppBar(props) {
     localStorage.setItem("portfolio_name", data);
     setAnchorEl(null);
     handleMobileMenuClose();
+    history.push("/table");
     window.location.reload();
     // return <Table dt={data}/>
   };
