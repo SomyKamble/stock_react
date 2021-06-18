@@ -33,6 +33,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
+import api from "../../constant";
 // import Custombutton from "../Button/Custombutton";
 import Custombutton from "./Tablecustombutton";
 import { Alert } from "@material-ui/lab";
@@ -41,6 +42,7 @@ import {
   // MuiThemeProvider,
   ThemeProvider,
 } from "@material-ui/core";
+import axios from 'axios';
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import Clock from "react-digital-clock";
@@ -182,6 +184,8 @@ const useStyles = (theme) => ({
   // },
 });
 
+var token = localStorage.getItem("token");
+
 class ExcelPage extends Component {
   constructor(props) {
     super(props);
@@ -191,6 +195,12 @@ class ExcelPage extends Component {
       files: [],
       data: "NO",
       error: [],
+      fileList: [],
+      FileList:"",
+      data2:"",
+      open:false,
+      err:"",
+      newe:"",
       name: "",
       btn: "no",
       errorMessage: null,
@@ -222,16 +232,123 @@ class ExcelPage extends Component {
         },
       ],
     };
+
+
+
+
+
+    
   }
 
   handleCallback = (childData) => {
+    
     this.setState({ data: childData });
+
   };
 
+
+  handleCallback2 = (childData) => {
+    
+    this.setState({ data2: "DELETE" });
+    // this.setState({ data: "YES" });
+    console.log(childData);
+    console.log(this.state.data2);
+
+if(this.state.data==="DELETE")
+{
+  console.log("dgdfgt");
+this.setState({open:true});
+}
+
+  };
+
+  handleUploaderChange = (info) => {
+    let fileList = [...info.fileList];
+    // fileList = fileList.slice(-2);
+    // 2. Read from response and show file link
+    fileList = fileList.map(file => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+        console.log(222,fileList)
+      }
+      return file;
+    });
+
+
+    // this.setState({ FileList:info.fileList });
+    // console.log(999,FileList);
+    this.setState({ fileList });
+    console.log(999,fileList);
+  };
+
+  
   fileHandler = (FileList) => {
     this.setState({ btn: "yes" });
+    var self=this;
+
+    // this.setState({files : FileList});
     console.log("asdada:", this.state.btn);
     console.log("fileListHere", FileList);
+    
+    var FormDatas = new FormData();
+    FormDatas.append('file', FileList); 
+    FormDatas.append('portfolio_name', this.state.name); 
+
+    console.log( this.state.name);
+    axios({
+      method: "post",
+      url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
+      data: FormDatas,
+      headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token '+token}
+    })
+      .then(function (response) {
+        console.log(response.data);
+        console.log( self.state.name);
+        self.setState({resp:response.data});
+      }).catch(function (error) {
+        console.log("error:", error);
+       
+        console.log("errosr:", error.response.data);
+        error.response.status === 400
+          ? console.log("400")
+          : error.response.status === 500
+          ? console.log("bad request")
+          : console.log("error");
+      });
+
+
+
+
+
+
+
+    // console.log(this.state.FileList);
+    // var bodyFormData = new FormData();
+
+    // bodyFormData.append('file', FileList); 
+    
+    // axios({
+    //   method: "post",
+    //   url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload/",
+    //   data: bodyFormData,
+    //   headers: { "Content-Type": "multipart/form-data",   "Authorization": 'Token ad34cc86b5dcf2beaaeb637eb5635b33f5768929'}
+    // })
+    //   .then(function (response) {
+    //     console.log(response.data);
+    //   }).catch(function (error) {
+    //     console.log("error:", error);
+    //     console.log("errosr:", error.response.data);
+    //     error.response.status === 400
+    //       ? alert("Please Enter Correct Login Credentials")
+    //       : error.response.status === 500
+    //       ? console.log("bad request")
+    //       : console.log("error");
+    //   });
+
+
+
+
     let fileObj = FileList;
     if (!fileObj) {
       this.setState({
@@ -261,24 +378,24 @@ class ExcelPage extends Component {
         let newerror = [];
         resp.rows.slice(1).map((row, index) => {
           if (row && row !== "undefined") {
-            if (row[0] && row[3]) {
+            if (row[0] && row[2]) {
               newRows.push({
                 key: index,
                 name: row[0],
-                age: row[1],
+                age: row[0],
                 gender: row[2],
-                age2: row[3],
-                assettype: row[4],
+                age2: row[1],
+                assettype: "asset",
               });
             } else {
-              if (!row[0] && !row[3]) {
+              if (!row[0] && !row[2]) {
                 console.log("heree");
                 newerror.push(
                   "Incomplete Data at ticker and price" + index + "row"
                 );
-              } else if (row[0] && !row[3]) {
+              } else if (row[0] && !row[2]) {
                 newerror.push("Incomplete Data at price  of" + index + "row");
-              } else if (!row[0] && row[3]) {
+              } else if (!row[0] && row[2]) {
                 newerror.push("Incomplete Data at ticker  of" + index + "row");
               }
             }
@@ -459,7 +576,57 @@ class ExcelPage extends Component {
       );
     };
 
-    function returnerror(error, data, name) {
+    function returnerror(error, data, name,resp) {
+      var x="";
+      var array=[];
+      var reach=0;
+      for(var i=0;i<resp.length;i++)
+      {
+       
+        if(reach===1)
+        {
+        if(resp[i]==='[')
+        {
+          if(x!=="")
+          {
+            x = x.replace(/'/g, '');
+          array.push(x);
+          }
+          x="";
+        }
+        else if(resp[i]===',')
+        {
+          if(x!=="")
+          {
+            x = x.replace(/'/g, '');
+          array.push(x);
+          }
+          x="";
+        }
+        else if(resp[i]===']')
+        {
+          if(x!=="")
+          {
+            x = x.replace(/'/g, '');
+          array.push(x);
+          }
+          x="";
+        }
+        else
+        {
+          if(resp[i]!==':')
+          {
+          x=x+resp[i];
+          }
+        }
+      }
+
+      if(resp[i]==='|')
+      {
+       reach=1;
+      }
+
+      }
       console.log("error here:" + error);
       if (data === "YES") {
         return (
@@ -519,9 +686,10 @@ class ExcelPage extends Component {
                     }}
                   >
                     Error !
-                    {error.map((er) => (
+                    {array.map((er) => (
                       <li style={{ color: "#ffffff" }}>{er}</li>
                     ))}
+                  {/* {resp} */}
                   </Alert>
                 </Box>
               </div>
@@ -533,7 +701,7 @@ class ExcelPage extends Component {
       }
     }
 
-    const check = (data) => {
+    const check = (data,fileList,name) => {
       if (data === "YES") {
         return (
           <div>
@@ -557,7 +725,8 @@ class ExcelPage extends Component {
                   {returnerror(
                     this.state.error,
                     this.state.data,
-                    this.state.name
+                    this.state.name,
+                    this.state.resp
                   )}
                 </div>
                 <Paper
@@ -641,7 +810,7 @@ class ExcelPage extends Component {
                     </Table>
                   </TableContainer>
                 </Paper>
-                <TableSubmitModal />
+                <TableSubmitModal file={fileList} portfolio_name={name} />
               </div>
             </Container>
           </div>
@@ -655,6 +824,7 @@ class ExcelPage extends Component {
     //   this.setState({ btn: databtn });
     //   console.log("sadsdas:", databtn);
     // };
+
 
     const checkfordissaperingform = (data) => {
       if (data === "NO") {
@@ -691,6 +861,7 @@ class ExcelPage extends Component {
                       label="Enter Portfolio name"
                       variant="standard"
                       id="standard-search"
+                      value={this.state.name}
                       onChange={this.storename.bind(this)}
                       inputProps={{
                         style: {
@@ -730,10 +901,12 @@ class ExcelPage extends Component {
                       dropzoneText={
                         <>
                           <Upload
+                            id='file'
                             accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             name="file"
                             beforeUpload={this.fileHandler}
                             // onRemove={() => this.setState({ rows: [] })}
+                            onChange={this.handleUploaderChange}
                             onRemove={() =>
                               this.setState({ btn: "no", rows: [], error: [] })
                             }
@@ -809,8 +982,12 @@ class ExcelPage extends Component {
                       rows={this.state.rows}
                       cols={columns}
                       parentCallback={this.handleCallback}
+                      parentCallback2={this.handleCallback2}
                       errors={this.state.error}
+                      newer={this.state.newe}
                       portfolio={this.state.name}
+                      err={this.state.err}
+                      resp={this.state.resp}
                     />
                   </div>
                 </div>
@@ -819,9 +996,55 @@ class ExcelPage extends Component {
           </div>
         );
       } else {
+
+        const handleClose = () => {
+          console.log(this.state.data)
+         this.setState({open:false,data:"NO"});
+
+        };
         return <div></div>;
       }
     };
+    const handleClose = () => this.setState({open:false});
+    const handleShow = () => this.setState({open:true});
+
+//   const returnmodal=(data2)=>
+//   {
+//     var array=[];
+//     axios({
+//       method: "get",
+//       url: "https://sabertoothdashboard.herokuapp.com/dashboard/me/portfolio",
+//       headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token 98b64eeeae1fac8b5a8a1b6093860e5a5e00bff9'}
+//     })
+//       .then(function (response) {
+//       //   console.log(response.data[0].name);
+//       // array.push(response.data[0].name);
+//       // array.push(response.data[1].name);
+//       // array.push(response.data[2].name);
+//       }).catch(function (error) {
+//         console.log("error:", error);     
+//         console.log("errosr:", error.response.data);
+//         error.response.status === 400
+//           ? console.log("400")
+//           : error.response.status === 500
+//           ? console.log("bad request")
+//           : console.log("error");
+//       });
+//     if(data2=="DELETE")
+//     {
+// return  <div>
+// {
+// array.map((data)=>{ <li>{data}</li>})
+// }
+// </div>;
+//     }
+//     else
+//     {
+//       return <div></div>;
+//     }
+//   };
+
+
 
     const { classes } = this.props;
 
@@ -829,7 +1052,10 @@ class ExcelPage extends Component {
       <>
         {checkfordissaperingform(this.state.data)}
 
-        {check(this.state.data)}
+        {check(this.state.data,this.state.fileList,this.state.name)}
+
+        {/* {returnmodal(this.state.data2)} */}
+        
       </>
     );
   }
@@ -849,31 +1075,124 @@ const useStyless = makeStyles((theme) => ({
   },
 }));
 
+
 function TransitionsModal(props) {
   const classes = useStyless();
   const [open, setOpen] = React.useState(false);
+  const [open2,setOpen2]=React.useState(false);
+  const [open3,setOpen3]=React.useState(false);
+  const [open4,setOpen4]=React.useState(false);
+  const [array,setArray]=React.useState([]);
+  const [stock,setStock]=React.useState([]);
+  const [checked,setChecked]=React.useState(false);
+  const [delet,setDelet] = React.useState([]);
+
+  axios({
+    method: "get",
+    url: "https://sabertoothdashboard.herokuapp.com/dashboard/me/portfolio",
+    headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token '+token}
+  })
+    .then(function (response) 
+    {
+  var arr=[];
+    console.log(response.data);
+    arr.push(response.data[0].name);
+    // arr.push(response.data[1].name);
+    // arr.push(response.data[2].name);
+    setArray(arr);
+
+    }).catch(function (error) {
+     
+     console.log(error);
+    });
+
+
+   
+
+    const handleOpen3 = () => {
+      setOpen3(true);
+    };
+  
+  
 
   const handleOpen = () => {
     setOpen(true);
   };
 
+
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+
+  const handleClose3 = () => {
+    setOpen3(false);
+  };
+
+  const handleClose4 = () => {
+    setOpen4(false);
+  };
+
+
 
   const returnstatement = (name) => {
     if (name) {
       var ans = "This table have ";
       ans = ans + props.rows.length;
       ans = ans + " rows and ";
-      ans = ans + props.errors.length;
+      ans = ans + props.resp;
       ans = ans + " errors found based on matching tickers from database.";
-
       return ans;
     } else {
       return "Please fill portfolio Name And Then Submit";
     }
   };
+
+  const handleEntailmentRequest = (e) => {
+    window.location.reload(false);
+    console.log("aasdfad");
+  };
+
+  function deletestocks()
+  {
+
+
+    delet.map((item)=>{
+
+      var data = new FormData();
+      data.append('portfolio_name', item);
+      data.append('action', 'delete');
+      
+      var config = {
+        method: 'post',
+        url: 'https://sabertoothdashboard.herokuapp.com/dashboard/my_stocks/',
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          'Authorization': 'token '+token
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+
+      
+    });
+
+   
+    setOpen4(true);
+
+  }
+
 
   // const [isOpen, setIsOpen] = useState(false);
   // function toggleModal() {
@@ -932,9 +1251,23 @@ function TransitionsModal(props) {
                     // props.parentCallback("YES");
                     // handleClose();
                     if (props.portfolio) {
+                      // console.log(props.resp);
+                      if(props.resp==="You already have 3 active portfolios. Inorder to create new please delete previous portfolio.")
+                      {
+                       
+                        // props.parentCallback2("DELETE");
+                        // handleClose();
+                        setOpen2(true);
+                        // console.log("here",array);
+                      }
+                      else
+                      {
                       props.parentCallback("YES");
                       handleClose();
-                    } else {
+                      }
+                    } 
+                    else 
+                    {
                       handleClose();
                     }
                   }}
@@ -951,10 +1284,207 @@ function TransitionsModal(props) {
                     marginLeft: "30%",
                   }}
                 >
-                  {/* OK */}
-                  {props.portfolio ? "OK" : "SUBMIT AGAIN"}
+                  {props.portfolio ? props.resp==="You already have 3 active portfolios. Inorder to create new please delete previous portfolio."?"DELETE SOME":"OK": "SUBMIT AGAIN"}
                 </Buttons>
+                <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open2}
+        onClose={handleClose2}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open2}>
+          <div
+            className={classes.paper}
+            style={{
+              position: "fixed",
+              // background: "lightblue",
+              width: "30%",
+              height: "25%",
+            }}
+          >
+            <h2 id="transition-modal-title">DELETE</h2>
+            <p id="transition-modal-description">
+             DELETE STOCKS
+            </p>
+            <div style={{ marginTop: 20 }}>
+              <div className="actions">
+           <ul>
+          
+  <li><input type="checkbox"  id={array[0]}  onChange={()=>{if(document.getElementById(array[0]).checked){ delet.push(array[0]); setDelet(delet); console.log(delet); }else{ const index = delet.indexOf(array[0]);   delet.splice(index, 1); setDelet(delet); console.log(delet); }}} ></input> <span>{array[0]}</span></li>
+  {/* <li><input type="checkbox"  id={array[1]}  onChange={()=>{if(document.getElementById(array[1]).checked){ delet.push(array[1]); setDelet(delet); console.log(delet); }else{ const index = delet.indexOf(array[1]);   delet.splice(index, 1); setDelet(delet); console.log(delet); }}} ></input> <span>{array[1]}</span></li>
+  // <li><input type="checkbox"  id={array[2]}  onChange={()=>{if(document.getElementById(array[2]).checked){ delet.push(array[2]); setDelet(delet); console.log(delet); }else{ const index = delet.indexOf(array[2]);   delet.splice(index, 1); setDelet(delet); console.log(delet); }}} ></input> <span>{array[2]}</span></li> */}
+
+</ul>
+              {/* <ForDeletestocks  array={array} /> */}
+
+
+
               </div>
+              <Buttons
+          type="button"
+          onClick={handleOpen3}
+          style={{
+            "min-height": "10px",
+            height: "30px",
+            width: "85%",
+            backgroundColor: "#20a45c",
+            fontSize: "15px",
+            fontWeight: "500",
+            marginTop: "20px",
+            padding: "1px",
+            borderRadius: "4px",
+            color: "black",
+            // marginLeft: "5px",
+            // float: 'right',
+            marginRight: "5px",
+            marginBottom: "10px",
+            // textTransform: "none"
+          }}
+        >
+          DELETE
+        </Buttons>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+              </div>
+
+              <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open3}
+        onClose={handleClose3}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open3}>
+          <div
+            className={classes.paper}
+            style={{
+              position: "fixed",
+              // background: "lightblue",
+              width: "30%",
+              height: "25%",
+            }}
+          >
+            <h2 id="transition-modal-title">Alert</h2>
+
+            <p id="transition-modal-description">
+              Are u shure u will delete these stocks 
+              {array.map((arr)=>{<p>{arr}</p>})}
+            </p>
+            <div style={{ marginTop: 20 }}>
+              <div className="actions">
+              <Buttons
+        onClick={deletestocks}
+        // component={Links}
+        // to="/form"
+        type="button"
+        // onClick={() => {}}
+        // onClick={() => { func1(); func2();}}
+        style={{
+          "min-height": "20px",
+          width: "50%",
+          backgroundColor: "#449474",
+          fontSize: "15px",
+          fontWeight: "500",
+          marginTop: "10px",
+          padding: "1px",
+          borderRadius: "4px",
+          color: "black",
+        }}
+      >
+       DELETE
+      </Buttons>
+      <span> &nbsp;&nbsp; </span>
+      <Buttons
+        onClick={(e) => {
+          handleEntailmentRequest(e);
+        }}
+        type="button"
+        style={{
+          "min-height": "20px",
+          width: "45%",
+          backgroundColor: "#449474",
+          fontSize: "15px",
+          fontWeight: "500",
+          marginTop: "10px",
+          padding: "1px",
+          borderRadius: "4px",
+          color: "black",
+        }}
+      >
+        CANCEL
+      </Buttons>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open4}
+        onClose={handleClose4}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open4}>
+          <div
+            className={classes.paper}
+            style={{
+              position: "fixed",
+              // background: "lightblue",
+              width: "30%",
+              height: "25%",
+            }}
+          >
+            <h2 id="transition-modal-title">Success</h2>
+            <p id="transition-modal-description">Completed !</p>
+            <div style={{ marginTop: 10 }}>
+              <div className="actions">
+                <Buttons
+                  onClick={(e) => {
+                    handleEntailmentRequest(e);
+                  }}
+                  type="button"
+                  style={{
+                    "min-height": "20px",
+                    width: "40%",
+                    backgroundColor: "#449474",
+                    fontSize: "15px",
+                    fontWeight: "500",
+                    marginTop: "10px",
+                    padding: "1px",
+                    borderRadius: "4px",
+                    color: "black",
+                    marginLeft: "30%",
+                  }}
+                >
+                  OK
+                </Buttons>
+
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+              </div>
+            </div>
+          </div>
+        </Fade>
+      </Modal>
+
+
             </div>
           </div>
         </Fade>
@@ -962,6 +1492,121 @@ function TransitionsModal(props) {
     </div>
   );
 }
+
+// function ForDeletestocks(props)
+// {
+//   const classes = useStyless();
+//   const [open, setOpen] = React.useState(false);
+
+//   const handleOpen = () => {
+//     setOpen(true);
+//   };
+
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
+
+//   return (
+//     <div>
+//       <div
+//         style={{
+//           float: "right",
+//           marginRight: "0px",
+//           display: "flex",
+//           width: "30%",
+//         }}
+//       >
+//         <Buttons
+//           style={{
+//             "min-height": "10px",
+//             width: "85%",
+//             backgroundColor: "#20a45c",
+//             fontSize: "15px",
+//             fontWeight: "500",
+//             marginTop: "20px",
+//             borderRadius: "4px",
+//             color: "black",
+//             height: "30px",
+//             // marginLeft: "850px",
+//             // float: 'right',
+//             marginRight: "10px",
+//             marginBottom: "10px",
+//             // textTransform: "none"
+//           }}
+//           className="button"
+         
+//         >
+//           Cancel
+//         </Buttons>
+//         <span> &nbsp;&nbsp; </span>
+//         <Buttons
+//           type="button"
+//           onClick={handleOpen}
+//           style={{
+//             "min-height": "10px",
+//             height: "30px",
+//             width: "85%",
+//             backgroundColor: "#20a45c",
+//             fontSize: "15px",
+//             fontWeight: "500",
+//             marginTop: "20px",
+//             padding: "1px",
+//             borderRadius: "4px",
+//             color: "black",
+//             // marginLeft: "5px",
+//             // float: 'right',
+//             marginRight: "5px",
+//             marginBottom: "10px",
+//             // textTransform: "none"
+//           }}
+//         >
+//           Submit
+//         </Buttons>
+//       </div>
+//       <Modal
+//         aria-labelledby="transition-modal-title"
+//         aria-describedby="transition-modal-description"
+//         className={classes.modal}
+//         open={open}
+//         onClose={handleClose}
+//         closeAfterTransition
+//         BackdropComponent={Backdrop}
+//         BackdropProps={{
+//           timeout: 500,
+//         }}
+//       >
+//         <Fade in={open}>
+//           <div
+//             className={classes.paper}
+//             style={{
+//               position: "fixed",
+//               // background: "lightblue",
+//               width: "30%",
+//               height: "25%",
+//             }}
+//           >
+//             <h2 id="transition-modal-title">Alert</h2>
+//             <p id="transition-modal-description">
+//               Ignore The Errors And Submit?
+//             </p>
+//             <div style={{ marginTop: 20 }}>
+//               <div className="actions">
+//                 <AlertSubmitModal file={props.file} portfolio_name={props.portfolio_name}/>
+//               </div>
+//             </div>
+//           </div>
+//         </Fade>
+//       </Modal>
+//     </div>
+//   );
+
+
+
+// }
+
+
+
+
 
 function TableSubmitModal(props) {
   const classes = useStyless();
@@ -1067,7 +1712,7 @@ function TableSubmitModal(props) {
             </p>
             <div style={{ marginTop: 20 }}>
               <div className="actions">
-                <AlertSubmitModal />
+                <AlertSubmitModal file={props.file} portfolio_name={props.portfolio_name}/>
               </div>
             </div>
           </div>
@@ -1084,6 +1729,36 @@ function AlertSubmitModal(props) {
   const handleOpen = () => {
     setOpen(true);
   };
+  
+  const posts=()=>
+  {
+    console.log(props.file[0].originFileObj);
+    var bodyFormData = new FormData();
+
+bodyFormData.append('file', props.file[0].originFileObj); 
+bodyFormData.append('portfolio_name',props.portfolio_name);
+console.log(props.portfolio_name);
+axios({
+  method: "post",
+  url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload/",
+  data: bodyFormData,
+  headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token '+token}
+})
+  .then(function (response) {
+    console.log(response.data);
+  }).catch(function (error) {
+
+    console.log("error:", error);
+    console.log("errosr:", error.response.data);
+    error.response.status === 400
+      ? console.log("400")
+      : error.response.status === 500
+      ? console.log("bad request")
+      : console.log("error");
+  });
+    setOpen(true);
+  };
+
 
   const handleClose = () => {
     setOpen(false);
@@ -1121,7 +1796,7 @@ function AlertSubmitModal(props) {
       </Buttons>
       <span> &nbsp;&nbsp; </span>
       <Buttons
-        onClick={handleOpen}
+        onClick={posts}
         type="button"
         style={{
           "min-height": "20px",
@@ -1134,7 +1809,6 @@ function AlertSubmitModal(props) {
           borderRadius: "4px",
           color: "black",
         }}
-        // className="button"
       >
         Yes
       </Buttons>
@@ -1184,6 +1858,7 @@ function AlertSubmitModal(props) {
                 >
                   OK
                 </Buttons>
+
               </div>
             </div>
           </div>
