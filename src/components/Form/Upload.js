@@ -1083,7 +1083,7 @@ function TransitionsModal(props) {
       // console.log(response.data);
       arr.push(response.data[0].name);
       arr.push(response.data[1].name);
-      // arr.push(response.data[2].name);
+      arr.push(response.data[2].name);
       setArray(arr);
 
     }).catch(function (error) {
@@ -1171,8 +1171,6 @@ function TransitionsModal(props) {
 
 
     });
-
-
     setOpen4(true);
 
   }
@@ -1219,7 +1217,6 @@ function TransitionsModal(props) {
               // position: "fixed",
               // width: "30%",
               // height: "20%",
-
             }}
           >
             <p id="transition-modal-description" style={{maxWidth:"500px"}}>
@@ -1265,7 +1262,7 @@ function TransitionsModal(props) {
                     marginLeft: "30%",
                   }}
                 >
-                  {props.portfolio ? props.resp === "You already have 3 active portfolios. Inorder to create new please delete previous portfolio." ? "Delete Some" : "Ok" : "Submit Again"}
+                  {props.portfolio ? props.resp === "You already have 3 active portfolios. Inorder to create new please delete previous portfolio." ? "DELETE SOME" : "OK" : "SUBMIT AGAIN"}
                 </Buttons>
                 <Modal
                   aria-labelledby="transition-modal-title"
@@ -1284,6 +1281,7 @@ function TransitionsModal(props) {
                       className={classes.paper}
                       style={{
                         // position: "fixed",
+                       
                         // width: "30%",
                         // height: "25%",
                       }}
@@ -1298,7 +1296,7 @@ function TransitionsModal(props) {
 
                             <li><input type="checkbox" id={array[0]} onChange={() => { delet.push(array[0]); setDelet(delet); }} ></input> <span>{array[0]}</span></li>
                             <li><input type="checkbox" id={array[1]} onChange={() => { delet.push(array[1]); setDelet(delet); }} ></input> <span>{array[1]}</span></li>
-                            {/* <li><input type="checkbox"  id={array[2]}  onChange={()=>{delet.push(array[2]); setDelet(delet); }} ></input> <span>{array[2]}</span></li> */}
+                            <li><input type="checkbox" id={array[2]} onChange={() => { delet.push(array[2]); setDelet(delet); }} ></input> <span>{array[2]}</span></li>
 
                           </ul>
                           {/* <ForDeletestocks  array={array} /> */}
@@ -1352,6 +1350,7 @@ function TransitionsModal(props) {
                     className={classes.paper}
                     style={{
                       // position: "fixed",
+                    
                       // width: "30%",
                       // height: "25%",
                     }}
@@ -1422,6 +1421,7 @@ function TransitionsModal(props) {
                               className={classes.paper}
                               style={{
                                 // position: "fixed",
+                             
                                 // width: "30%",
                                 // height: "25%",
                               }}
@@ -1445,7 +1445,7 @@ function TransitionsModal(props) {
                                       padding: "1px",
                                       borderRadius: "4px",
                                       color: "black",
-                                      marginLeft: "30%",
+                                      marginLeft: "10%",
                                     }}
                                   >
                                     OK
@@ -1636,8 +1636,8 @@ function TableSubmitModal(props) {
           }}
         >
           Cancel
-        </Buttons>
-        <span> &nbsp;&nbsp; </span>
+        </Buttons>&nbsp;&nbsp;
+        {/* <span> &nbsp;&nbsp; </span> */}
         <Buttons
           type="button"
           onClick={handleOpen}
@@ -1679,6 +1679,7 @@ function TableSubmitModal(props) {
             className={classes.paper}
             style={{
               // position: "fixed",
+              
               // width: "30%",
               // height: "25%",
             }}
@@ -1707,9 +1708,7 @@ function AlertSubmitModal(props) {
     setOpen(true);
   };
 
-  const posts = () =>
-  // handleClose();
-  {
+  const posts = () => {
     console.log(props.file[0].originFileObj);
     var bodyFormData = new FormData();
 
@@ -1774,7 +1773,6 @@ function AlertSubmitModal(props) {
       </Buttons>&nbsp;&nbsp;
       {/* <span> &nbsp;&nbsp; </span> */}
       <Buttons
-        // {function(event){ func1(); func2()}}
         onClick={posts}
         type="button"
         style={{
@@ -1808,6 +1806,7 @@ function AlertSubmitModal(props) {
             className={classes.paper}
             style={{
               // position: "fixed",
+             
               // width: "30%",
               // height: "25%",
             }}
@@ -1831,12 +1830,11 @@ function AlertSubmitModal(props) {
                     padding: "1px",
                     borderRadius: "4px",
                     color: "black",
-                    // marginLeft: "30%",
+                    marginLeft: "10%",
                   }}
                 >
                   OK
                 </Buttons>
-
               </div>
             </div>
           </div>
