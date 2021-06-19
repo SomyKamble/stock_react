@@ -1083,7 +1083,7 @@ function TransitionsModal(props) {
       // console.log(response.data);
       arr.push(response.data[0].name);
       arr.push(response.data[1].name);
-      arr.push(response.data[2].name);
+      // arr.push(response.data[2].name);
       setArray(arr);
 
     }).catch(function (error) {
@@ -1296,7 +1296,7 @@ function TransitionsModal(props) {
 
                             <li><input type="checkbox" id={array[0]} onChange={() => { delet.push(array[0]); setDelet(delet); }} ></input> <span>{array[0]}</span></li>
                             <li><input type="checkbox" id={array[1]} onChange={() => { delet.push(array[1]); setDelet(delet); }} ></input> <span>{array[1]}</span></li>
-                            <li><input type="checkbox" id={array[2]} onChange={() => { delet.push(array[2]); setDelet(delet); }} ></input> <span>{array[2]}</span></li>
+                            {/* <li><input type="checkbox" id={array[2]} onChange={() => { delet.push(array[2]); setDelet(delet); }} ></input> <span>{array[2]}</span></li> */}
 
                           </ul>
                           {/* <ForDeletestocks  array={array} /> */}
