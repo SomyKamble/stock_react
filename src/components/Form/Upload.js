@@ -300,7 +300,7 @@ class ExcelPage extends Component {
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
     })
       .then(function (response) {
-        console.log(response.data);
+        console.log("testing________:",response.data);
         console.log(self.state.name);
         self.setState({ resp: response.data });
       }).catch(function (error) {
