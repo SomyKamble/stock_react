@@ -492,6 +492,7 @@ export default function EnhancedTable() {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  const [test, settestData] = React.useState({});
   const [indents, setindentsData] = React.useState([]);
   const [ticks, ticksData] = React.useState();
   React.useEffect(() => {
@@ -508,9 +509,10 @@ export default function EnhancedTable() {
 
       .then(function (response) {
         if (response.status === 200) {
-          // console.log("success:", response.data);
+          // console.log("iam in my_stock api:");
 
           ticksData(response.data);
+
         }
       })
       .catch(function (error) {
@@ -559,14 +561,17 @@ export default function EnhancedTable() {
       // ) : (
       //   <>
       // console.log("ticks:", ticks);
+      // console.log("iam in testing mode:")
       {
         {
           ticks === undefined
             ? window.location.reload()
             : ticks.map((r) => {
+              
                 // {r.length<0?(console.log("error in api dashboard/my_stocks")):(
                 ref.child(r.instrument_token).on("value", (snapshot) => {
                   const state = snapshot.val();
+                  
                   const ch = {
                     tradingsymbol: r.tradingsymbol,
                     name: r.name,
@@ -574,26 +579,33 @@ export default function EnhancedTable() {
                     buy_price: r.buy_price,
                   };
                   const act_data = Object.assign({}, state, ch);
-                  // console.log("inst_tok:",r.instrument_token)
-                  // console.log("asda:", act_data);
+                  
+                  // console.log("asda:", act_data['instrument_token']);
                   if (state === null) {
                     return null;
                   } else {
                     // console.log("data:", state);
-                    setindentsData((indents) => [...indents, act_data]);
+                    test[act_data['instrument_token']]=act_data
+                    // setindentsData((indents) => [...indents, act_data]);
                   }
                 });
                 // )}
               });
         }
       }
-      // console.log("final:", indents);
+      
       // </>
       // )}
     }, MINUTE_MS);
     return () => clearInterval(interval);
   }, [ticks]);
+  // console.log("test:",test);
+  // console.log("gg:",Object.keys(test).length)
   // console.log("finalresult:", indents);
+
+  // {Object.values(test).map((keyName, id) => {
+  //   console.log("data:",keyName);
+  // })}
 
   // console.log("finalresultcount:", indents.length);
   // {indents.length === 0 ? (console.log("erter")
@@ -607,18 +619,24 @@ export default function EnhancedTable() {
     // var y = (val / weight1) * 100;
     // return y.toFixed(2);
     var weight1 = 0;
-    indents.map((stock) => {
-      weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
-    });
+    // indents.map((stock) => {
+    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
+    // });
+    {Object.values(test).map((stock, id) => {
+      weight1 = weight1 + parseFloat(stock['last_price'] * stock['quantity']);
+    })}
     var y = (val / weight1) * 100;
     return y.toFixed(2);
   }
 
   function calCtr(val, totalreturn, cost, quantity) {
     var weight1 = 0;
-    indents.map((stock) => {
-      weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
-    });
+    // indents.map((stock) => {
+    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
+    // });
+    {Object.values(test).map((stock, id) => {
+      weight1 = weight1 + parseFloat(stock['last_price'] * stock['quantity']);
+    })}
     var weight = (val / weight1) * 100;
     var ctr = weight * (totalreturn / (cost * quantity));
     return ctr.toFixed(2);
@@ -637,20 +655,33 @@ export default function EnhancedTable() {
   function totalcalCtr(val) {
 
     var weight1 = 0;
-    val.map((stock) => {
-      weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
-    });
+    // val.map((stock) => {
+    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
+    // });
+    {Object.values(val).map((stock, id) => {
+      weight1 = weight1 + parseFloat(stock['last_price'] * stock['quantity']);
+    })}
     var tot = 0;
-    val.map((row) => {
+    // val.map((row) => {
+    //   tot =
+    //     tot +
+    //     parseFloat(
+    //       ((row.last_price * row.quantity) / weight1) *
+    //         100 *
+    //         (((row.last_price - row.close) * row.quantity) /
+    //           (row.close * row.quantity))
+    //     );
+    // });
+    {Object.values(val).map((row, id) => {
       tot =
         tot +
         parseFloat(
-          ((row.last_price * row.quantity) / weight1) *
+          ((row['last_price'] * row['quantity']) / weight1) *
             100 *
-            (((row.last_price - row.close) * row.quantity) /
-              (row.close * row.quantity))
+            (((row['last_price'] - row['close']) * row['quantity']) /
+              (row['close'] * row['quantity']))
         );
-    });
+    })}
     return tot.toFixed(2);
 
     //new
@@ -703,9 +734,12 @@ export default function EnhancedTable() {
   function totalQuanCount(data) {
 
     var totq = 0;
-    data.map((row) => {
-      totq = totq + parseFloat(row.quantity);
-    });
+    // data.map((row) => {
+    //   totq = totq + parseFloat(row.quantity);
+    // });
+    {Object.values(data).map((row, id) => {
+      totq = totq + parseFloat(row['quantity']);
+    })}
     return totq;
 
     // var totq = 0;
@@ -718,9 +752,12 @@ export default function EnhancedTable() {
   function totalValCount(val) {
 
     var totv = 0;
-    val.map((row) => {
-      totv = totv + parseFloat(row.last_price * row.quantity);
-    });
+    // val.map((row) => {
+    //   totv = totv + parseFloat(row.last_price * row.quantity);
+    // });
+    {Object.values(val).map((row, id) => {
+      totv = totv + parseFloat(row['last_price'] * row['quantity']);
+    })}
     return numberWithCommas(totv.toFixed(2));
 
     // var totv = 0;
@@ -732,9 +769,12 @@ export default function EnhancedTable() {
   function totalReturnCount(val) {
 
     var totr = 0;
-    val.map((row) => {
-      totr = totr + parseFloat((row.last_price - row.close) * row.quantity);
-    });
+    // val.map((row) => {
+    //   totr = totr + parseFloat((row.last_price - row.close) * row.quantity);
+    // });
+    {Object.values(val).map((row, id) => {
+      totr = totr + parseFloat((row['last_price'] - row['close']) * row['quantity']);
+    })}
     return numberWithCommas(totr.toFixed(2));
 
     // var totr = 0;
@@ -747,11 +787,11 @@ export default function EnhancedTable() {
   //   indents.map((stock) => {
   //   console.log("hekk:",stock.length)
   // });
-  const key = "instrument_token";
+  // const key = "instrument_token";
 
-  const arrayUniqueByKey = [
-    ...new Map(indents.map((item) => [item[key], item])).values(),
-  ];
+  // const arrayUniqueByKey = [
+  //   ...new Map(indents.map((item) => [item[key], item])).values(),
+  // ];
 
   // console.log("count:",arrayUniqueByKey.length);
 
@@ -786,7 +826,7 @@ export default function EnhancedTable() {
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       {/* {secNameCount()} */}
-                      {arrayUniqueByKey.length}
+                      {Object.keys(test).length}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       -----
@@ -798,30 +838,30 @@ export default function EnhancedTable() {
                       100 %
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {totalQuanCount(arrayUniqueByKey)}
+                      {totalQuanCount(test)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{totalValCount(arrayUniqueByKey)}
+                      ₹{totalValCount(test)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       -----
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{totalReturnCount(arrayUniqueByKey)}
+                      ₹{totalReturnCount(test)}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {totalcalCtr(arrayUniqueByKey)} %
+                      {totalcalCtr(test)} %
                     </TableCell>
                   </TableRow>
 
                   {/* {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => { */}
-                  {indents.length < 0 ? (
+                  {Object.keys(test).length < 0 ? (
                     console.log("error in table ")
                   ) : (
                     <>
-                      {arrayUniqueByKey.map((row, id) => {
+                      {Object.values(test).map((row, id) => {
                         return (
                           <TableRow
                             hover
@@ -834,14 +874,14 @@ export default function EnhancedTable() {
                               align="left"
                             >
                               {/* {row.tradingsymbol} */}
-                              {row.change < 0 ? (
+                              {row['change'] < 0 ? (
                                 <Custombutton
-                                  bankName={row.tradingsymbol}
+                                  bankName={row['tradingsymbol']}
                                   dChange={false}
                                 />
                               ) : (
                                 <Custombutton
-                                  bankName={row.tradingsymbol}
+                                  bankName={row['tradingsymbol']}
                                   dChange={true}
                                 />
                               )}
@@ -851,7 +891,7 @@ export default function EnhancedTable() {
                               align="left"
                             >
                               {/* security name */}
-                              {row.name}
+                              {row['name']}
                             </TableCell>
                             <TableCell
                               align="left"
@@ -862,14 +902,14 @@ export default function EnhancedTable() {
                               }
                             >
                               {/* %1d change */}
-                              {row.change.toFixed(2)}%
+                              {row['change'].toFixed(2)}%
                             </TableCell>
                             <TableCell
                               align="left"
                               className={classes.tableCell}
                             >
                               {/* last price */}₹
-                              {numberWithCommas(row.last_price.toFixed(2))}
+                              {numberWithCommas(row['last_price'].toFixed(2))}
                             </TableCell>
                             <TableCell
                               align="left"
@@ -878,7 +918,7 @@ export default function EnhancedTable() {
                               {/* weight */}
                               <Progressbar
                                 position={calWeight(
-                                  row.last_price * row.quantity
+                                  row['last_price'] * row['quantity']
                                 )}
                               />
                             </TableCell>
@@ -887,7 +927,7 @@ export default function EnhancedTable() {
                               className={classes.tableCell}
                             >
                               {/* quantity */}
-                              {numberWithCommas(row.quantity)}
+                              {numberWithCommas(row['quantity'])}
                             </TableCell>
                             <TableCell
                               align="left"
@@ -895,7 +935,7 @@ export default function EnhancedTable() {
                             >
                               {/* value */}₹
                               {numberWithCommas(
-                                (row.last_price * row.quantity).toFixed(2)
+                                (row['last_price'] * row['quantity']).toFixed(2)
                               )}
                             </TableCell>
                             <TableCell
@@ -903,7 +943,7 @@ export default function EnhancedTable() {
                               className={classes.tableCell}
                             >
                               {/* cost */}₹
-                              {numberWithCommas(row.close.toFixed(2))}
+                              {numberWithCommas(row['close'].toFixed(2))}
                             </TableCell>
                             <TableCell
                               align="left"
@@ -911,18 +951,18 @@ export default function EnhancedTable() {
                             >
                               {/* total return */}₹
                               {(
-                                (row.last_price - row.close) *
-                                row.quantity
+                                (row['last_price'] - row['close']) *
+                                row['quantity']
                               ).toFixed(2)}
                             </TableCell>
                             <TableCell
                               align="left"
                               className={
                                 calCtr(
-                                  row.last_price * row.quantity,
-                                  (row.last_price - row.close) * row.quantity,
-                                  row.close,
-                                  row.quantity
+                                  row['last_price'] * row['quantity'],
+                                  (row['last_price'] - row['close']) * row['quantity'],
+                                  row['close'],
+                                  row['quantity']
                                 ) < 0
                                   ? classes.tableCellRed
                                   : classes.tableCellGreen
@@ -930,10 +970,10 @@ export default function EnhancedTable() {
                             >
                               {/* CTR */}
                               {calCtr(
-                                row.last_price * row.quantity,
-                                (row.last_price - row.close) * row.quantity,
-                                row.close,
-                                row.quantity
+                                row['last_price'] * row['quantity'],
+                                (row['last_price'] - row['close']) * row['quantity'],
+                                row['close'],
+                                row['quantity']
                               )}{" "}
                               %
                             </TableCell>

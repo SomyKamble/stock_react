@@ -577,41 +577,46 @@ class ExcelPage extends Component {
       var x = "";
       var array = [];
       var reach = 0;
-      for (var i = 0; i < resp.length; i++) {
+      console.log("error_test:", resp);
+      if (resp === undefined) {
+        console.log("something went wrong");
+      } else {
+        for (var i = 0; i < resp.length; i++) {
 
-        if (reach === 1) {
-          if (resp[i] === '[') {
-            if (x !== "") {
-              x = x.replace(/'/g, '');
-              array.push(x);
+          if (reach === 1) {
+            if (resp[i] === '[') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+              }
+              x = "";
             }
-            x = "";
-          }
-          else if (resp[i] === ',') {
-            if (x !== "") {
-              x = x.replace(/'/g, '');
-              array.push(x);
+            else if (resp[i] === ',') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+              }
+              x = "";
             }
-            x = "";
-          }
-          else if (resp[i] === ']') {
-            if (x !== "") {
-              x = x.replace(/'/g, '');
-              array.push(x);
+            else if (resp[i] === ']') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+              }
+              x = "";
             }
-            x = "";
-          }
-          else {
-            if (resp[i] !== ':') {
-              x = x + resp[i];
+            else {
+              if (resp[i] !== ':') {
+                x = x + resp[i];
+              }
             }
           }
+
+          if (resp[i] === '|') {
+            reach = 1;
+          }
+
         }
-
-        if (resp[i] === '|') {
-          reach = 1;
-        }
-
       }
       console.log("error here:" + error);
       if (data === "YES") {
@@ -1219,7 +1224,7 @@ function TransitionsModal(props) {
               // height: "20%",
             }}
           >
-            <p id="transition-modal-description" style={{maxWidth:"500px"}}>
+            <p id="transition-modal-description" style={{ maxWidth: "500px" }}>
               {/* This table have {props.rows.length} rows and {props.errors.length}{" "}
               errors found based on matching tickers from database. */}
               {returnstatement(props.portfolio)}
@@ -1281,7 +1286,7 @@ function TransitionsModal(props) {
                       className={classes.paper}
                       style={{
                         // position: "fixed",
-                       
+
                         // width: "30%",
                         // height: "25%",
                       }}
@@ -1350,7 +1355,7 @@ function TransitionsModal(props) {
                     className={classes.paper}
                     style={{
                       // position: "fixed",
-                    
+
                       // width: "30%",
                       // height: "25%",
                     }}
@@ -1421,7 +1426,7 @@ function TransitionsModal(props) {
                               className={classes.paper}
                               style={{
                                 // position: "fixed",
-                             
+
                                 // width: "30%",
                                 // height: "25%",
                               }}
@@ -1679,7 +1684,7 @@ function TableSubmitModal(props) {
             className={classes.paper}
             style={{
               // position: "fixed",
-              
+
               // width: "30%",
               // height: "25%",
             }}
@@ -1806,7 +1811,7 @@ function AlertSubmitModal(props) {
             className={classes.paper}
             style={{
               // position: "fixed",
-             
+
               // width: "30%",
               // height: "25%",
             }}
