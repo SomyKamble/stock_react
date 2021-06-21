@@ -192,8 +192,8 @@ export default function Login() {
           if (response.status === 200) {
             console.log("success:", response.data["token"]);
             localStorage.setItem("token", response.data["token"]);
-
-            // console.log("successtoken:",localStorage.getItem('token'));
+            localStorage.setItem("email", email);
+            // console.log("email:",email);
             window.location = "/table";
           }
         })
@@ -263,6 +263,7 @@ export default function Login() {
               <TextField
                 // className={classe.placeholder}
                 label="Password"
+                style={{display:null}}
                 variant="standard"
                 type={icon === "yes" ? "text" : "password"}
                 // type="password"

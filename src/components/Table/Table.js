@@ -445,7 +445,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#070A1B",
     fontSize: "13px",
     letterSpacing: "1px",
-    position: "sticky",
+    // position: "sticky",
     top: "56px",
     zIndex: "99999",
   },

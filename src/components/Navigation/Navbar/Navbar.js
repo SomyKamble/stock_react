@@ -25,6 +25,9 @@ import Divider from "@material-ui/core/Divider";
 import api from "../../../constant";
 import Table from "../../Table/Table";
 
+var email = localStorage.getItem("email");
+console.log("email:",email);
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -207,8 +210,8 @@ export default function PrimarySearchAppBar(props) {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <Grid style={{ textAlign: "right", paddingTop: 12, paddingLeft: 15 }}>
-          <Grid className={classes2.userName}>User Name</Grid>
-          <Grid className={classes2.email}>abcd@gmail.com</Grid>
+          <Grid className={classes2.userName}>.</Grid>
+          <Grid className={classes2.email}>{email}</Grid>
         </Grid>
         <Grid container direction="row" alignItems="center">
           <Grid item>
@@ -281,8 +284,8 @@ export default function PrimarySearchAppBar(props) {
                     paddingLeft: 15,
                   }}
                 >
-                  <Grid className={classes2.userName}>User Name</Grid>
-                  <Grid className={classes2.email}>abcd@gmail.com</Grid>
+                  <Grid className={classes2.userName}>.</Grid>
+                  <Grid className={classes2.email}>{email}</Grid>
                 </Grid>
                 <Grid container direction="row" alignItems="center">
                   <Grid item>
