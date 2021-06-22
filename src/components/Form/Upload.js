@@ -300,7 +300,8 @@ class ExcelPage extends Component {
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
     })
       .then(function (response) {
-        console.log("testing________:",response.data);
+        // console.log("testing________:",response.data);
+        localStorage.setItem("table_error", response.data);
         console.log(self.state.name);
         self.setState({ resp: response.data });
       }).catch(function (error) {
@@ -368,6 +369,74 @@ class ExcelPage extends Component {
     }
 
     ExcelRenderer(fileObj, (err, resp) => {
+      let respp = localStorage.getItem("table_error");
+      let x = "";
+      let array = [];
+      let reach = 0;
+      // console.log("error_test:", resp);
+      if (respp === undefined) {
+        console.log("something went wrong");
+      } else {
+        for (var i = 0; i < respp.length; i++) {
+
+          if (reach === 1) {
+            if (respp[i] === '[') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+              }
+              x = "";
+            }
+            else if (respp[i] === ',') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+              }
+              x = "";
+            }
+            else if (respp[i] === ']') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+              }
+              x = "";
+            }
+            // else if (respp[i] === '(Invalid Tranding Symbol)') {
+            //   if (x !== "") {
+            //     x = x.replace(/'/g, '');
+            //     array.push(x);
+            //   }
+            //   x = "";
+            // }
+            // else if (respp[i] === '(Invalid Quantity)') {
+            //   if (x !== "") {
+            //     x = x.replace(/'/g, '');
+            //     array.push(x);
+            //   }
+            //   x = "";
+            // }
+
+            else {
+              if (respp[i] !== ':') {
+                x = x + respp[i];
+              }
+            }
+          }
+
+          if (respp[i] === '|') {
+            reach = 1;
+          }
+
+        }
+      }
+
+      let dt = []
+      array.map((r) => {
+        let dtt = (r.replace('(Invalid Tranding Symbol)', '').replace('(Invalid Quantity)', '').replace(' ', '')).toString()
+        dt.push(dtt.split(/\s/).join(''))
+      })
+
+
       if (err) {
         console.log(err);
       } else {
@@ -376,14 +445,25 @@ class ExcelPage extends Component {
         resp.rows.slice(1).map((row, index) => {
           if (row && row !== "undefined") {
             if (row[0] && row[2]) {
-              newRows.push({
-                key: index,
-                name: row[0],
-                age: row[0],
-                gender: row[2],
-                age2: row[1],
-                assettype: "asset",
-              });
+
+              let fg = ((row[0]).toString()).split(/\s/).join('')
+              if (dt.includes(fg)) {
+                console.log("error in excel data");
+              }
+              else {
+                newRows.push({
+                  key: index,
+                  name: row[0],
+                  age: row[0],
+                  gender: row[2],
+                  age2: row[1],
+                  assettype: "asset",
+                });
+              }
+              //   }
+              // })
+              // console.log("now_test:",row[0]);
+
             } else {
               if (!row[0] && !row[2]) {
                 console.log("heree");
@@ -1140,6 +1220,8 @@ function TransitionsModal(props) {
       return "Please fill portfolio Name And Then Submit";
     }
   };
+
+
 
   const handleEntailmentRequest = (e) => {
     window.location.reload(false);
