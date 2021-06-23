@@ -301,14 +301,14 @@ class ExcelPage extends Component {
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
     })
       .then(function (response) {
-        // console.log("testing________:",response.data);
+        console.log("testing________:",response.data);
         localStorage.setItem("table_error", response.data);
         // console.log("ASDASD:", response.data);
         self.setState({ resp: response.data });
       }).catch(function (error) {
         console.log("error:", error);
 
-        console.log("errosr:", error.response.data);
+        // console.log("errosr:", error.response.data);
         error.response.status === 400
           ? console.log("400")
           : error.response.status === 500
@@ -719,7 +719,7 @@ class ExcelPage extends Component {
 
     const check = (data, fileList, name) => {
       let respp = localStorage.getItem("table_error");
-      // console.log("something went wrongASADASD:", respp);
+      console.log("table error while replacing:", respp);
       let x = "";
       let array = [];
       let reach = 0;
@@ -796,11 +796,11 @@ class ExcelPage extends Component {
       {
         this.state.rows.map((row, index) => {
           if (dt.includes(((row.name).toString()).split(/\s/).join(''))) {
-            // console.log("error in excel data", row.name, index);
+            console.log("error in excel data", row.name, index);
             this.state.rows.splice(index)
             return null
           } else {
-            console.log("correct data");
+            console.log("correct data",row.name);
           }
         })
       }
@@ -1866,7 +1866,7 @@ function AlertSubmitModal(props) {
       }).catch(function (error) {
 
         console.log("error:", error);
-        console.log("errosr:", error.response.data);
+        // console.log("errosr:", error.response.data);
         error.response.status === 400
           ? console.log("400")
           : error.response.status === 500
