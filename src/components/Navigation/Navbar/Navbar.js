@@ -91,11 +91,11 @@ export default function PrimarySearchAppBar(props) {
       .catch(function (error) {
         console.log("error:", error);
         // console.log("errosr:", error.response.data);
-        error.response.status === 400
-          ? alert("Something went wrong from server side")
-          : error.response.status === 500
-          ? console.log("bad request")
-          : console.log("error");
+        // error.response.status === 400
+        //   ? alert("Something went wrong from server side")
+        //   : error.response.status === 500
+        //   ? console.log("bad request")
+        //   : console.log("error");
       });
   }, [props.flag]);
 

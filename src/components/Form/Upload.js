@@ -309,11 +309,11 @@ class ExcelPage extends Component {
         console.log("error:", error);
 
         // console.log("errosr:", error.response.data);
-        error.response.status === 400
-          ? console.log("400")
-          : error.response.status === 500
-            ? console.log("bad request")
-            : console.log("error");
+        // error.response.status === 400
+        //   ? console.log("400")
+        //   : error.response.status === 500
+        //     ? console.log("bad request")
+        //     : console.log("error");
       });
 
 
@@ -1867,11 +1867,11 @@ function AlertSubmitModal(props) {
 
         console.log("error:", error);
         // console.log("errosr:", error.response.data);
-        error.response.status === 400
-          ? console.log("400")
-          : error.response.status === 500
-            ? console.log("bad request")
-            : console.log("error");
+        // error.response.status === 400
+        //   ? console.log("400")
+        //   : error.response.status === 500
+        //     ? console.log("bad request")
+        //     : console.log("error");
       });
     setOpen(true);
   };
