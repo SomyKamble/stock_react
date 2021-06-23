@@ -190,7 +190,7 @@ export default function Login() {
 
         .then(function (response) {
           if (response.status === 200) {
-            console.log("success:", response.data["token"]);
+            // console.log("success:", response.data["token"]);
             localStorage.setItem("token", response.data["token"]);
 
             // console.log("successtoken:",localStorage.getItem('token'));
@@ -198,13 +198,13 @@ export default function Login() {
           }
         })
         .catch(function (error) {
-          console.log("error:", error);
-          console.log("errosr:", error.response.data);
-          error.response.status === 400
-            ? alert("Please Enter Correct Login Credentials")
-            : error.response.status === 500
-            ? console.log("bad request")
-            : console.log("error");
+          // console.log("error:", error);
+          // console.log("errosr:", error.response.data);
+          // error.response.status === 400
+          //   ? alert("Please Enter Correct Login Credentials")
+          //   : error.response.status === 500
+          //   ? console.log("bad request")
+          //   : console.log("error");
         });
     }
   };
@@ -231,16 +231,7 @@ export default function Login() {
             >
               LOG IN
             </Typography>
-            <Typography
-              className={classes.subtext}
-              // variant="h6"
-              // id="tableTitle"
-              component="div"
-            >
-              At vero eos et accusamus et iusto osio diagnissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atquw corrupti
-            </Typography>
-
+           
             {/* <form className={classes.textfield} noValidate autoComplete="off">
                     <Input className={classes.placeholder} color="green"  placeholder="Email Address" inputProps={{ 'aria-label': 'description' }}
                         id="custom-css-outlined-input" variant="outlined" />
@@ -291,9 +282,7 @@ export default function Login() {
                 align="right"
                 component="div"
               >
-                <Link className={classes.forgetpassword} href="#">
-                  Forget Password?
-                </Link>
+               
               </Typography>
 
               <ThemeProvider theme={theme}>
@@ -320,9 +309,7 @@ export default function Login() {
                 align="right"
                 component="div"
               >
-                <Link className={classes.needhelpbutton} href="#">
-                  Need Help?
-                </Link>
+                
               </Typography>
             </form>
           </div>

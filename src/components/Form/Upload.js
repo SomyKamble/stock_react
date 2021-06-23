@@ -184,8 +184,6 @@ const useStyles = (theme) => ({
   // },
 });
 
-var token = localStorage.getItem("token");
-
 class ExcelPage extends Component {
   constructor(props) {
     super(props);
@@ -300,7 +298,7 @@ this.setState({open:true});
       method: "post",
       url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
       data: FormDatas,
-      headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token '+token}
+      headers: { "Content-Type": "multipart/form-data",   "Authorization": `token ${localStorage.getItem("token")}`}
     })
       .then(function (response) {
         console.log(response.data);
@@ -1090,14 +1088,14 @@ function TransitionsModal(props) {
   axios({
     method: "get",
     url: "https://sabertoothdashboard.herokuapp.com/dashboard/me/portfolio",
-    headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token '+token}
+    headers: { "Content-Type": "multipart/form-data",   "Authorization": `token ${localStorage.getItem("token")}`}
   })
     .then(function (response) 
     {
   var arr=[];
-    console.log(response.data);
+    // console.log(response.data);
     arr.push(response.data[0].name);
-    // arr.push(response.data[1].name);
+    arr.push(response.data[1].name);
     // arr.push(response.data[2].name);
     setArray(arr);
 
@@ -1171,7 +1169,7 @@ function TransitionsModal(props) {
         url: 'https://sabertoothdashboard.herokuapp.com/dashboard/my_stocks/',
         headers: { 
           "Content-Type": "multipart/form-data",
-          'Authorization': 'token '+token
+          "Authorization": `token ${localStorage.getItem("token")}`
         },
         data : data
       };
@@ -1187,8 +1185,6 @@ function TransitionsModal(props) {
 
       
     });
-
-   
     setOpen4(true);
 
   }
@@ -1316,9 +1312,9 @@ function TransitionsModal(props) {
               <div className="actions">
            <ul>
           
-  <li><input type="checkbox"  id={array[0]}  onChange={()=>{if(document.getElementById(array[0]).checked){ delet.push(array[0]); setDelet(delet); console.log(delet); }else{ const index = delet.indexOf(array[0]);   delet.splice(index, 1); setDelet(delet); console.log(delet); }}} ></input> <span>{array[0]}</span></li>
-  {/* <li><input type="checkbox"  id={array[1]}  onChange={()=>{if(document.getElementById(array[1]).checked){ delet.push(array[1]); setDelet(delet); console.log(delet); }else{ const index = delet.indexOf(array[1]);   delet.splice(index, 1); setDelet(delet); console.log(delet); }}} ></input> <span>{array[1]}</span></li>
-  // <li><input type="checkbox"  id={array[2]}  onChange={()=>{if(document.getElementById(array[2]).checked){ delet.push(array[2]); setDelet(delet); console.log(delet); }else{ const index = delet.indexOf(array[2]);   delet.splice(index, 1); setDelet(delet); console.log(delet); }}} ></input> <span>{array[2]}</span></li> */}
+  <li><input type="checkbox"  id={array[0]}  onChange={()=>{delet.push(array[0]); setDelet(delet); }} ></input> <span>{array[0]}</span></li>
+  <li><input type="checkbox"  id={array[1]}  onChange={()=>{delet.push(array[1]); setDelet(delet); }} ></input> <span>{array[1]}</span></li>
+  {/* <li><input type="checkbox"  id={array[2]}  onChange={()=>{delet.push(array[2]); setDelet(delet); }} ></input> <span>{array[2]}</span></li> */}
 
 </ul>
               {/* <ForDeletestocks  array={array} /> */}
@@ -1742,10 +1738,10 @@ axios({
   method: "post",
   url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload/",
   data: bodyFormData,
-  headers: { "Content-Type": "multipart/form-data",   "Authorization": 'token '+token}
+  headers: { "Content-Type": "multipart/form-data",   "Authorization": `token ${localStorage.getItem("token")}`}
 })
   .then(function (response) {
-    console.log(response.data);
+    // console.log(response.data);
   }).catch(function (error) {
 
     console.log("error:", error);
@@ -1858,7 +1854,6 @@ axios({
                 >
                   OK
                 </Buttons>
-
               </div>
             </div>
           </div>

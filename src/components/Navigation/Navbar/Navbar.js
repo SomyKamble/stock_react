@@ -86,13 +86,13 @@ export default function PrimarySearchAppBar(props) {
         }
       })
       .catch(function (error) {
-        console.log("error:", error);
-        console.log("errosr:", error.response.data);
-        error.response.status === 400
-          ? alert("Something went wrong from server side")
-          : error.response.status === 500
-          ? console.log("bad request")
-          : console.log("error");
+        // console.log("error:", error);
+        // console.log("errosr:", error.response.data);
+        // error.response.status === 400
+        //   ? alert("Something went wrong from server side")
+        //   : error.response.status === 500
+        //   ? console.log("bad request")
+        //   : console.log("error");
       });
   }, [props.flag]);
 
@@ -233,6 +233,8 @@ export default function PrimarySearchAppBar(props) {
     <div className={classes.grow}>
       <AppBar className={classes2.navbarColor} position="static">
         <Toolbar>
+        {props.flag === "login"?
+        <>
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -245,15 +247,15 @@ export default function PrimarySearchAppBar(props) {
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Company Name
-          </Typography>
+          </Typography></>:<div> <Typography className={classes.title} variant="h6" noWrap>
+            Company Name
+          </Typography></div>}
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {props.flag === "login" ? (
               <ThemeProvider theme={theme}>
-                <Button variant="outlined" color="primary">
-                  SIGN UP
-                </Button>
+               
               </ThemeProvider>
             ) : (
               <>
