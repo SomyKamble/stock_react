@@ -293,7 +293,7 @@ export default function Login() {
                 component="div"
               >
                 <Link className={classes.forgetpassword} href="#">
-                  Forget Password?
+                  {/* Forget Password? */}
                 </Link>
               </Typography>
 
@@ -322,7 +322,7 @@ export default function Login() {
                 component="div"
               >
                 <Link className={classes.needhelpbutton} href="#">
-                  Need Help?
+                  {/* Need Help? */}
                 </Link>
               </Typography>
             </form>

@@ -26,7 +26,7 @@ import api from "../../../constant";
 import Table from "../../Table/Table";
 
 var email = localStorage.getItem("email");
-console.log("email:",email);
+console.log("email:", email);
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -116,7 +116,7 @@ export default function PrimarySearchAppBar(props) {
 
   // const [val, setVal] = React.useState("");
   const handleMenuStock = (e) => {
-    var data=e.target.id;
+    var data = e.target.id;
     // setVal(data)
     // console.log("iam in:",data);
     localStorage.setItem("portfolio_name", data);
@@ -158,18 +158,18 @@ export default function PrimarySearchAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {indents.map((stock,index) => {
+      {indents.map((stock, index) => {
         // {index===0?
         //   console.log("dataasda:", index);
         //   localStorage.setItem("default_portfolio_name", stock["name"]):('')
         // }
-        if (index === 0){
+        if (index === 0) {
           localStorage.setItem("default_portfolio_name", stock["name"]);
         }
-        else{
+        else {
 
         }
-        
+
         // console.log("qqqqdataasda:", stock["name"]);
         return <MenuItem id={stock["name"]} onClick={handleMenuStock}>{stock["name"]}</MenuItem>;
       })}
@@ -236,7 +236,7 @@ export default function PrimarySearchAppBar(props) {
     <div className={classes.grow}>
       <AppBar className={classes2.navbarColor} position="static">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
@@ -248,7 +248,25 @@ export default function PrimarySearchAppBar(props) {
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Company Name
-          </Typography>
+          </Typography> */}
+
+          {props.flag === "login" ?
+            <>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="open drawer"
+                component={Links}
+                to="/"
+              >
+                LOGO
+              </IconButton>
+              <Typography className={classes.title} variant="h6" noWrap>
+                Company Name
+              </Typography></> : <div> <Typography className={classes.title} variant="h6" noWrap>
+                Company Name
+              </Typography></div>}
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
