@@ -296,7 +296,7 @@ class ExcelPage extends Component {
     // console.log(this.state.name);
     axios({
       method: "post",
-      url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
+      url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
       data: FormDatas,
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
     })
@@ -1858,7 +1858,7 @@ function AlertSubmitModal(props) {
     // console.log(props.portfolio_name);
     axios({
       method: "post",
-      url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload/",
+      url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload/",
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
     })
