@@ -201,6 +201,7 @@ class ExcelPage extends Component {
       newe: "",
       name: "",
       btn: "no",
+      arraydata: [],
       errorMessage: null,
       columns: [
         {
@@ -249,11 +250,11 @@ class ExcelPage extends Component {
 
     this.setState({ data2: "DELETE" });
     // this.setState({ data: "YES" });
-    console.log(childData);
-    console.log(this.state.data2);
+    // console.log(childData);
+    // console.log(this.state.data2);
 
     if (this.state.data === "DELETE") {
-      console.log("dgdfgt");
+      // console.log("dgdfgt");
       this.setState({ open: true });
     }
 
@@ -267,7 +268,7 @@ class ExcelPage extends Component {
       if (file.response) {
         // Component will show file.url as link
         file.url = file.response.url;
-        console.log(222, fileList)
+        // console.log(222, fileList)
       }
       return file;
     });
@@ -276,7 +277,7 @@ class ExcelPage extends Component {
     // this.setState({ FileList:info.fileList });
     // console.log(999,FileList);
     this.setState({ fileList });
-    console.log(999, fileList);
+    // console.log(999, fileList);
   };
 
 
@@ -285,14 +286,14 @@ class ExcelPage extends Component {
     var self = this;
 
     // this.setState({files : FileList});
-    console.log("asdada:", this.state.btn);
-    console.log("fileListHere", FileList);
+    // console.log("asdada:", this.state.btn);
+    // console.log("fileListHere", FileList);
 
     var FormDatas = new FormData();
     FormDatas.append('file', FileList);
     FormDatas.append('portfolio_name', this.state.name);
 
-    console.log(this.state.name);
+    // console.log(this.state.name);
     axios({
       method: "post",
       url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
@@ -302,7 +303,7 @@ class ExcelPage extends Component {
       .then(function (response) {
         // console.log("testing________:",response.data);
         localStorage.setItem("table_error", response.data);
-        console.log(self.state.name);
+        // console.log("ASDASD:", response.data);
         self.setState({ resp: response.data });
       }).catch(function (error) {
         console.log("error:", error);
@@ -354,7 +355,7 @@ class ExcelPage extends Component {
       });
       return false;
     }
-    console.log("fileObj.type:", fileObj.type);
+    // console.log("fileObj.type:", fileObj.type);
     if (
       !(
         fileObj.type === "application/vnd.ms-excel" ||
@@ -369,72 +370,12 @@ class ExcelPage extends Component {
     }
 
     ExcelRenderer(fileObj, (err, resp) => {
-      let respp = localStorage.getItem("table_error");
-      let x = "";
-      let array = [];
-      let reach = 0;
+      // let respp = localStorage.getItem("table_error");
+      // console.log("something went wrongASADASD:",respp);
+
+      // let array = [];
+      // let reach = 0;
       // console.log("error_test:", resp);
-      if (respp === undefined) {
-        console.log("something went wrong");
-      } else {
-        for (var i = 0; i < respp.length; i++) {
-
-          if (reach === 1) {
-            if (respp[i] === '[') {
-              if (x !== "") {
-                x = x.replace(/'/g, '');
-                array.push(x);
-              }
-              x = "";
-            }
-            else if (respp[i] === ',') {
-              if (x !== "") {
-                x = x.replace(/'/g, '');
-                array.push(x);
-              }
-              x = "";
-            }
-            else if (respp[i] === ']') {
-              if (x !== "") {
-                x = x.replace(/'/g, '');
-                array.push(x);
-              }
-              x = "";
-            }
-            // else if (respp[i] === '(Invalid Tranding Symbol)') {
-            //   if (x !== "") {
-            //     x = x.replace(/'/g, '');
-            //     array.push(x);
-            //   }
-            //   x = "";
-            // }
-            // else if (respp[i] === '(Invalid Quantity)') {
-            //   if (x !== "") {
-            //     x = x.replace(/'/g, '');
-            //     array.push(x);
-            //   }
-            //   x = "";
-            // }
-
-            else {
-              if (respp[i] !== ':') {
-                x = x + respp[i];
-              }
-            }
-          }
-
-          if (respp[i] === '|') {
-            reach = 1;
-          }
-
-        }
-      }
-
-      let dt = []
-      array.map((r) => {
-        let dtt = (r.replace('(Invalid Tranding Symbol)', '').replace('(Invalid Quantity)', '').replace(' ', '')).toString()
-        dt.push(dtt.split(/\s/).join(''))
-      })
 
 
       if (err) {
@@ -446,27 +387,27 @@ class ExcelPage extends Component {
           if (row && row !== "undefined") {
             if (row[0] && row[2]) {
 
-              let fg = ((row[0]).toString()).split(/\s/).join('')
-              if (dt.includes(fg)) {
-                console.log("error in excel data");
-              }
-              else {
-                newRows.push({
-                  key: index,
-                  name: row[0],
-                  age: row[0],
-                  gender: row[2],
-                  age2: row[1],
-                  assettype: "asset",
-                });
-              }
+              // let fg = ((row[0]).toString()).split(/\s/).join('')
+              // if (dt.includes(fg)) {
+              //   console.log("error in excel data");
+              // }
+              // else {
+              newRows.push({
+                key: index,
+                name: row[0],
+                age: row[0],
+                gender: row[2],
+                age2: row[1],
+                assettype: "asset",
+              });
+              // }
               //   }
               // })
               // console.log("now_test:",row[0]);
 
             } else {
               if (!row[0] && !row[2]) {
-                console.log("heree");
+                // console.log("heree");
                 newerror.push(
                   "Incomplete Data at ticker and price" + index + "row"
                 );
@@ -498,7 +439,7 @@ class ExcelPage extends Component {
 
   storename(e) {
     this.setState({ name: e.target.value });
-    console.log("here" + this.state.name);
+    // console.log("here" + this.state.name);
   }
   render() {
     const columns = this.state.columns.map((col) => {
@@ -657,10 +598,14 @@ class ExcelPage extends Component {
       var x = "";
       var array = [];
       var reach = 0;
-      console.log("error_test:", resp);
+      // console.log("error_test:", resp);
       if (resp === undefined) {
         console.log("something went wrong");
-      } else {
+      }
+      else if (resp === null) {
+        console.log("something went wrong");
+      }
+      else {
         for (var i = 0; i < resp.length; i++) {
 
           if (reach === 1) {
@@ -698,7 +643,7 @@ class ExcelPage extends Component {
 
         }
       }
-      console.log("error here:" + error);
+      // console.log("error here:" + error);
       if (data === "YES") {
         return (
           <>
@@ -773,7 +718,104 @@ class ExcelPage extends Component {
     }
 
     const check = (data, fileList, name) => {
+      let respp = localStorage.getItem("table_error");
+      // console.log("something went wrongASADASD:", respp);
+      let x = "";
+      let array = [];
+      let reach = 0;
+      if (respp === undefined) {
+        console.log("something went wrong");
+      }
+      else if (respp === null) {
+        console.log("something went wrong");
+      }
+      else {
+        for (var i = 0; i < respp.length; i++) {
+
+          if (reach === 1) {
+            if (respp[i] === '[') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+                // this.setState({ arraydata: [...this.state.arraydata, x] })
+              }
+              x = "";
+            }
+            else if (respp[i] === ',') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+                // this.setState({ arraydata: [...this.state.arraydata, x] })
+              }
+              x = "";
+            }
+            else if (respp[i] === ']') {
+              if (x !== "") {
+                x = x.replace(/'/g, '');
+                array.push(x);
+                // this.setState({ arraydata: [...this.state.arraydata, x] })
+              }
+              x = "";
+            }
+            // else if (respp[i] === '(Invalid Tranding Symbol)') {
+            //   if (x !== "") {
+            //     x = x.replace(/'/g, '');
+            //     array.push(x);
+            //   }
+            //   x = "";
+            // }
+            // else if (respp[i] === '(Invalid Quantity)') {
+            //   if (x !== "") {
+            //     x = x.replace(/'/g, '');
+            //     array.push(x);
+            //   }
+            //   x = "";
+            // }
+
+            else {
+              if (respp[i] !== ':') {
+                x = x + respp[i];
+              }
+            }
+          }
+
+          if (respp[i] === '|') {
+            reach = 1;
+          }
+
+        }
+      }
+      // console.log("testinggggggggggg:", this.state.rows);
+      let dt = []
+      array.map((r) => {
+        let dtt = (r.replace('(Invalid Tranding Symbol)', '').replace('(Invalid Quantity)', '').replace(' ', '')).toString()
+        dt.push(dtt.split(/\s/).join(''))
+      })
+      // console.log("error in excel dataasdasd:", dt);
+
+      {
+        this.state.rows.map((row, index) => {
+          if (dt.includes(((row.name).toString()).split(/\s/).join(''))) {
+            // console.log("error in excel data", row.name, index);
+            this.state.rows.splice(index)
+            return null
+          } else {
+            console.log("correct data");
+          }
+        })
+      }
+
+      // console.log("ppppppppppppppp:", this.state.rows);
+
+      // {this.state.rows.map((row, index) => {
+      //   console.log("asdsdsdhhhhhhhhh:",row.name)
+      // })}
+      // {dt.includes(((row.name).toString()).split(/\s/).join(''))?console.log("error in excel data"):
+
+      // let fg = ((row[0]).toString()).split(/\s/).join('')
+
       if (data === "YES") {
+
         return (
           <div>
             <Container
@@ -823,7 +865,10 @@ class ExcelPage extends Component {
                         rowCount={this.state.rows.length}
                       />
                       <TableBody>
+
                         {this.state.rows.map((row, index) => {
+
+
                           return (
                             <TableRow
                               hover
@@ -876,7 +921,10 @@ class ExcelPage extends Component {
                               </TableCell>
                             </TableRow>
                           );
+                          {/* </> */ }
+                          // )}
                         })}
+
                       </TableBody>
                     </Table>
                   </TableContainer>
@@ -885,16 +933,14 @@ class ExcelPage extends Component {
               </div>
             </Container>
           </div>
-        );
+        )
+        // })}
       } else {
         return <div></div>;
       }
     };
 
-    // const handleBtn = (databtn) => {
-    //   this.setState({ btn: databtn });
-    //   console.log("sadsdas:", databtn);
-    // };
+
 
 
     const checkfordissaperingform = (data) => {
@@ -1069,7 +1115,7 @@ class ExcelPage extends Component {
       } else {
 
         const handleClose = () => {
-          console.log(this.state.data)
+          // console.log(this.state.data)
           this.setState({ open: false, data: "NO" });
 
         };
@@ -1165,10 +1211,15 @@ function TransitionsModal(props) {
   })
     .then(function (response) {
       var arr = [];
-      // console.log(response.data);
-      arr.push(response.data[0].name);
-      arr.push(response.data[1].name);
+      // console.log("dasdasdasdsdasdasd:",response.data.length);
+      // arr.push(response.data[0].name);
+      // arr.push(response.data[1].name);
       // arr.push(response.data[2].name);
+
+      for (var i = 0; i < response.data.length; i++) {
+        arr.push(response.data[i].name)
+      }
+
       setArray(arr);
 
     }).catch(function (error) {
@@ -1225,7 +1276,7 @@ function TransitionsModal(props) {
 
   const handleEntailmentRequest = (e) => {
     window.location.reload(false);
-    console.log("aasdfad");
+    // console.log("aasdfad");
   };
 
   function deletestocks() {
@@ -1380,9 +1431,11 @@ function TransitionsModal(props) {
                       <div style={{ marginTop: 20 }}>
                         <div className="actions">
                           <ul>
-
-                            <li><input type="checkbox" id={array[0]} onChange={() => { delet.push(array[0]); setDelet(delet); }} ></input> <span>{array[0]}</span></li>
-                            <li><input type="checkbox" id={array[1]} onChange={() => { delet.push(array[1]); setDelet(delet); }} ></input> <span>{array[1]}</span></li>
+                            {array.map((stock, index) => {
+                              return <li><input type="checkbox" id={stock} onChange={() => { delet.push(stock); setDelet(delet); }} ></input> <span>{stock}</span></li>
+                            })}
+                            {/* <li><input type="checkbox" id={array[0]} onChange={() => { delet.push(array[0]); setDelet(delet); }} ></input> <span>{array[0]}</span></li> */}
+                            {/* <li><input type="checkbox" id={array[1]} onChange={() => { delet.push(array[1]); setDelet(delet); }} ></input> <span>{array[1]}</span></li> */}
                             {/* <li><input type="checkbox" id={array[2]} onChange={() => { delet.push(array[2]); setDelet(delet); }} ></input> <span>{array[2]}</span></li> */}
 
                           </ul>
@@ -1687,7 +1740,7 @@ function TableSubmitModal(props) {
 
   const handleEntailmentRequest = (e) => {
     window.location.reload(false);
-    console.log("aasdfad");
+    // console.log("aasdfad");
   };
 
   return (
@@ -1796,12 +1849,12 @@ function AlertSubmitModal(props) {
   };
 
   const posts = () => {
-    console.log(props.file[0].originFileObj);
+    // console.log(props.file[0].originFileObj);
     var bodyFormData = new FormData();
 
     bodyFormData.append('file', props.file[0].originFileObj);
     bodyFormData.append('portfolio_name', props.portfolio_name);
-    console.log(props.portfolio_name);
+    // console.log(props.portfolio_name);
     axios({
       method: "post",
       url: "http://sabertoothdashboard.herokuapp.com/dashboard/upload/",
@@ -1830,7 +1883,7 @@ function AlertSubmitModal(props) {
 
   const handleEntailmentRequest = (e) => {
     window.location.reload(false);
-    console.log("aasdfad");
+    // console.log("aasdfad");
   };
 
   return (
