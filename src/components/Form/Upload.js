@@ -1358,7 +1358,7 @@ function TransitionsModal(props) {
               // height: "20%",
             }}
           >
-            <p id="transition-modal-description" style={{ maxWidth: "500px" }}>
+            <p id="transition-modal-description" style={{ width: "300px" }}>
               {/* This table have {props.rows.length} rows and {props.errors.length}{" "}
               errors found based on matching tickers from database. */}
               {returnstatement(props.portfolio)}
@@ -1377,6 +1377,7 @@ function TransitionsModal(props) {
                         // props.parentCallback2("DELETE");
                         // handleClose();
                         setOpen2(true);
+                        // handleClose();
                         // console.log("here",array);
                       }
                       else {
@@ -1425,9 +1426,9 @@ function TransitionsModal(props) {
                         // height: "25%",
                       }}
                     >
-                      <h2 id="transition-modal-title">DELETE</h2>
-                      <p id="transition-modal-description">
-                        DELETE STOCKS
+                      {/* <h2 id="transition-modal-title">DELETE</h2> */}
+                      <p id="transition-modal-description" style={{ width:"300px" }}>
+                        DELETE PORTFOLIO NAME
                       </p>
                       <div style={{ marginTop: 20 }}>
                         <div className="actions">
@@ -1459,10 +1460,10 @@ function TransitionsModal(props) {
                             padding: "1px",
                             borderRadius: "4px",
                             color: "black",
-                            // marginLeft: "5px",
+                            marginLeft: "20px",
                             // float: 'right',
-                            marginRight: "5px",
-                            marginBottom: "10px",
+                            // marginRight: "5px",
+                            // marginBottom: "10px",
                             // textTransform: "none"
                           }}
                         >
@@ -1496,13 +1497,13 @@ function TransitionsModal(props) {
                       // height: "25%",
                     }}
                   >
-                    <h2 id="transition-modal-title">Alert</h2>
+                    <h2 id="transition-modal-title" style={{ marginTop:"40px"}}>Alert</h2>
 
-                    <p id="transition-modal-description">
-                      Are u shure u will delete these stocks
+                    <p id="transition-modal-description" style={{ width: "300px" }}>
+                      Are you sure want to delete these Portfolio name
                       {array.map((arr) => { <p>{arr}</p> })}
                     </p>
-                    <div style={{ marginTop: 20 }}>
+                    <div style={{ marginTop: 8 }}>
                       <div className="actions">
                         <Buttons
                           onClick={deletestocks}
@@ -1567,8 +1568,8 @@ function TransitionsModal(props) {
                                 // height: "25%",
                               }}
                             >
-                              <h2 id="transition-modal-title">Success</h2>
-                              <p id="transition-modal-description">Completed !</p>
+                              <h2 id="transition-modal-title" style={{ marginTop:"55px",textAlign:"center"}}>Success</h2>
+                              <p id="transition-modal-description" style={{ width: "300px",textAlign:"center" }}>Completed !</p>
                               <div style={{ marginTop: 10 }}>
                                 <div className="actions">
                                   <Buttons
@@ -1586,7 +1587,8 @@ function TransitionsModal(props) {
                                       padding: "1px",
                                       borderRadius: "4px",
                                       color: "black",
-                                      marginLeft: "10%",
+                                      marginLeft: "30%",
+                                      // verticalAlign:"center"
                                     }}
                                   >
                                     OK
@@ -1826,7 +1828,7 @@ function TableSubmitModal(props) {
             }}
           >
             <h2 id="transition-modal-title">Alert</h2>
-            <p id="transition-modal-description">
+            <p id="transition-modal-description" style={{ width:"300px" }}>
               Ignore The Errors And Submit?
             </p>
             <div style={{ marginTop: 20 }}>
@@ -1952,8 +1954,8 @@ function AlertSubmitModal(props) {
               // height: "25%",
             }}
           >
-            <h2 id="transition-modal-title">Success</h2>
-            <p id="transition-modal-description">Completed !</p>
+            <h2 id="transition-modal-title" style={{ marginTop:"55px",textAlign:"center"}}>Success</h2>
+            <p id="transition-modal-description" style={{ width: "300px",textAlign:"center" }}>Completed !</p>
             <div style={{ marginTop: 10 }}>
               <div className="actions">
                 <Buttons
@@ -1971,7 +1973,7 @@ function AlertSubmitModal(props) {
                     padding: "1px",
                     borderRadius: "4px",
                     color: "black",
-                    marginLeft: "10%",
+                    marginLeft: "30%",
                   }}
                 >
                   OK

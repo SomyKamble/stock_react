@@ -536,6 +536,7 @@ export default function EnhancedTable() {
       }
       indents.splice();
       let ref = Firebase.database().ref().child("Stock");
+      
       // start
       // let refe = Firebase.database().ref();
       // refe
