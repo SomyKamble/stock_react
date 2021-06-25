@@ -600,41 +600,41 @@ export default function EnhancedTable() {
     return () => clearInterval(interval);
   }, [ticks]);
 
-  if (Object.keys(test).length === 0) {
-    console.log("have data:", Object.keys(test).length);
-  } else {
-    
-    console.log("no data:", Object.keys(test).length);
-    // return (
-    //   <div
-    //     className="loader"
-    //     style={{
-    //       backgroundColor: "transparent",
-    //       alignItems: "center",
-    //       display: "flex",
-    //       justifyContent: "center",
-    //       height: "100vh",
-    //       width: "100vw",
-    //     }}
-    //   >
-    //     <CircularProgress
-    //       color="secondary"
-    //       style={{ backgroundColor: "transparent" }}
-    //     />
-        
-    //     <span
-    //       style={{
-    //         backgroundColor: "transparent",
-    //         justifyContent: "center",
-    //         position: "fixed",
-    //         top: "55%",
-    //       }}
-    //     >
-    //       Loading...please wait
-    //     </span>
-    //   </div>
-    // )
-  }
+  // if (Object.keys(test).length === 0) {
+  //   console.log("no data:", Object.keys(test).length);
+  // } else {
+  //   console.log("have data:", Object.keys(test).length);
+
+  // return (
+  //   <div
+  //     className="loader"
+  //     style={{
+  //       backgroundColor: "transparent",
+  //       alignItems: "center",
+  //       display: "flex",
+  //       justifyContent: "center",
+  //       height: "100vh",
+  //       width: "100vw",
+  //     }}
+  //   >
+  //     <CircularProgress
+  //       color="secondary"
+  //       style={{ backgroundColor: "transparent" }}
+  //     />
+
+  //     <span
+  //       style={{
+  //         backgroundColor: "transparent",
+  //         justifyContent: "center",
+  //         position: "fixed",
+  //         top: "55%",
+  //       }}
+  //     >
+  //       Loading...please wait
+  //     </span>
+  //   </div>
+  // )
+  // }
 
   // console.log("test:",test);
   // console.log("gg:",Object.keys(test).length)
@@ -906,8 +906,45 @@ export default function EnhancedTable() {
                   {/* {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => { */}
-                  {Object.keys(test).length < 0 ? (
-                    console.log("error in table ")
+                  {Object.keys(test).length < 1 ? (
+                    // console.log("error in table ")
+
+                    <>
+                      <div
+                        className="loader"
+                        style={{
+                          backgroundColor: "transparent",
+                          alignItems: "center",
+                          display: "flex",
+                          justifyContent: "center",
+                          height: "100vh",
+                          width: "100vw",
+                        }}
+                      >
+                        {/* <CircularProgress
+                          color="secondary"
+                          style={{ backgroundColor: "transparent" }}
+                        /> */}
+
+                        <span
+                          style={{
+                            backgroundColor: "transparent",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "fixed",
+                            top: "55%",
+                            color: "#21CE99",
+                          }}
+                        >
+                          <CircularProgress
+                            color="#21CE99"
+                            style={{ backgroundColor: "transparent" }}
+                          />
+                          <br></br>
+                          Loading..
+                        </span>
+                      </div>
+                    </>
                   ) : (
                     <>
                       {Object.values(test).map((row, id) => {
