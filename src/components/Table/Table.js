@@ -601,39 +601,39 @@ export default function EnhancedTable() {
   }, [ticks]);
 
   if (Object.keys(test).length === 0) {
-    console.log("no data:", Object.keys(test).length);
-    // return <CircularProgress color="secondary" style={{display:"flex",justifyContent:"center",alignSelf:"center",height:"100vh"}}/>
-    // <CircularProgress color="secondary" />
-    return (
-      <div
-        className="loader"
-        style={{
-          backgroundColor: "transparent",
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "center",
-          height: "100vh",
-          width: "100vw",
-        }}
-      >
-        <CircularProgress
-          color="secondary"
-          style={{ backgroundColor: "transparent" }}
-        />
-        <span
-          style={{
-            backgroundColor: "transparent",
-            justifyContent: "center",
-            position: "fixed",
-            top: "55%",
-          }}
-        >
-          Loading...please wait
-        </span>
-      </div>
-    );
-  } else {
     console.log("have data:", Object.keys(test).length);
+  } else {
+    
+    console.log("no data:", Object.keys(test).length);
+    // return (
+    //   <div
+    //     className="loader"
+    //     style={{
+    //       backgroundColor: "transparent",
+    //       alignItems: "center",
+    //       display: "flex",
+    //       justifyContent: "center",
+    //       height: "100vh",
+    //       width: "100vw",
+    //     }}
+    //   >
+    //     <CircularProgress
+    //       color="secondary"
+    //       style={{ backgroundColor: "transparent" }}
+    //     />
+        
+    //     <span
+    //       style={{
+    //         backgroundColor: "transparent",
+    //         justifyContent: "center",
+    //         position: "fixed",
+    //         top: "55%",
+    //       }}
+    //     >
+    //       Loading...please wait
+    //     </span>
+    //   </div>
+    // )
   }
 
   // console.log("test:",test);
