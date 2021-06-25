@@ -53,6 +53,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { lighten } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import classes3 from "../../app.scss";
+import sample from "../Form/SampleUpload.xlsx";
 
 const useStyles = (theme) => ({
   root: {
@@ -1075,7 +1076,7 @@ class ExcelPage extends Component {
                             <i>
                               {" "}
                               <a
-                                href="https://res.cloudinary.com/bryta/raw/upload/v1562751445/Sample_Excel_Sheet_muxx6s.xlsx"
+                                href={sample}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 download
