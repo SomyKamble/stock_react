@@ -158,6 +158,9 @@ export default function PrimarySearchAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      {/* <Divider /> */}
+      <MenuItem style={{color:"#21CE99"}}>Portfolio Name -</MenuItem>
+      {/* <Divider /> */}
       {indents.map((stock, index) => {
         // {index===0?
         //   console.log("dataasda:", index);
@@ -174,10 +177,10 @@ export default function PrimarySearchAppBar(props) {
         return <MenuItem id={stock["name"]} onClick={handleMenuStock}>{stock["name"]}</MenuItem>;
       })}
       <Divider />
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
 
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={logOut}>Log Out</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
+      <MenuItem onClick={logOut} style={{color:"#21CE99"}}>Log Out</MenuItem>
     </Menu>
   );
 

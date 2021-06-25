@@ -584,11 +584,11 @@ class ExcelPage extends Component {
 
           <Tooltip title="Filter list">
             <IconButton aria-label="filter list">
-              <img
+              {/* <img
                 src="https://res.cloudinary.com/de1v32nv0/image/upload/v1620350560/icons/filter-1634626_johksw.png"
                 alt="filtericon"
                 className={classes.filterIcon}
-              />
+              /> */}
             </IconButton>
           </Tooltip>
         </Toolbar>
