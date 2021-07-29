@@ -978,6 +978,7 @@ class ExcelPage extends Component {
                   <form className={classes.textfield} noValidate>
                     <TextField
                       label="Enter Portfolio name"
+                      autoComplete="off"
                       variant="standard"
                       id="standard-search"
                       value={this.state.name}
@@ -1107,6 +1108,7 @@ class ExcelPage extends Component {
                       portfolio={this.state.name}
                       err={this.state.err}
                       resp={this.state.resp}
+                      file_check={this.state.fileList}
                     />
                   </div>
                 </div>
@@ -1261,17 +1263,35 @@ function TransitionsModal(props) {
 
 
 
-  const returnstatement = (name) => {
-    if (name) {
-      var ans = "This table have ";
+  const returnstatement = (name,file_check) => {
+    
+    if (!name){
+      return "Please enter portfolio name and then submit";
+    }
+    else if (!file_check.length){
+      return "Please attach excel file and then submit";
+    }
+    // else if (file_check){
+
+    // }
+    else{
+         var ans = "This table have ";
       ans = ans + props.rows.length;
       ans = ans + " rows and ";
       ans = ans + props.resp;
       ans = ans + " errors found based on matching tickers from database.";
       return ans;
-    } else {
-      return "Please fill portfolio Name And Then Submit";
     }
+    // if (name) {
+    //   var ans = "This table have ";
+    //   ans = ans + props.rows.length;
+    //   ans = ans + " rows and ";
+    //   ans = ans + props.resp;
+    //   ans = ans + " errors found based on matching tickers from database.";
+    //   return ans;
+    // } else {
+    //   return "Please fill portfolio Name And Then Submit";
+    // }
   };
 
 
@@ -1362,7 +1382,7 @@ function TransitionsModal(props) {
             <p id="transition-modal-description" style={{ width: "300px" }}>
               {/* This table have {props.rows.length} rows and {props.errors.length}{" "}
               errors found based on matching tickers from database. */}
-              {returnstatement(props.portfolio)}
+              {returnstatement(props.portfolio,props.file_check)}
             </p>
             <div style={{ marginTop: 8 }}>
               <div className="actions">
@@ -1381,6 +1401,9 @@ function TransitionsModal(props) {
                         // handleClose();
                         // console.log("here",array);
                       }
+                      else if (!props.file_check.length){
+                        handleClose();
+                      }
                       else {
                         props.parentCallback("YES");
                         handleClose();
@@ -1388,7 +1411,7 @@ function TransitionsModal(props) {
                     }
                     else {
                       handleClose();
-                    }
+                    }  
                   }}
                   style={{
                     "min-height": "20px",
@@ -1830,7 +1853,8 @@ function TableSubmitModal(props) {
           >
             <h2 id="transition-modal-title">Alert</h2>
             <p id="transition-modal-description" style={{ width:"300px" }}>
-              Ignore The Errors And Submit?
+              {/* Ignore The Errors And Submit? */}
+              Are you sure want to submit?
             </p>
             <div style={{ marginTop: 20 }}>
               <div className="actions">

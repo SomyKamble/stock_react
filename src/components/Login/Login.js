@@ -237,8 +237,9 @@ export default function Login() {
               // id="tableTitle"
               component="div"
             >
-              At vero eos et accusamus et iusto osio diagnissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atquw corrupti
+              {/* Welcome back. Login is here. */}
+              {/* At vero eos et accusamus et iusto osio diagnissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atquw corrupti */}
             </Typography>
 
             {/* <form className={classes.textfield} noValidate autoComplete="off">
@@ -253,8 +254,10 @@ export default function Login() {
                 label="Email Address"
                 variant="standard"
                 id="standard-search"
+                autoComplete="off"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                // style={{ backgroundColor: "#141629" }}
                 inputProps={{
                   style: { fontSize: 13, color: "white", marginBottom: "18px" },
                 }}
@@ -264,10 +267,12 @@ export default function Login() {
                 // className={classe.placeholder}
                 label="Password"
                 style={{display:null}}
+                autoComplete="off"
                 variant="standard"
                 type={icon === "yes" ? "text" : "password"}
                 // type="password"
                 id="standard-search"
+
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 inputProps={{ style: { fontSize: 13, color: "white" } }}
