@@ -298,6 +298,7 @@ class ExcelPage extends Component {
     axios({
       method: "post",
       url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
+      // url:"http://127.0.0.1:8000/dashboard/upload_err/",
       data: FormDatas,
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
     })
@@ -1211,6 +1212,7 @@ function TransitionsModal(props) {
   axios({
     method: "get",
     url: "https://sabertoothdashboard.herokuapp.com/dashboard/me/portfolio",
+    // url:"http://127.0.0.1:8000/dashboard/me/portfolio",
     headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
   })
     .then(function (response) {
@@ -1262,7 +1264,7 @@ function TransitionsModal(props) {
   };
 
 
-
+  let resp_table_err= localStorage.getItem("table_error");
   const returnstatement = (name,file_check) => {
     
     if (!name){
@@ -1271,9 +1273,9 @@ function TransitionsModal(props) {
     else if (!file_check.length){
       return "Please attach excel file and then submit";
     }
-    // else if (file_check){
-
-    // }
+    else if (resp_table_err == "Upload file is not in proper format please refer from sample file"){
+      return "Upload file is not in proper format please refer from sample file";
+    }
     else{
          var ans = "This table have ";
       ans = ans + props.rows.length;
@@ -1313,6 +1315,7 @@ function TransitionsModal(props) {
       var config = {
         method: 'post',
         url: 'https://sabertoothdashboard.herokuapp.com/dashboard/my_stocks/',
+        // url:'http://127.0.0.1:8000/dashboard/my_stocks/',
         headers: {
           "Content-Type": "multipart/form-data",
           "Authorization": `token ${localStorage.getItem("token")}`
@@ -1402,6 +1405,9 @@ function TransitionsModal(props) {
                         // console.log("here",array);
                       }
                       else if (!props.file_check.length){
+                        handleClose();
+                      }
+                      else if (resp_table_err == "Upload file is not in proper format please refer from sample file"){
                         handleClose();
                       }
                       else {
@@ -1886,6 +1892,7 @@ function AlertSubmitModal(props) {
     axios({
       method: "post",
       url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload/",
+      // url:'http://127.0.0.1:8000/dashboard/upload/',
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
     })
