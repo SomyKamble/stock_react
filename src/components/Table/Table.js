@@ -497,6 +497,7 @@ export default function EnhancedTable() {
   const [indents, setindentsData] = React.useState([]);
   const [ticks, ticksData] = React.useState();
   React.useEffect(() => {
+    
     // console.log("table_token:", "Authorization" + token);
     const headers = {
       Authorization: "Token " + token,

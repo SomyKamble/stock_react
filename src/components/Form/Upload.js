@@ -55,6 +55,11 @@ import Box from "@material-ui/core/Box";
 import classes3 from "../../app.scss";
 import sample from "../Form/SampleUpload.xlsx";
 
+
+const base_url=localStorage.getItem("base_url");
+// console.log('testttttttttt:',base_url);
+
+
 const useStyles = (theme) => ({
   root: {
     width: "100%",
@@ -297,7 +302,8 @@ class ExcelPage extends Component {
     // console.log(this.state.name);
     axios({
       method: "post",
-      url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
+      url: base_url+"dashboard/upload_err/",
+      // url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload_err/",
       // url:"http://127.0.0.1:8000/dashboard/upload_err/",
       data: FormDatas,
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
@@ -1211,7 +1217,8 @@ function TransitionsModal(props) {
 
   axios({
     method: "get",
-    url: "https://sabertoothdashboard.herokuapp.com/dashboard/me/portfolio",
+    url: base_url+'dashboard/me/portfolio',
+    // url: "https://sabertoothdashboard.herokuapp.com/dashboard/me/portfolio",
     // url:"http://127.0.0.1:8000/dashboard/me/portfolio",
     headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }
   })
@@ -1314,7 +1321,8 @@ function TransitionsModal(props) {
 
       var config = {
         method: 'post',
-        url: 'https://sabertoothdashboard.herokuapp.com/dashboard/my_stocks/',
+        url: base_url+'dashboard/my_stocks/',
+        // url: 'https://sabertoothdashboard.herokuapp.com/dashboard/my_stocks/',
         // url:'http://127.0.0.1:8000/dashboard/my_stocks/',
         headers: {
           "Content-Type": "multipart/form-data",
@@ -1891,7 +1899,8 @@ function AlertSubmitModal(props) {
     // console.log(props.portfolio_name);
     axios({
       method: "post",
-      url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload/",
+      url: base_url+'dashboard/upload/',
+      // url: "https://sabertoothdashboard.herokuapp.com/dashboard/upload/",
       // url:'http://127.0.0.1:8000/dashboard/upload/',
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data", "Authorization": `token ${localStorage.getItem("token")}` }

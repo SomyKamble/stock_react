@@ -1,9 +1,12 @@
 import axios from "axios";
 
+const base_url="https://sabertoothdashboard.herokuapp.com/";
+
 export default axios.create({
-    baseURL:"https://sabertoothdashboard.herokuapp.com/",
-    // baseURL:"http://127.0.0.1:8000/",
+    baseURL:base_url,
 });
+
+localStorage.setItem("base_url", base_url);
 
 
 
