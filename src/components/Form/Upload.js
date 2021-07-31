@@ -1334,6 +1334,9 @@ function TransitionsModal(props) {
       axios(config)
         .then(function (response) {
           console.log(JSON.stringify(response.data));
+          localStorage.removeItem("default_portfolio_name");
+          localStorage.removeItem("portfolio_name");
+          
         })
         .catch(function (error) {
           console.log(error);

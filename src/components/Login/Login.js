@@ -167,6 +167,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [icon, setIcon] = useState("no");
+  const [alertdata, setAlertData] = useState("");
   const datapost = {
     email: email,
     password: password,
@@ -174,9 +175,14 @@ export default function Login() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert("Email or Password cannot be blank");
-    } else {
+    if (!email) {
+      // alert("Email or Password cannot be blank");
+      setAlertData('Email cannot be blank')
+    } 
+    else if(!password){
+      setAlertData('Password cannot be blank')
+    }
+    else {
       setEmail("");
       setPassword("");
 
@@ -201,7 +207,8 @@ export default function Login() {
           console.log("error:", error);
           console.log("errosr:", error.response.data);
           error.response.status === 400
-            ? alert("Please Enter Correct Login Credentials")
+            // ? alert("Please Enter Correct Login Credentials")
+            ? setAlertData('Please Enter Correct Login Credentials')
             : error.response.status === 500
             ? console.log("bad request")
             : console.log("error");
@@ -256,13 +263,17 @@ export default function Login() {
                 id="standard-search"
                 autoComplete="off"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                // onChange={(e) => setEmail(e.target.value)}
+                onChange={e => { setEmail(e.target.value); setAlertData("") }}
                 // style={{ backgroundColor: "#141629" }}
                 inputProps={{
                   style: { fontSize: 13, color: "white", marginBottom: "18px" },
                 }}
                 InputLabelProps={{ className: classes2.text_field }}
               />
+              <p style={{color:"red"}}>
+              {alertdata=="Email cannot be blank"?"Email cannot be blank":""}
+              </p>
               <TextField
                 // className={classe.placeholder}
                 label="Password"
@@ -274,7 +285,8 @@ export default function Login() {
                 id="standard-search"
 
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => { setPassword(e.target.value); setAlertData("") }}
+                // onChange={(e) => setPassword(e.target.value)}
                 inputProps={{ style: { fontSize: 13, color: "white" } }}
                 InputLabelProps={{ className: classes2.text_field }}
                 InputProps={{
@@ -288,6 +300,9 @@ export default function Login() {
                   ),
                 }}
               />
+              <p style={{color:"red"}}>
+              {alertdata=="Password cannot be blank"?"Password cannot be blank":""}
+              </p>
               {/* </form> */}
 
               <Typography
@@ -303,6 +318,9 @@ export default function Login() {
               </Typography>
 
               <ThemeProvider theme={theme}>
+                <p style={{color:"red"}}>
+                {alertdata=="Please Enter Correct Login Credentials"?"Please Enter Correct Login Credentials":""}
+               </p>
                 <Button
                   classes={{
                     endIcon: classes.endIcon,
