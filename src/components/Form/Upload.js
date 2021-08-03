@@ -996,6 +996,7 @@ class ExcelPage extends Component {
                           color: "#ffffff",
                           // marginBottom: "10px",
                         },
+                        maxLength: 50,
                       }}
                       InputLabelProps={{ className: classes2.text_field }}
                       className={classes.lineStyle}
