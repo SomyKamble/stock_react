@@ -191,8 +191,8 @@ export default function Login() {
       };
  
       const postResponse = await api
-        // .post("user/login/", datapost, { headers })
-        .post("dashboard_api_login/", datapost, { headers })
+        .post("user/login/", datapost, { headers })
+        // .post("dashboard_api_login/", datapost, { headers })
 
         .then(function (response) {
           if (response.status === 200) {
