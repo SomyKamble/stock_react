@@ -392,6 +392,7 @@ class ExcelPage extends Component {
         let newRows = [];
         let newerror = [];
         resp.rows.slice(1).map((row, index) => {
+          // console.log('asdsadasdasdasd:',row);
           if (row && row !== "undefined") {
             if (row[0] && row[2]) {
 
@@ -806,6 +807,7 @@ class ExcelPage extends Component {
           if (dt.includes(((row.name).toString()).split(/\s/).join(''))) {
             console.log("error in excel data", row.name, index);
             this.state.rows.splice(index)
+            console.log("check correct data");
             return null
           } else {
             console.log("correct data",row.name);

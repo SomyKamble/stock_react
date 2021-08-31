@@ -11,8 +11,6 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 import MuiTableCell from "@material-ui/core/TableCell";
 import Container from "@material-ui/core/Container";
 import Custombutton from "../Button/Custombutton";
@@ -20,11 +18,10 @@ import Progressbar from "../Progressbar/Progressbar";
 import styles from "./Table.module.css";
 import Layout from "../Layout/Layout";
 import api from "../../constant";
-import config from "../../Firebase";
-import Firebase from "firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 var token = localStorage.getItem("token");
+console.log("token:", token);
 
 function createData(
   id,
@@ -464,19 +461,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable() {
-  // console.log("ggggggg:",localStorage.getItem("default_portfolio_name"));
-
-  var port_name = localStorage.getItem("portfolio_name");
-  var default_port_name = localStorage.getItem("default_portfolio_name");
-
-  if (port_name) {
-    var port_name_data = port_name;
-  } else {
-    var port_name_data = default_port_name;
-  }
-
-  // console.log("data_port_name:",port_name_data);
-
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -495,355 +479,63 @@ export default function EnhancedTable() {
 
   const [test, settestData] = React.useState({});
   const [indents, setindentsData] = React.useState([]);
-  const [ticks, ticksData] = React.useState();
-  React.useEffect(() => {
-    
-    // console.log("table_token:", "Authorization" + token);
-    const headers = {
-      Authorization: "Token " + token,
-    };
-    const datapost = {
-      portfolio_name: port_name_data,
-      action: "view",
-    };
-    const postResponse = api
-      .post("dashboard/my_stocks/", datapost, { headers })
+  const [total, totalData] = React.useState("");
+  const [tabledt, tableData] = React.useState("");
+  const [portname, portnameData] = React.useState("");
 
-      .then(function (response) {
-        if (response.status === 200) {
-          // console.log("iam in my_stock api:");
-
-          ticksData(response.data);
-        }
-      })
-      .catch(function (error) {
-        console.log("error:", error);
-        // console.log("errosr:", error.response.data);
-        // error.response.status === 400
-        //   ? alert("Something went wrong from server side")
-        //   : error.response.status === 500
-        //   ? console.log("bad request")
-        //   : console.log("error");
-      });
-  }, []);
-  // console.log("final:", indents);
   React.useEffect(() => {
     const interval = setInterval(() => {
-      // console.log("success_after:", ticks);
-      // console.log("final:", indents);
-
-      if (!Firebase.apps.length) {
-        Firebase.initializeApp(config);
+      var port_name = localStorage.getItem("portfolio_name");
+      var default_port_name = localStorage.getItem("default_portfolio_name");
+      // console.log("dport_name:",port_name);
+      // console.log("data_port_name_default:",default_port_name);
+      if (port_name) {
+        var port_name_data = port_name;
+      } else {
+        var port_name_data = default_port_name;
       }
-      indents.splice();
-      let ref = Firebase.database().ref().child("Stock");
+      portnameData(port_name_data);
+      // console.log("data_port_name:",port_name_data);
 
-      // start
-      // let refe = Firebase.database().ref();
-      // refe
-      //     // .ref("Stock")
-      //     .once("value")
-      //     .then(function (snapshot) {
-      //       console.log("dat_ddget:", snapshot.val());
+      const headers = {
+        Authorization: "Token " + token,
+      };
+      const datapost = {
+        portfolio_name: port_name_data,
+      };
+      const postResponse = api
+        .post("dashboard_api_streaming/", datapost, { headers })
 
-      //     });
-      // end
-      // start
-      // let refe = Firebase.database().ref().child("Stock");
-      // refe
-      //   // .ref("Stock")
-      //   .child("897537")
-      //   .on("value", (snapshot) => {
-      //     console.log("dat_ddget:", snapshot.val());
-      //   });
-      // end
-      setindentsData([]);
-
-      // {indents.length === 0 ? (console.log("error in api dashboard/my_stocks")
-      // ) : (
-      //   <>
-      // console.log("ticks:", ticks);
-      // console.log("iam in testing mode:")
-      {
-        {
-          ticks === undefined
-            ? window.location.reload()
-            : ticks.map((r) => {
-                // {r.length<0?(console.log("error in api dashboard/my_stocks")):(
-                ref.child(r.instrument_token).on("value", (snapshot) => {
-                  const state = snapshot.val();
-
-                  const ch = {
-                    tradingsymbol: r.tradingsymbol,
-                    name: r.name,
-                    quantity: r.quantity,
-                    buy_price: r.buy_price,
-                  };
-                  const act_data = Object.assign({}, state, ch);
-
-                  // console.log("asda:", act_data['instrument_token']);
-                  if (state === null) {
-                    return null;
-                  } else {
-                    // console.log("data:", state);
-                    test[act_data["instrument_token"]] = act_data;
-                    // setindentsData((indents) => [...indents, act_data]);
-                  }
-                });
-                // )}
-              });
-        }
-      }
-
-      // </>
-      // )}
+        .then(function (response) {
+          if (response.status === 200) {
+            var dfe = response.data;
+            // var grt= Object.keys(dfe['total'])
+            // console.log('featch:',dfe['total'])
+            // console.log('featchfdf:',dfe['data'])
+            totalData(dfe["total"]);
+            tableData(dfe["data"]);
+            console.log("fetch");
+            // window.location.reload();
+          }
+        })
+        .catch(function (error) {
+          console.log("error:", error);
+        });
     }, MINUTE_MS);
     return () => clearInterval(interval);
-  }, [ticks]);
+  });
 
-  // if (Object.keys(test).length === 0) {
-  //   console.log("no data:", Object.keys(test).length);
-  // } else {
-  //   console.log("have data:", Object.keys(test).length);
+  // console.log('get_total:',total)
+  // console.log('get_data:',tabledt)
 
-  // return (
-  //   <div
-  //     className="loader"
-  //     style={{
-  //       backgroundColor: "transparent",
-  //       alignItems: "center",
-  //       display: "flex",
-  //       justifyContent: "center",
-  //       height: "100vh",
-  //       width: "100vw",
-  //     }}
-  //   >
-  //     <CircularProgress
-  //       color="secondary"
-  //       style={{ backgroundColor: "transparent" }}
-  //     />
+  // if (tabledt=="")
+  //   console.log('nooo');
+  // else {
 
-  //     <span
-  //       style={{
-  //         backgroundColor: "transparent",
-  //         justifyContent: "center",
-  //         position: "fixed",
-  //         top: "55%",
-  //       }}
-  //     >
-  //       Loading...please wait
-  //     </span>
-  //   </div>
-  // )
+  //   {Object.values(tabledt).map((keyName, id) => {
+  //     console.log("data:",keyName);
+  //   })}
   // }
-
-  // console.log("test:",test);
-  // console.log("gg:",Object.keys(test).length)
-  // console.log("finalresult:", indents);
-
-  // {Object.values(test).map((keyName, id) => {
-  //   console.log("data:",keyName);
-  // })}
-
-  // console.log("finalresultcount:", indents.length);
-  // {indents.length === 0 ? (console.log("erter")
-  //   ) : (console.log("werwerw")
-  //     )};
-  function calWeight(val) {
-    // var weight1 = 0;
-    // indents.map((stock) => {
-    //   weight1 = weight1 + parseFloat(stock.last_price);
-    // });
-    // var y = (val / weight1) * 100;
-    // return y.toFixed(2);
-    var weight1 = 0;
-    // indents.map((stock) => {
-    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
-    // });
-    {
-      Object.values(test).map((stock, id) => {
-        weight1 = weight1 + parseFloat(stock["last_price"] * stock["quantity"]);
-      });
-    }
-    var y = (val / weight1) * 100;
-    return y.toFixed(2);
-  }
-
-  function calCtr(val, totalreturn, cost, quantity) {
-    var weight1 = 0;
-    // indents.map((stock) => {
-    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
-    // });
-    {
-      Object.values(test).map((stock, id) => {
-        weight1 = weight1 + parseFloat(stock["last_price"] * stock["quantity"]);
-      });
-    }
-    var weight = (val / weight1) * 100;
-    var ctr = weight * (totalreturn / (cost * quantity));
-    return ctr.toFixed(2);
-    // var weight1 = 0;
-    // indents.map((stock) => {
-    //   weight1 = weight1 + parseFloat(stock.last_price);
-    // });
-    // var y = ((val / weight1) * 100).toFixed(2);
-    // var ctr = (y * (totalreturn / (val * 10).toFixed(2))).toFixed(2);
-
-    // return ctr;
-  }
-  // (row.last_price)*(row.quantity)
-  // (row.last_price - row.close) * row.quantity)
-
-  function totalcalCtr(val) {
-    var weight1 = 0;
-    // val.map((stock) => {
-    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
-    // });
-    {
-      Object.values(val).map((stock, id) => {
-        weight1 = weight1 + parseFloat(stock["last_price"] * stock["quantity"]);
-      });
-    }
-    var tot = 0;
-    // val.map((row) => {
-    //   tot =
-    //     tot +
-    //     parseFloat(
-    //       ((row.last_price * row.quantity) / weight1) *
-    //         100 *
-    //         (((row.last_price - row.close) * row.quantity) /
-    //           (row.close * row.quantity))
-    //     );
-    // });
-    {
-      Object.values(val).map((row, id) => {
-        tot =
-          tot +
-          parseFloat(
-            ((row["last_price"] * row["quantity"]) / weight1) *
-              100 *
-              (((row["last_price"] - row["close"]) * row["quantity"]) /
-                (row["close"] * row["quantity"]))
-          );
-      });
-    }
-    return tot.toFixed(2);
-
-    //new
-    // var weight1 = 0;
-    // indents.map((stock) => {
-    //   weight1 = weight1 + parseFloat(stock.last_price * stock.quantity);
-    // });
-    // var tot = 0;
-    // indents.map((row) => {
-    //   tot =
-    //     tot +
-    //     parseFloat(
-    //       ((row.last_price * row.quantity) / weight1) *
-    //         100 *
-    //         (((row.last_price - row.close) * row.quantity) /
-    //           (row.close * row.quantity))
-    //     );
-    // });
-    // return tot.toFixed(2);
-
-    //old
-    // var weight1 = 0;
-    // indents.map((stock) => {
-    //   weight1 = weight1 + parseFloat(stock.last_price);
-    // });
-    // var tot = 0;
-    // indents.map((row) => {
-    //   tot =
-    //     tot +
-    //     parseFloat(
-    //       (
-    //         ((row.last_price / weight1) * 100).toFixed(2) *
-    //         (((row.last_price - row.close) * row.quantity).toFixed(2) /
-    //           (row.last_price * 10).toFixed(2))
-    //       ).toFixed(2)
-    //     );
-    // });
-    // console.log("eeee:", tot);
-    // return tot.toFixed(2);
-  }
-
-  function secNameCount() {
-    var res = 0;
-    indents.map((stock, id) => {
-      res = id;
-    });
-    return res + 1;
-  }
-
-  function totalQuanCount(data) {
-    var totq = 0;
-    // data.map((row) => {
-    //   totq = totq + parseFloat(row.quantity);
-    // });
-    {
-      Object.values(data).map((row, id) => {
-        totq = totq + parseFloat(row["quantity"]);
-      });
-    }
-    return totq;
-
-    // var totq = 0;
-    // indents.map((row) => {
-    //   totq = totq + parseFloat(row.quantity);
-    // });
-    // return totq;
-  }
-
-  function totalValCount(val) {
-    var totv = 0;
-    // val.map((row) => {
-    //   totv = totv + parseFloat(row.last_price * row.quantity);
-    // });
-    {
-      Object.values(val).map((row, id) => {
-        totv = totv + parseFloat(row["last_price"] * row["quantity"]);
-      });
-    }
-    return numberWithCommas(totv.toFixed(2));
-
-    // var totv = 0;
-    // indents.map((row) => {
-    //   totv = totv + parseFloat(row.last_price * row.quantity);
-    // });
-    // return numberWithCommas(totv.toFixed(2));
-  }
-  function totalReturnCount(val) {
-    var totr = 0;
-    // val.map((row) => {
-    //   totr = totr + parseFloat((row.last_price - row.close) * row.quantity);
-    // });
-    {
-      Object.values(val).map((row, id) => {
-        totr =
-          totr +
-          parseFloat((row["last_price"] - row["close"]) * row["quantity"]);
-      });
-    }
-    return numberWithCommas(totr.toFixed(2));
-
-    // var totr = 0;
-    // indents.map((row) => {
-    //   totr = totr + parseFloat((row.last_price - row.close) * row.quantity);
-    // });
-    // return numberWithCommas(totr.toFixed(2));
-  }
-
-  //   indents.map((stock) => {
-  //   console.log("hekk:",stock.length)
-  // });
-  // const key = "instrument_token";
-
-  // const arrayUniqueByKey = [
-  //   ...new Map(indents.map((item) => [item[key], item])).values(),
-  // ];
-
-  // console.log("count:",arrayUniqueByKey.length);
 
   return (
     <>
@@ -872,11 +564,12 @@ export default function EnhancedTable() {
                       align="left"
                       className={`${classes.tableCellSticky} ${styles.paddingLeft}`}
                     >
-                      {port_name_data}
+                      {portname === "" ? console.log("wait") : portname}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {/* {secNameCount()} */}
-                      {Object.keys(test).length}
+                      {tabledt === ""
+                        ? console.log("wait")
+                        : Object.keys(tabledt).length}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       -----
@@ -888,28 +581,34 @@ export default function EnhancedTable() {
                       100 %
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {totalQuanCount(test)}
+                      {tabledt === ""
+                        ? console.log("wait")
+                        : total["total_qty"]}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{totalValCount(test)}
+                      ₹
+                      {tabledt === ""
+                        ? console.log("wait")
+                        : total["total_val"]}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
                       -----
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      ₹{totalReturnCount(test)}
+                      ₹
+                      {tabledt === ""
+                        ? console.log("wait")
+                        : total["total_return"]}
                     </TableCell>
                     <TableCell align="left" className={classes.tableCellSticky}>
-                      {totalcalCtr(test)} %
+                      {tabledt === ""
+                        ? console.log("wait")
+                        : total["total_ctr"]}{" "}
+                      %
                     </TableCell>
                   </TableRow>
 
-                  {/* {stableSort(rows, getComparator(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => { */}
-                  {Object.keys(test).length < 1 ? (
-                    // console.log("error in table ")
-
+                  {Object.keys(tabledt).length < 1 ? (
                     <>
                       <div
                         className="loader"
@@ -922,11 +621,6 @@ export default function EnhancedTable() {
                           width: "100vw",
                         }}
                       >
-                        {/* <CircularProgress
-                          color="secondary"
-                          style={{ backgroundColor: "transparent" }}
-                        /> */}
-
                         <span
                           style={{
                             backgroundColor: "transparent",
@@ -948,7 +642,7 @@ export default function EnhancedTable() {
                     </>
                   ) : (
                     <>
-                      {Object.values(test).map((row, id) => {
+                      {Object.values(tabledt).map((row, id) => {
                         return (
                           <TableRow
                             hover
@@ -960,7 +654,6 @@ export default function EnhancedTable() {
                               className={classes.tableCell}
                               align="left"
                             >
-                              {/* {row.tradingsymbol} */}
                               {row["change"] < 0 ? (
                                 <Custombutton
                                   bankName={row["tradingsymbol"]}
@@ -977,7 +670,6 @@ export default function EnhancedTable() {
                               className={classes.tableCell}
                               align="left"
                             >
-                              {/* security name */}
                               {row["name"]}
                             </TableCell>
                             <TableCell
@@ -988,83 +680,54 @@ export default function EnhancedTable() {
                                   : classes.tableCell
                               }
                             >
-                              {/* %1d change */}
                               {row["change"].toFixed(2)}%
                             </TableCell>
                             <TableCell
                               align="left"
                               className={classes.tableCell}
                             >
-                              {/* last price */}₹
-                              {numberWithCommas(row["last_price"].toFixed(2))}
+                              ₹{numberWithCommas(row["last_price"].toFixed(2))}
                             </TableCell>
                             <TableCell
                               align="left"
                               className={classes.tableCell}
                             >
-                              {/* weight */}
-                              <Progressbar
-                                position={calWeight(
-                                  row["last_price"] * row["quantity"]
-                                )}
-                              />
+                              <Progressbar position={row["weight"]} />
                             </TableCell>
                             <TableCell
                               align="left"
                               className={classes.tableCell}
                             >
-                              {/* quantity */}
                               {numberWithCommas(row["quantity"])}
                             </TableCell>
                             <TableCell
                               align="left"
                               className={classes.tableCell}
                             >
-                              {/* value */}₹
-                              {numberWithCommas(
-                                (row["last_price"] * row["quantity"]).toFixed(2)
-                              )}
+                              ₹{numberWithCommas(row["value"])}
                             </TableCell>
                             <TableCell
                               align="left"
                               className={classes.tableCell}
                             >
                               {/* cost */}₹
-                              {numberWithCommas(row["close"].toFixed(2))}
+                              {numberWithCommas(row["cost"].toFixed(2))}
                             </TableCell>
                             <TableCell
                               align="left"
                               className={classes.tableCell}
                             >
-                              {/* total return */}₹
-                              {(
-                                (row["last_price"] - row["close"]) *
-                                row["quantity"]
-                              ).toFixed(2)}
+                              ₹{row["return"]}
                             </TableCell>
                             <TableCell
                               align="left"
                               className={
-                                calCtr(
-                                  row["last_price"] * row["quantity"],
-                                  (row["last_price"] - row["close"]) *
-                                    row["quantity"],
-                                  row["close"],
-                                  row["quantity"]
-                                ) < 0
+                                row["ctr"] < 0
                                   ? classes.tableCellRed
                                   : classes.tableCellGreen
                               }
                             >
-                              {/* CTR */}
-                              {calCtr(
-                                row["last_price"] * row["quantity"],
-                                (row["last_price"] - row["close"]) *
-                                  row["quantity"],
-                                row["close"],
-                                row["quantity"]
-                              )}{" "}
-                              %
+                              {row["ctr"]} %
                             </TableCell>
                           </TableRow>
                         );

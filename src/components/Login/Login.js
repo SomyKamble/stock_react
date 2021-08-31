@@ -177,22 +177,20 @@ export default function Login() {
     e.preventDefault();
     if (!email) {
       // alert("Email or Password cannot be blank");
-      setAlertData('Email cannot be blank')
-    } 
-    else if(!password){
-      setAlertData('Password cannot be blank')
-    }
-    else {
+      setAlertData("Email cannot be blank");
+    } else if (!password) {
+      setAlertData("Password cannot be blank");
+    } else {
       setEmail("");
       setPassword("");
 
       const headers = {
         "Content-Type": "application/json; charset=UTF-8",
       };
- 
+
       const postResponse = await api
-        .post("user/login/", datapost, { headers })
-        // .post("dashboard_api_login/", datapost, { headers })
+        // .post("user/login/", datapost, { headers })
+        .post("dashboard_api_login/", datapost, { headers })
 
         .then(function (response) {
           if (response.status === 200) {
@@ -207,8 +205,8 @@ export default function Login() {
           console.log("error:", error);
           console.log("errosr:", error.response.data);
           error.response.status === 400
-            // ? alert("Please Enter Correct Login Credentials")
-            ? setAlertData('Please Enter Correct Login Credentials')
+            ? // ? alert("Please Enter Correct Login Credentials")
+              setAlertData("Please Enter Correct Login Credentials")
             : error.response.status === 500
             ? console.log("bad request")
             : console.log("error");
@@ -264,28 +262,35 @@ export default function Login() {
                 autoComplete="off"
                 value={email}
                 // onChange={(e) => setEmail(e.target.value)}
-                onChange={e => { setEmail(e.target.value); setAlertData("") }}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setAlertData("");
+                }}
                 // style={{ backgroundColor: "#141629" }}
                 inputProps={{
                   style: { fontSize: 13, color: "white", marginBottom: "18px" },
                 }}
                 InputLabelProps={{ className: classes2.text_field }}
               />
-              <p style={{color:"red"}}>
-              {alertdata=="Email cannot be blank"?"Email cannot be blank":""}
+              <p style={{ color: "red" }}>
+                {alertdata === "Email cannot be blank"
+                  ? "Email cannot be blank"
+                  : ""}
               </p>
               <TextField
                 // className={classe.placeholder}
                 label="Password"
-                style={{display:null}}
+                style={{ display: null }}
                 autoComplete="off"
                 variant="standard"
                 type={icon === "yes" ? "text" : "password"}
                 // type="password"
                 id="standard-search"
-
                 value={password}
-                onChange={e => { setPassword(e.target.value); setAlertData("") }}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setAlertData("");
+                }}
                 // onChange={(e) => setPassword(e.target.value)}
                 inputProps={{ style: { fontSize: 13, color: "white" } }}
                 InputLabelProps={{ className: classes2.text_field }}
@@ -300,8 +305,10 @@ export default function Login() {
                   ),
                 }}
               />
-              <p style={{color:"red"}}>
-              {alertdata=="Password cannot be blank"?"Password cannot be blank":""}
+              <p style={{ color: "red" }}>
+                {alertdata === "Password cannot be blank"
+                  ? "Password cannot be blank"
+                  : ""}
               </p>
               {/* </form> */}
 
@@ -318,9 +325,11 @@ export default function Login() {
               </Typography>
 
               <ThemeProvider theme={theme}>
-                <p style={{color:"red"}}>
-                {alertdata=="Please Enter Correct Login Credentials"?"Please Enter Correct Login Credentials":""}
-               </p>
+                <p style={{ color: "red" }}>
+                  {alertdata === "Please Enter Correct Login Credentials"
+                    ? "Please Enter Correct Login Credentials"
+                    : ""}
+                </p>
                 <Button
                   classes={{
                     endIcon: classes.endIcon,
